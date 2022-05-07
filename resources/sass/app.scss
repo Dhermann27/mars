@@ -1,0 +1,136 @@
+@import 'mdb.pro.scss';
+
+
+$my-theme-primary: #17301c; // theme primary color, change this value to customize theme
+$my-theme-secondary: lightgray; // theme secondary color, change this value to customize theme
+
+$my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // create the new light theme using primary and secondary colors
+
+// include theme styles
+@include mdb-theme($my-light-theme);
+
+h1, h2, h3 {
+    font-family: $font-family-primary;
+}
+
+#navbarMars .btn,
+.card .btn,
+.nav-tabs .nav-link {
+    font-size: 1.2rem;
+}
+
+#navbarMars .dropdown-menu {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+#navbarMars svg {
+    margin-right: 5px;
+}
+
+a.underlined-link:hover {
+    text-decoration: underline;
+}
+
+a.btn-amber-hover:hover,
+.nav-tabs .nav-link:hover {
+    background-color: $amber-300;
+}
+
+.number-spinner input {
+    text-align: center;
+}
+
+/* ANIMATED NAVBAR */
+/* Color of the links BEFORE scroll */
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon {
+    color: #fff;
+    text-shadow: 2px 2px $teal-900;
+}
+
+.navbar-scroll .nav-link:hover,
+.navbar-scroll .nav-link:focus {
+    color: $amber-300;
+}
+
+/* Color of the links AFTER scroll */
+.navbar-scrolled .nav-link,
+.navbar-scrolled .navbar-toggler-icon {
+    color: #4f4f4f;
+    text-shadow: none;
+}
+
+.navbar-scrolled .nav-link:hover,
+.navbar-scrolled .nav-link:focus {
+    color: $gray-800;
+}
+
+/* Color of the navbar AFTER scroll */
+.navbar-scrolled {
+    background-color: #fff;
+}
+
+/* An optional height of the navbar AFTER scroll */
+.navbar.navbar-scroll.navbar-scrolled {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#carouselWelcome .carousel-item {
+    min-height: 500px;
+}
+
+.building-carousel .carousel-item {
+    min-height: 400px;
+}
+
+.carousel-inner > .carousel-item > img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 100%;
+    min-height: 500px;
+    min-width: 1200px;
+}
+
+.carousel-caption, .text-shadow {
+    left: 10%;
+    right: 10%;
+    text-shadow: 1px 1px $teal-900;
+}
+
+.carousel-caption h2 {
+    font-size: 2.8vw;
+}
+
+.carousel-caption h4, .carousel-caption btn-info {
+    font-size: 1.7vw;
+}
+
+/*  INDIVIDUAL STYLES */
+.testi-desc {
+    background-color: #ffffff;
+    -webkit-box-shadow: 0 10px 35px 0 rgba(154, 161, 171, 0.1);
+    box-shadow: 0 10px 35px 0 rgba(154, 161, 171, 0.1);
+    border-radius: 7px;
+    position: relative;
+}
+
+.testi-desc:before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    bottom: -6px;
+    left: 52px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
