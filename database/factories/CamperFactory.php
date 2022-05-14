@@ -7,6 +7,7 @@ use App\Models\Church;
 use App\Models\Family;
 use App\Models\Foodoption;
 use App\Models\Pronoun;
+use App\Models\Year;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,10 +25,10 @@ class CamperFactory extends Factory
         $year = date("Y") - Year::where('is_current', '1')->first()->year;
         return [
             'pronoun_id' => function () {
-                return factory(Pronoun::class)->create()->id;
+                return Pronoun::factory()->create()->id;
             },
             'family_id' => function () {
-                return factory(Family::class)->create()->id;
+                return Family::factory()->create()->id;
             },
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
@@ -35,11 +36,11 @@ class CamperFactory extends Factory
             'phonenbr' => $this->faker->regexify('[1-9]\d{9}'),
             'birthdate' => $this->faker->dateTimeBetween('-' . (100 + $year) . ' years', '-' . (19 + $year) . ' years')->format('Y-m-d'),
             'church_id' => function () {
-                return factory(Church::class)->create()->id;
+                return Church::factory()->create()->id;
             },
             'is_handicap' => 0,
             'foodoption_id' => function () {
-                return factory(Foodoption::class)->create()->id;
+                return Foodoption::factory()->create()->id;
             }
         ];
     }

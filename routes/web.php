@@ -23,7 +23,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', [ContactController::class, 'contactIndex'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'contactStore'])->name('contact.store');
-//Route::get('/refreshcaptcha', [ContactController::class, 'refreshCaptcha'])->name('contact.refresh');
+Route::get('/refreshcaptcha', [ContactController::class, 'refreshCaptcha'])->name('contact.refresh');
 
 Route::get('/cost', [HomeController::class, 'campcost'])->name('cost');
 Route::get('/themespeaker', [HomeController::class, 'themespeaker'])->name('themespeaker');

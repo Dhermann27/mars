@@ -44,7 +44,7 @@
                     funds that are available, and explains the scholarship award process.</p>
                 <h3 class="pb-2">How to Apply For a Scholarship</h3>
                 <h5>Begin an application form, available <a
-                        href="//docs.google.com/forms/d/1MOP0UtePIKBKeubNcj5hgX6z_a6KcgZ5fFMn_zLsgP0">here</a>.
+                            href="//docs.google.com/forms/d/1MOP0UtePIKBKeubNcj5hgX6z_a6KcgZ5fFMn_zLsgP0">here</a>.
                 </h5>
                 <p>If you are unable to use the online form, you may request a hard copy application form by
                     contacting the MUUSA Scholarship Coordinator. If you mail in a hard copy form, your form must be

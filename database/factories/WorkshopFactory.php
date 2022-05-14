@@ -21,7 +21,7 @@ class WorkshopFactory extends Factory
 
         return [
             'room_id' => function () {
-                return factory(Room::class)->create()->id;
+                return Room::factory()->create()->id;
             },
             'timeslot_id' => $slots[array_rand($slots)],
             'order' => $this->faker->randomNumber(2),

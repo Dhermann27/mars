@@ -1,4 +1,4 @@
-From: {{ $request->name }} <{{ $request->email }}>
+From: {{ $request->yourname }} <{{ $request->email }}>
 
 Sent By: MUUSA Contact Us Form
 

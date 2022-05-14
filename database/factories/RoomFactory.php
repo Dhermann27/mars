@@ -18,7 +18,7 @@ class RoomFactory extends Factory
     {
         return [
             'building_id' => function () {
-                return factory(Building::class)->create()->id;
+                return Building::factory()->create()->id;
             },
             'room_number' => $this->faker->randomNumber(5),
             'capacity' => $this->faker->randomNumber(1),

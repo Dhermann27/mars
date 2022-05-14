@@ -21,10 +21,10 @@ class YearattendingWorkshopFactory extends Factory
     {
         return [
             'yearattending_id' => function () {
-                return factory(Yearattending::class)->create()->id;
+                return Yearattending::factory()->create()->id;
             },
             'workshop_id' => function () {
-                return factory(Workshop::class)->create()->id;
+                return Workshop::factory()->create()->id;
             },
         ];
     }

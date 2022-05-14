@@ -13,7 +13,8 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>
-                    <a class="btn btn-secondary float-end" href="mailto:{{ $positions->flatten(1)->implode('email', ';') }}">
+                    <a class="btn btn-secondary float-end"
+                       href="mailto:{{ $positions->flatten(1)->implode('email', ';') }}">
                         Email All <i class="far fa-envelope"></i></a>
                 </th>
             </tr>

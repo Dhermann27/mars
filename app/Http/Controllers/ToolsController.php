@@ -64,7 +64,7 @@ class ToolsController extends Controller
 
         $request->session()->flash('success', 'Assigned. Suckers! No backsies.');
 
-        return redirect()->action('ToolsController@positionIndex');
+        return redirect()->action([ToolsController::class, 'positionIndex']);
     }
 
     public function positionIndex()

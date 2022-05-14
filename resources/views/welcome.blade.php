@@ -84,7 +84,7 @@
                                 it might contain.
                             @endif
                         </p>
-                        <a class="btn btn-primary" href="{{ route('brochure') }}">
+                        <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">
                             Take a look <i class="far fa-file-pdf mx-2"></i>
                         </a>
                     </div>
@@ -112,7 +112,7 @@
                     distancing, testing, etc. will be made in accordance with evidence-based public health
                     recommendations closer to camp. We will provide these to you by June 1st. Questions should be
                     directed to Jesse Hardin, the Omsbuddy and lead for the PC Covid Task Force using the <a
-                        href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
+                            href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
                 </p>
             </div>
         </div>
@@ -147,11 +147,11 @@
             </h3>
             <div>
                 @can('has-paid')
-                    <a href="{{ route('campers.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('campers.index') }}" class="btn btn-lg btn-secondary">
                         See Your Information for {{ $year->year }} <i class="fas fa-sign-in"></i>
                     </a>
                 @else
-                    <button type="button" class="btn btn-secondary" data-toggle="modal"
+                    <button type="button" class="btn btn-lg btn-secondary" data-toggle="modal"
                             data-target="#modal-register">
                         Register for {{ $year->year }} <i class="fas fa-sign-in"></i>
                     </button>
@@ -175,7 +175,7 @@
                         building friendships that will last well beyond the week of camp.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('programs') }}" class="btn btn-primary">Program Descriptions</a>
+                    <a href="{{ route('programs') }}" class="btn btn-lg btn-primary">Program Descriptions</a>
                 </div>
             </div>
         </div>
@@ -191,7 +191,7 @@
                         Accommodations are available for all budgets.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('housing') }}" class="btn btn-primary">Housing Options</a>
+                    <a href="{{ route('housing') }}" class="btn btn-lg btn-primary">Housing Options</a>
                 </div>
             </div>
         </div>
@@ -209,7 +209,7 @@
                         wonderful talents, skills, and insights the workshop leaders have to offer.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('workshops.display') }}" class="btn btn-primary">
+                    <a href="{{ route('workshops.display') }}" class="btn btn-lg btn-primary">
                         @if($year->is_live)
                             Workshop List
                         @else
@@ -233,7 +233,7 @@
                         led by Pam Blevins Hinkle and accompanied by Bonnie Ettinger.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('themespeaker') }}" class="btn btn-primary">Theme Speaker
+                    <a href="{{ route('themespeaker') }}" class="btn btn-lg btn-primary">Theme Speaker
                         Biography</a>
                 </div>
             </div>
@@ -254,7 +254,7 @@
                         you know they are available.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('scholarship') }}" class="btn btn-primary">Application
+                    <a href="{{ route('scholarship') }}" class="btn btn-lg btn-primary">Application
                         Process</a>
                 </div>
             </div>
@@ -271,7 +271,7 @@
                         optimum use of housing. Full details can be found in the brochure.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{{ route('cost') }}" class="btn btn-primary">Full-Week
+                    <a href="{{ route('cost') }}" class="btn btn-lg btn-primary">Full-Week
                         Rates</a>
                 </div>
             </div>

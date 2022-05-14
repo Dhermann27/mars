@@ -51,7 +51,7 @@
                                     name="chargetype_id">
                                 @foreach($chargetypes as $chargetype)
                                     <option value="{{ $chargetype->id }}"
-                                        {{ $chargetype->id == old('chargetype_id') ? ' selected' : '' }}>
+                                            {{ $chargetype->id == old('chargetype_id') ? ' selected' : '' }}>
                                         {{ $chargetype->name }}
                                     </option>
                                 @endforeach

@@ -48,7 +48,8 @@
                 <label for="programs" class="col-md-4 control-label">Programs (all off by default)</label>
                 <div class="col-md-6 btn-group" data-toggle="buttons">
                     @foreach($programs as $program)
-                        <label class="btn btn-default {{ old('program-' . $program->id, $request->input('program-' . $program->id)) == 'on' ? 'active' : '' }}">
+                        <label
+                            class="btn btn-default {{ old('program-' . $program->id, $request->input('program-' . $program->id)) == 'on' ? 'active' : '' }}">
                             <input type="checkbox" name="program-{{ $program->id }}" data-toggle="switch"
                                 {{ old('program-' . $program->id, $request->input('program-' . $program->id)) == 'on' ? ' checked="checked"' : '' }}/>
                             {{ $program->name }}

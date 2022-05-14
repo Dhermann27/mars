@@ -21,10 +21,10 @@ class RateFactory extends Factory
     {
         return [
             'building_id' => function () {
-                return factory(Building::class)->create()->id;
+                return Building::factory()->create()->id;
             },
             'program_id' => function () {
-                return factory(Program::class)->create()->id;
+                return Program::factory()->create()->id;
             },
             'min_occupancy' => 1,
             'max_occupancy' => 999,

@@ -76,7 +76,7 @@ class ReportController extends Controller
                 ->update(['deposited_date' => Carbon::now()->toDateString()]);
         }
         $request->session()->flash('success', 'John made me put this message here. Send help.');
-        return redirect()->action('ReportController@deposits');
+        return redirect()->action([ReportController::class, 'deposits']);
     }
 
     public function deposits()
@@ -98,7 +98,7 @@ class ReportController extends Controller
         $charge->save();
 
         $request->session()->flash('success', 'This payment was actually ignored, but the green message still seems congratulatory.');
-        return redirect()->action('ReportController@outstanding');
+        return redirect()->action([ReportController::class, 'outstanding']);
     }
 
     public function outstanding()

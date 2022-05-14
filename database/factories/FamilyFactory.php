@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Family;
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,7 @@ class FamilyFactory extends Factory
             'address2' => $this->faker->secondaryAddress(),
             'city' => $this->faker->city(),
             'province_id' => function () {
-                return factory(Province::class)->create()->id;
+                return Province::factory()->create()->id;
             },
             'zipcd' => $this->faker->postcode(),
             'country' => $this->faker->country(),

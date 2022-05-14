@@ -8,47 +8,65 @@
     Send an email to the right person to answer your questions or concerns.
 @endsection
 
+@section('image')
+    url('/images/biographies.jpg')
+@endsection
+
 @section('content')
-    <div class="container">
-        <form class="form-horizontal" role="form" method="POST" action="{{ route('contact.index') }}">
-            @include('includes.flash')
+    <form class="form-horizontal m-5" role="form" method="POST" action="{{ route('contact.index') }}">
+        @include('includes.flash')
 
-            @if(Auth::check() && !empty(Auth::user()->camper))
-                @include('includes.formgroup', ['type' => 'info', 'label' => 'Your Name', 'attribs' => ['name' => 'name'],
-                    'default' => Auth::user()->camper->firstname . ' ' . Auth::user()->camper->lastname])
+        @if(Auth::check() && !empty(Auth::user()->camper))
+            <x-form-group name="yourname" label="Your Name"
+                          readonly="{{ Auth::user()->camper->firstname . ' ' . Auth::user()->camper->lastname }}"/>
+        @else
+            <x-form-group name="yourname" label="Your Name"/>
+        @endif
 
-                @include('includes.formgroup', ['type' => 'info', 'label' => 'Email Address', 'attribs' => ['name' => 'email'],
-                    'default' => Auth::user()->email])
-            @else
-                @include('includes.formgroup', ['label' => 'Your Name', 'attribs' => ['name' => 'name']])
+        @auth
+            <x-form-group name="email" label="Your Email" readonly="{{ Auth::user()->email }}"/>
+        @else
+            <x-form-group name="email" label="Your Email"/>
+        @endauth
 
-                @include('includes.formgroup', ['label' => 'Email Address', 'attribs' => ['name' => 'email']])
-            @endif
+        <x-form-group type="select" name="mailbox" label="Recipient Mailbox">
+            <option value="0">Choose a recipient mailbox</option>
+            @foreach($mailboxes as $mailbox)
+                <option value="{{ $mailbox->id }}" @selected(old('mailbox'))>{{ $mailbox->name }}</option>
+            @endforeach
+        </x-form-group>
 
-            @include('includes.formgroup', ['type' => 'select', 'label' => 'Recipient Mailbox',
-                'attribs' => ['name' => 'mailbox'], 'default' => 'Choose a recipient mailbox', 'list' => $mailboxes,
-                'option' => 'name'])
+        <x-form-group type="textarea" name="message" label="Message">{{ old('message') }}</x-form-group>
 
-            @include('includes.formgroup', ['type' => 'text', 'label' => 'Message', 'attribs' => ['name' => 'message']])
+        <div class="col-md-6 offset-md-3 mb-1">
+            <span id="captchaimg">{!! captcha_img() !!}</span>
+            <button type="button" id="refreshcaptcha" class="btn btn-primary" onclick="window.location.reload();"><i
+                    class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+        <div class="mb-3 pb-1">
+            <div class="form-outline col-md-6 offset-md-3">
+                <input id="captcha" name="captcha" type="text"
+                       class="form-control @error('captcha') is-invalid @enderror"/>
+                <label for="captcha" class="form-label">CAPTCHA Test</label>
+                @error('captcha')
+                <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                @enderror
+            </div>
+        </div>
 
-            @include('includes.formgroup', ['type' => 'captcha', 'label' => 'CAPTCHA Test',
-                'attribs' => ['name' => 'captcha']])
-
-            @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => 'Send Message']])
-        </form>
-    </div>
+        <x-form-group type="submit" label="Send Message"/>
+    </form>
 @endsection
 
 @section('script')
     <script type="text/javascript">
-        $('button#refreshcaptcha').click(function () {
-            $.ajax({
-                type: 'GET',
-                url: '/refreshcaptcha',
-                success: function (data) {
-                    $("span#captchaimg").html(data.captcha);
-                }
-            });
-        }).click();
+        // var refreshCap = function () {
+        //     getAjax('/refreshcaptcha', function (data) {
+        //         document.getElementById('captchaimg').innerHTML = data.captcha;
+        //     })
+        // }
+        //
+        // addEvent(document.getElementById('refreshcaptcha'), 'click', refreshCap);
     </script>
 @endsection

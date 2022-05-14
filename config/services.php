@@ -20,6 +20,11 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'mailtrap' => [
+        'secret' => env('MAILTRAP_SECRET'),
+        'default_inbox' => env('MAILTRAP_INBOX')
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

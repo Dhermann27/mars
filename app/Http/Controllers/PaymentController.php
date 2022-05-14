@@ -190,7 +190,7 @@ class PaymentController extends Controller
             $request->session()->flash('error', 'Payment was not processed by MUUSA. If you believe that PayPal has transmitted funds, please contact the Treasurer so we can confirm and update your account.');
         }
 
-        return redirect()->action('PaymentController@index');
+        return redirect()->action([PaymentController::class, 'index']);
 
     }
 
@@ -206,7 +206,7 @@ class PaymentController extends Controller
 
         if (!isset(Auth::user()->camper)) {
             $request->session()->flash('warning', 'Please fill out your camper information to continue.');
-            return redirect()->action('CamperController@index');
+            return redirect()->action([CamperController::class, 'index']);
         } else {
             if ($id && Gate::allows('is-council')) {
                 $family_id = $request->session()->get('camper')->family_id;
@@ -215,7 +215,7 @@ class PaymentController extends Controller
                 $years = ThisyearCharge::where('family_id', Auth::user()->camper->family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
                 if (count($years) == 0) {
                     $request->session()->flash('warning', 'Please choose which campers are attending this year.');
-                    return redirect()->action('CamperController@index');
+                    return redirect()->action([CamperController::class, 'index']);
                 }
                 foreach ($years as $charge) {
                     if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit) {

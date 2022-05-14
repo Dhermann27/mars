@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Buildingtype;
 use App\Models\Building;
 use App\Models\CampCost;
-use App\Enums\Buildingtype;
 use App\Models\Program;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('welcome');
     }

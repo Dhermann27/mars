@@ -6,7 +6,8 @@
 
 @section('content')
     <div class="container">
-        <form id="positions" class="form-horizontal" role="form" method="POST" action="{{ route('admin.positions.store') }}">
+        <form id="positions" class="form-horizontal" role="form" method="POST"
+              action="{{ route('admin.positions.store') }}">
             @include('includes.flash')
             {{--<div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $timeslot->id }}" role="tabpanel">--}}
             @component('components.navtabs', ['tabs' => $programs, 'id'=> 'id', 'option' => 'name'])

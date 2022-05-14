@@ -42,14 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function actions()
-    {
-        return $this->hasMany('App\Http\Action');
-    }
-
     public function camper()
     {
-        return $this->hasOne('App\Http\Camper', 'email', 'email');
+        return $this->hasOne('App\Models\Camper', 'email', 'email');
     }
 
     public function sendPasswordResetNotification($token)

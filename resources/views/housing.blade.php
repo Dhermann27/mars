@@ -20,7 +20,8 @@
                 <div class="mt-2">{!! $building->blurb !!}</div>
 
                 @if(isset($building->image))
-                    <div id="carousel{{ $building->id }}" class="carousel slide building-carousel" data-mdb-ride="carousel">
+                    <div id="carousel{{ $building->id }}" class="carousel slide building-carousel"
+                         data-mdb-ride="carousel">
                         <div class="carousel-indicators">
                             @foreach($building->image_array as $image)
                                 <button type="button" data-mdb-target="#carousel{{ $building->id }}"

@@ -2,7 +2,7 @@
 
 
 $my-theme-primary: #17301c; // theme primary color, change this value to customize theme
-$my-theme-secondary: lightgray; // theme secondary color, change this value to customize theme
+$my-theme-secondary: gray; // theme secondary color, change this value to customize theme
 
 $my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // create the new light theme using primary and secondary colors
 
@@ -13,10 +13,8 @@ h1, h2, h3 {
     font-family: $font-family-primary;
 }
 
-#navbarMars .btn,
-.card .btn,
-.nav-tabs .nav-link {
-    font-size: 1.2rem;
+.btn-lg {
+    font-size: 1.1rem;
 }
 
 #navbarMars .dropdown-menu {
@@ -39,6 +37,11 @@ a.btn-amber-hover:hover,
 
 .number-spinner input {
     text-align: center;
+}
+
+textarea {
+    height: 150px;
+    width: 100%;
 }
 
 /* ANIMATED NAVBAR */

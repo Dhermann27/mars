@@ -19782,7 +19782,7 @@ body {
 }
 
 .bg-secondary {
-  background-color: lightgray !important;
+  background-color: gray !important;
   color: #ffffff;
 }
 
@@ -19799,7 +19799,7 @@ body {
 }
 
 .border-secondary {
-  border-color: lightgray !important;
+  border-color: gray !important;
 }
 
 a:not(.sidenav-link):not(.btn):not(.dropdown-item):not(.nav-link):not(.navbar-brand):not(.page-link):not(.carousel-control-prev):not(.carousel-control-next) {
@@ -19814,7 +19814,7 @@ a:not(.sidenav-link):not(.btn):not(.dropdown-item):not(.nav-link):not(.navbar-br
 }
 
 .text-secondary {
-  color: lightgray !important;
+  color: gray !important;
 }
 
 .note {
@@ -19827,8 +19827,8 @@ a:not(.sidenav-link):not(.btn):not(.dropdown-item):not(.nav-link):not(.navbar-br
 }
 
 .note-secondary {
-  background-color: white;
-  border-color: lightgray;
+  background-color: #d4d4d4;
+  border-color: gray;
 }
 
 .datepicker-modal-container {
@@ -19907,12 +19907,12 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .alert-secondary {
-  color: #7f7f7f;
-  background-color: #f6f6f6;
-  border-color: #f2f2f2;
+  color: #4d4d4d;
+  background-color: #e6e6e6;
+  border-color: #d9d9d9;
 }
 .alert-secondary .alert-link {
-  color: #666666;
+  color: #3e3e3e;
 }
 
 .btn-primary {
@@ -19937,24 +19937,24 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .btn-secondary {
-  background-color: lightgray;
-  color: #262626;
+  background-color: gray;
+  color: #ffffff;
 }
 .btn-secondary:hover {
-  background-color: silver;
-  color: #262626;
+  background-color: #6d6d6d;
+  color: #ffffff;
 }
 .btn-secondary:focus, .btn-secondary.focus {
-  background-color: silver;
-  color: #262626;
+  background-color: #6d6d6d;
+  color: #ffffff;
 }
 .btn-check:checked + .btn-secondary, .btn-check:active + .btn-secondary, .btn-secondary:active, .btn-secondary.active, .show > .btn-secondary.dropdown-toggle {
-  background-color: #a0a0a0;
-  color: #262626;
+  background-color: #4d4d4d;
+  color: #ffffff;
 }
 .btn-secondary:disabled, .btn-secondary.disabled {
-  background-color: lightgray;
-  color: #262626;
+  background-color: gray;
+  color: #ffffff;
 }
 
 .btn-outline-primary {
@@ -19976,21 +19976,21 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .btn-outline-secondary {
-  color: lightgray;
-  border-color: lightgray;
+  color: gray;
+  border-color: gray;
 }
 .btn-outline-secondary:hover {
-  color: lightgray;
-  border-color: lightgray;
+  color: gray;
+  border-color: gray;
 }
 .btn-outline-secondary:focus, .btn-outline-secondary.focus {
-  color: lightgray;
+  color: gray;
 }
 .btn-outline-secondary:active, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show {
-  color: lightgray;
+  color: gray;
 }
 .btn-outline-secondary:disabled, .btn-outline-secondary.disabled {
-  color: lightgray;
+  color: gray;
 }
 
 .btn-link {
@@ -20046,8 +20046,8 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
   background-color: #60b371;
 }
 .list-group-item-action.list-group-item-secondary:hover {
-  color: #adadad;
-  background-color: white;
+  color: #5a5a5a;
+  background-color: #b3b3b3;
 }
 
 .list-group-item-primary {
@@ -20055,7 +20055,7 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .list-group-item-secondary {
-  color: lightgray;
+  color: gray;
 }
 
 .card {
@@ -20242,7 +20242,7 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .ripple-surface-secondary .ripple-wave {
-  background-image: radial-gradient(circle, rgba(211, 211, 211, 0.2) 0, rgba(211, 211, 211, 0.3) 40%, rgba(211, 211, 211, 0.4) 50%, rgba(211, 211, 211, 0.5) 60%, rgba(23, 48, 28, 0) 70%);
+  background-image: radial-gradient(circle, rgba(128, 128, 128, 0.2) 0, rgba(128, 128, 128, 0.3) 40%, rgba(128, 128, 128, 0.4) 50%, rgba(128, 128, 128, 0.5) 60%, rgba(23, 48, 28, 0) 70%);
 }
 
 .nav-pills.menu-sidebar .nav-link {
@@ -20275,23 +20275,23 @@ input:focus + .datepicker-toggle-button, input:focus + .datepicker-toggle-button
 }
 
 .shadow-1-secondary {
-  box-shadow: 0px 2px 5px 0px rgba(211, 211, 211, 0.25), 0px 3px 10px 0px rgba(211, 211, 211, 0.2);
+  box-shadow: 0px 2px 5px 0px rgba(128, 128, 128, 0.25), 0px 3px 10px 0px rgba(128, 128, 128, 0.2);
 }
 
 .shadow-2-secondary {
-  box-shadow: 0px 4px 8px 0px rgba(211, 211, 211, 0.25), 0px 5px 15px 2px rgba(211, 211, 211, 0.2);
+  box-shadow: 0px 4px 8px 0px rgba(128, 128, 128, 0.25), 0px 5px 15px 2px rgba(128, 128, 128, 0.2);
 }
 
 .shadow-3-secondary {
-  box-shadow: 0px 6px 11px 0px rgba(211, 211, 211, 0.25), 0px 7px 20px 3px rgba(211, 211, 211, 0.2);
+  box-shadow: 0px 6px 11px 0px rgba(128, 128, 128, 0.25), 0px 7px 20px 3px rgba(128, 128, 128, 0.2);
 }
 
 .shadow-4-secondary {
-  box-shadow: 0px 6px 14px 0px rgba(211, 211, 211, 0.25), 0px 10px 30px 4px rgba(211, 211, 211, 0.2);
+  box-shadow: 0px 6px 14px 0px rgba(128, 128, 128, 0.25), 0px 10px 30px 4px rgba(128, 128, 128, 0.2);
 }
 
 .shadow-5-secondary {
-  box-shadow: 0px 6px 20px 0px rgba(211, 211, 211, 0.25), 0px 12px 40px 5px rgba(211, 211, 211, 0.2);
+  box-shadow: 0px 6px 20px 0px rgba(128, 128, 128, 0.25), 0px 12px 40px 5px rgba(128, 128, 128, 0.2);
 }
 
 .table {
@@ -20353,10 +20353,10 @@ caption {
 }
 
 .link-secondary {
-  color: white;
+  color: #b3b3b3;
 }
 .link-secondary:hover {
-  color: #f9f9f9;
+  color: #a6a6a6;
 }
 
 .tooltip-inner {
@@ -20877,15 +20877,15 @@ caption {
 }
 
 .sidenav-secondary .sidenav-item .sidenav-link:hover {
-  color: lightgray;
-  background-color: rgba(211, 211, 211, 0.1);
+  color: gray;
+  background-color: rgba(128, 128, 128, 0.1);
 }
 .sidenav-secondary .sidenav-link:active, .sidenav-secondary .sidenav-link:focus {
-  color: lightgray;
-  background-color: rgba(211, 211, 211, 0.1);
+  color: gray;
+  background-color: rgba(128, 128, 128, 0.1);
 }
 .sidenav-secondary .sidenav-link.active {
-  color: lightgray;
+  color: gray;
 }
 
 .stepper:not(.stepper-vertical) .stepper-step:not(:first-child) .stepper-head:before {
@@ -20974,10 +20974,8 @@ h1, .h1, h2, .h2, h3, .h3 {
   font-family: "Antic Slab", "Arial", sans-serif;
 }
 
-#navbarMars .btn,
-.card .btn,
-.nav-tabs .nav-link {
-  font-size: 1.2rem;
+.btn-lg, .btn-group-lg > .btn {
+  font-size: 1.1rem;
 }
 
 #navbarMars .dropdown-menu {
@@ -21000,6 +20998,11 @@ a.btn-amber-hover:hover,
 
 .number-spinner input {
   text-align: center;
+}
+
+textarea {
+  height: 150px;
+  width: 100%;
 }
 
 /* ANIMATED NAVBAR */

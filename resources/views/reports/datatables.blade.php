@@ -85,81 +85,82 @@
 @section('script')
     <script type="text/javascript">
         $('ul#nav-tab-years a:last').tab('show');
-            @foreach($tabs as $tab)
+        @foreach($tabs as $tab)
         var table = $('table#table-{{ $tab->id }}').DataTable({
-                pageLength: 50,
-                buttons: [
-                    {
-                        extend: 'columnVisibility',
-                        text: 'Show all',
-                        visibility: true
-                    },
-                    {
-                        extend: 'colvis',
-                        columnText: function (dt, idx, title) {
-                            return (idx + 1) + ': ' + title;
-                        }
-                    },
-                    {
-                        extend: 'columnVisibility',
-                        text: 'Hide all',
-                        visibility: false
-                    },
-                    {
-                        extend: 'copy',
-                        text: '<u>C</u>opy <i class="fa fa-copy"></i>',
-                        key: {
-                            key: 'c',
-                            altKey: true
-                        }
-                    }, 'excel', 'pdf'
-                ],
-                columnDefs: [
-                        @if(isset($visible))
-                    {
-                        visible: false, targets: [ {{ implode(',', $visible) }} ]
-                    },
-                        @endif
-                        @if(isset($groupColumn))
-                    {
-                        visible: false, targets: {{ $groupColumn }} },
-                    @endif
-                ],
-
-                @if(isset($groupColumn))
-                drawCallback: function (settings) {
-                    var api = this.api();
-                    var rows = api.rows({page: 'current'}).nodes();
-                    var last = null;
-
-                    api.column({{ $groupColumn }}, {page: 'current'}).data().each(function (group, i) {
-                        if (last !== group) {
-                            $(rows).eq(i).before(
-                                '<tr class="group">' +
-                                '<td colspan="{{ count($columns)-1 }}">' + group + '</td>' +
-                                '</tr>'
-                            );
-
-                            last = group;
-                        }
-                    });
+            pageLength: 50,
+            buttons: [
+                {
+                    extend: 'columnVisibility',
+                    text: 'Show all',
+                    visibility: true
                 },
-                order: [[ {{ $groupColumn }}, 'asc']],
+                {
+                    extend: 'colvis',
+                    columnText: function (dt, idx, title) {
+                        return (idx + 1) + ': ' + title;
+                    }
+                },
+                {
+                    extend: 'columnVisibility',
+                    text: 'Hide all',
+                    visibility: false
+                },
+                {
+                    extend: 'copy',
+                    text: '<u>C</u>opy <i class="fa fa-copy"></i>',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    }
+                }, 'excel', 'pdf'
+            ],
+            columnDefs: [
+                    @if(isset($visible))
+                {
+                    visible: false, targets: [{{ implode(',', $visible) }}]
+                },
+                    @endif
+                    @if(isset($groupColumn))
+                {
+                    visible: false, targets: {{ $groupColumn }}
+                },
                 @endif
-                data: [
-                        @foreach($tab->$datafield as $data)
-                    [
-                        @foreach($columns as $column => $display)
-                        @if($column == "controls")
-                        `@include('includes.admin.controls', ['id' => $data->id])`,
-                        @else
-                            "{{ $data->$column }}@if(isset($groupColumn) && $loop->index == $groupColumn)<span class='d-none'>{{ $data->family_id }}</span>@endif",
-                        @endif
-                        @endforeach
-                    ],
+            ],
+
+            @if(isset($groupColumn))
+            drawCallback: function (settings) {
+                var api = this.api();
+                var rows = api.rows({page: 'current'}).nodes();
+                var last = null;
+
+                api.column({{ $groupColumn }}, {page: 'current'}).data().each(function (group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group">' +
+                            '<td colspan="{{ count($columns)-1 }}">' + group + '</td>' +
+                            '</tr>'
+                        );
+
+                        last = group;
+                    }
+                });
+            },
+            order: [[{{ $groupColumn }}, 'asc']],
+            @endif
+            data: [
+                    @foreach($tab->$datafield as $data)
+                [
+                    @foreach($columns as $column => $display)
+                    @if($column == "controls")
+                    `@include('includes.admin.controls', ['id' => $data->id])`,
+                    @else
+                        "{{ $data->$column }}@if(isset($groupColumn) && $loop->index == $groupColumn)<span class='d-none'>{{ $data->family_id }}</span>@endif",
+                    @endif
                     @endforeach
-                ]
-            });
+                ],
+                @endforeach
+            ]
+        });
         table.buttons().container().insertBefore('table#table-{{ $tab->id }}');
         @endforeach
 

@@ -21,12 +21,12 @@ class ChargeFactory extends Factory
     {
         return [
             'camper_id' => function () {
-                return factory(Camper::class)->create()->id;
+                return Camper::factory()->create()->id;
             },
             'amount' => $this->faker->randomNumber(4),
             'memo' => $this->faker->sentence(),
             'chargetype_id' => function () {
-                return factory(Chargetype::class)->create()->id;
+                return Chargetype::factory()->create()->id;
             },
             'deposited_date' => $this->faker->date(),
             'timestamp' => $this->faker->date()

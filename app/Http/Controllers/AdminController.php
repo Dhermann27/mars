@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         $request->session()->flash('success', 'Real artists ship.');
 
-        return redirect()->action('AdminController@roleIndex');
+        return redirect()->action([AdminController::class, 'roleIndex']);
     }
 
     public function roleIndex()
@@ -99,7 +99,7 @@ class AdminController extends Controller
 
         $request->session()->flash('success', 'You created those positions like a <i>pro</i>.');
 
-        return redirect()->action('AdminController@positionIndex');
+        return redirect()->action([AdminController::class, 'positionIndex']);
     }
 
     public function positionIndex()

@@ -22,10 +22,10 @@ class StaffpositionFactory extends Factory
         return [
             'name' => $this->faker->colorName(),
             'compensationlevel_id' => function () {
-                return factory(Compensationlevel::class)->create()->id;
+                return Compensationlevel::factory()->create()->id;
             },
             'program_id' => function () {
-                return factory(Program::class)->create()->id;
+                return Program::factory()->create()->id;
             },
             'pctype' => 0
         ];

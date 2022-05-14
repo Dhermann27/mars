@@ -14,7 +14,7 @@
     </div>
 @elseif(count($errors->all())>0)
     <div class="alert alert-danger">
-        {{ count($errors->all()) }} error{{ count($errors->all())>1 ? 's were' : ' was' }} found, so changes were not saved.
-        Please correct the errors outlined in red.
+        {{ count($errors->all()) }} error{{ count($errors->all())>1 ? 's were' : ' was' }} found, so submission was not
+        accepted. Please correct the errors outlined in red and try submitting again.
     </div>
 @endif

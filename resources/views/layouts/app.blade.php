@@ -154,7 +154,7 @@
                         {{--                            </li>--}}
                         {{--                        @endif--}}
 
-                        <a class="btn btn-ghost-secondary btn-no-focus me-2 me-lg-0" href="{{ route('logout') }}"
+                        <a class="btn btn-lg btn-ghost-secondary btn-no-focus me-2 me-lg-0" href="{{ route('logout') }}"
                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             Logout
                         </a>
@@ -163,8 +163,8 @@
                             @csrf
                         </form>
                     @else
-                        <a class="btn btn-link px-3 me-2" href="{{ route('login') }}" role="button">Login</a>
-                        <a class="btn btn-primary" href="{{ route('register') }}" role="button">
+                        <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}" role="button">Login</a>
+                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
                             Get Started
                         </a>
                     @endif
@@ -177,7 +177,7 @@
 
 
     @hasSection('title')
-        <div class="jumbotron jumbotron-fluid text-white @hasSection('image') bg-image @else bg-primary @endif"
+        <div class="jumbotron jumbotron-fluid text-white @hasSection('image') bg-image @else bg-primary py-5 @endif"
              @hasSection('image') style="background-size: cover; background-position-y: bottom; background-image: @yield('image');" @endif>
             <div class="container mt-5 pt-5 text-shadow">
                 <h1 class="display-4">

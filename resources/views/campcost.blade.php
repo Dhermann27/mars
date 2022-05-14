@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div class="form-outline m-5">
+    <div class="m-5">
         <div class="note note-warning text-black m-3">
             Warning: this calculator only provides an estimate of your camp cost and your actual fees
             may vary.
@@ -28,7 +28,7 @@
             <div class="col-md-4 text-center">
                 <div class="btn-group">
                     <input type="radio" checked="checked" class="btn-check" name="adults-housing" id="adults-housing1"
-                           autocomplete="off" value="1" />
+                           autocomplete="off" value="1"/>
                     <label for="adults-housing1" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
                            title="Guestroom, Cabin, or Loft Housing"><i class="fa-solid fa-hotel"></i></label>
                     <input type="radio" class="btn-check" name="adults-housing" id="adults-housing2" value="2"
@@ -117,6 +117,13 @@
         var guestsuite = [{{ $lodge->implode('rate', ',') }}];
         var tentcamp = [{{ $tent->implode('rate', ',') }}];
         var lakewood = [{{ $lakewood->implode('rate', ',') }}];
+        var buttons = document.querySelectorAll('div.number-spinner button');
+        for (var i = 0; i < buttons.length; i++) {
+            addEvent(buttons[i], 'click', spinnerClick);
+        }
+        var radios = document.querySelectorAll('input[type=radio]');
+        for (var i = 0; i < radios.length; i++) {
+            addEvent(radios[i], 'change', calcluateCampCost);
+        }
     </script>
-    <script src="/js/campcost.js" type="text/javascript"></script>
 @endsection

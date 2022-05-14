@@ -60,7 +60,8 @@
 @section('content')
     @include('includes.steps')
     <div class="container">
-        <form id="roomselection" method="POST" action="{{ route('roomselection.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+        <form id="roomselection" method="POST"
+              action="{{ route('roomselection.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
             @include('includes.flash')
 
             <svg id="rooms" height="731" width="1152">
@@ -147,7 +148,7 @@
         });
         $('#roomselection').on('submit', function () {
             active = $("rect.active");
-            if(active.length !== 1) {
+            if (active.length !== 1) {
                 alert("Please select an available room by clicking on one of the white squares.");
                 return false;
             }

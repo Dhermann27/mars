@@ -108,7 +108,7 @@
             {
                 'y': '{{ $day }}',
                 @foreach($chartdays as $chartday)
-                '{{ $chartday->year }}':  {{ $chartday->count }},
+                '{{ $chartday->year }}': {{ $chartday->count }},
                 @endforeach
             },
             @endforeach
