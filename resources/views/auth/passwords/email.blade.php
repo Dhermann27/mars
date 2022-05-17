@@ -9,8 +9,6 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Reset Password') }}</div>
-
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -21,10 +19,9 @@
                         <form method="POST" action="{{ route('password.email') }}">
                             @csrf
 
-                            @include('includes.formgroup', ['label' => 'Email', 'attribs' => ['name' => 'email']])
+                            <x-form-group name="email" label="Your Email"/>
 
-                            @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => __('Send Password Reset Link')]])
-                        </form>
+                            <x-form-group type="submit" :label="__('Send Password Reset Link')"/>                        </form>
                     </div>
                 </div>
             </div>

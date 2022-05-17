@@ -154,6 +154,18 @@
                         {{--                            </li>--}}
                         {{--                        @endif--}}
 
+                        <div class="highlight pe-3">
+
+                            @if(Auth::user()->camper)
+                                <i class="fas fa-circle-user fa-2x float-start"></i>
+                                {{ Auth::user()->camper->firstname . ' ' . Auth::user()->camper->lastname}}
+                                <span><br/>&lt;{{ Auth::user()->email }}&gt;</span>
+                            @else
+                                <i class="fas fa-circle-user float-start"></i>
+                                {{ Auth::user()->email }}
+                            @endif
+                        </div>
+
                         <a class="btn btn-lg btn-ghost-secondary btn-no-focus me-2 me-lg-0" href="{{ route('logout') }}"
                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             Logout
@@ -163,7 +175,8 @@
                             @csrf
                         </form>
                     @else
-                        <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}" role="button">Login</a>
+                        <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
+                           role="button">Login</a>
                         <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
                             Get Started
                         </a>

@@ -9,12 +9,28 @@ $my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // cre
 // include theme styles
 @include mdb-theme($my-light-theme);
 
-h1, h2, h3 {
+h1, h2, h3  {
     font-family: $font-family-primary;
 }
 
 .btn-lg {
     font-size: 1.1rem;
+}
+
+div.highlight {
+    //font-family: $font-family-primary;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px;
+    border: 2px dotted black;
+    border-radius: 15px;
+    line-height: 15px;
+}
+
+div.highlight span {
+    font-size: .85rem;
+    text-transform: none;
 }
 
 #navbarMars .dropdown-menu {

@@ -17,56 +17,36 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
-
-                            @include('includes.formgroup', ['label' => 'Email', 'attribs' => ['name' => 'email']])
-
-                            <div class="form-group row col-md-6 offset-md-3">
-                                <div class="form-outline">
-                                    <input id="password" type="password"
-                                           class="form-control @error('password') is-invalid @enderror" name="password">
-
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                    <label for="password" class="form-label">{{ __('Password') }}</label>
+                            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
                                 </div>
-                            </div>
+                            @endif
 
-                            <div class="form-group row col-md-6 offset-md-3">
-                                <div class="form-outline">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember"
-                                               id="remember" @checked(old('remember'))>
 
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-form-group name="email" label="Email"/>
 
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
+                            <x-form-group name="password" type="password" :label="__('Password')"/>
 
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif
-                                    @if (Route::has('register'))
-                                        <a class="btn btn-link" href="{{ route('register') }}" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="New camper? Just click the 'Register Now' button to get started!">
-                                            New Account?
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
+                            <x-form-group name="remember" type="checkbox" :label="__('Remember Me') "/>
+
+
+                            <x-form-group type="submit" :label="__('Login')"/>
+
+
+                            @if (Route::has('password.request'))
+                                <a class="btn btn-lg btn-link" href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
+                            @endif
+                            @if (Route::has('register'))
+                                <a class="btn btn-lg btn-link float-md-end" href="{{ route('register') }}"
+                                   data-mdb-toggle="tooltip"
+                                   data-mdb-placement="top"
+                                   title="New camper? Create a new account to get started!">
+                                    New Account?
+                                </a>
+                            @endif
                         </form>
                     </div>
                 </div>
