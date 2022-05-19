@@ -18,7 +18,6 @@ h1, h2, h3  {
 }
 
 div.highlight {
-    //font-family: $font-family-primary;
     text-transform: uppercase;
     font-size: 1.1rem;
     padding: 5px 10px 5px 10px;
@@ -31,6 +30,15 @@ div.highlight {
 div.highlight span {
     font-size: .85rem;
     text-transform: none;
+}
+
+span.select-invalid-feedback {
+    display: block;
+    position: absolute;
+    width: auto;
+    font-size: .875rem;
+    color: #f93154;
+    margin-top: -.75rem;
 }
 
 #navbarMars .dropdown-menu {

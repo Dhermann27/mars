@@ -20993,6 +20993,15 @@ div.highlight span {
   text-transform: none;
 }
 
+span.select-invalid-feedback {
+  display: block;
+  position: absolute;
+  width: auto;
+  font-size: 0.875rem;
+  color: #f93154;
+  margin-top: -0.75rem;
+}
+
 #navbarMars .dropdown-menu {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;

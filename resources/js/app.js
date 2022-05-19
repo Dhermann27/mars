@@ -1,7 +1,7 @@
 import '@fortawesome/fontawesome-pro/js/all.min.js';
 import * as mdb from 'mdb-ui-kit';
-require ('./campcost.js');
 
+require('./campcost.js');
 window.addEvent = function (el, type, handler) {
     if (el.attachEvent) el.attachEvent('on' + type, handler); else el.addEventListener(type, handler);
 }
@@ -17,7 +17,8 @@ window.getAjax = function (url, success) {
     return xhr;
 }
 
-if (typeof(window.runOnLoad) == "function") {
+
+if (typeof (window.runOnLoad) == "function") {
 // in case the document is already rendered
     if (document.readyState !== 'loading') runOnLoad();
 // modern browsers

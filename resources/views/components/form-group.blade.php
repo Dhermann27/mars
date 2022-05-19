@@ -19,7 +19,12 @@
                 {{ $slot }}
             </select>
             @error($name)
-            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+            <span class="select-invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+            @push('inlinescripts')
+                <script>
+                    document.getElementById('{{ $name }}').parentNode.querySelector('.select-input').classList.add("is-invalid");
+                </script>
+            @endpush
             @enderror
 
             <label for="{{ $name }}" class="form-label select-label">
@@ -44,8 +49,8 @@
                 <textarea id="{{ $name }}" name="{{ $name }}"
                     {{ $attributes->class(['form-control','is-invalid' => $errors->has($name)]) }}>{{ old($name) }}</textarea>
             @else
-                <input id="{{ $name }}" name="{{ $name }}" type="{{ $type }}" @if(old($name))) value="{{ old($name) }}"
-                       @endif
+                <input id="{{ $name }}" name="{{ $name }}" type="{{ $type }}"
+                       @if(old($name))) value="{{ old($name) }}" @endif
                        {{ $attributes->class(['form-control','is-invalid' => $errors->has($name)]) }}
                        @if(isset($readonly)) value="{{ $readonly }}" aria-label="{{ $readonly }}"
                        readonly @endif />
