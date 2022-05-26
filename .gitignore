@@ -20,3 +20,6 @@ Homestead.json
 *.iml
 public/js/app.js
 public/css/app.css
+public/fonts/*
+public/vendor/*
+artisan
