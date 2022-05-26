@@ -23,7 +23,7 @@ use function str_replace;
 /**
  * @group Campers
  */
-class CamperTest extends DuskTestCase
+class CamperInfoTest extends DuskTestCase
 {
 
     /**

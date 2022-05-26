@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Gate;
 use function array_push;
 use function count;
 
-class CamperController extends Controller
+class CamperInformationController extends Controller
 {
     private $messages = ['pronoun_id.*.exists' => 'Please choose a preferred pronoun.',
         'firstname.*.required' => 'Please enter a first name.',

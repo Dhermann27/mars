@@ -1,22 +1,18 @@
 <?php
 
+use App\Http\Controllers\CamperInformationController;
+use App\Http\Controllers\CamperSelectionController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DirectoryController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HouseholdController;
+use App\Http\Controllers\MedicalResponseController;
+use App\Http\Controllers\NametagController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RoomSelectionController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -36,49 +32,64 @@ Route::get('/excursions', [WorkshopController::class, 'excursions'])->name('work
 
 Route::get('/directory', [DirectoryController::class, 'index'])->name('directory')->middleware('auth');
 
-//Route::group(['prefix' => 'campers', [middleware' => 'auth'], function () {
-//    Route::get('', [CamperController::class, 'index'])->name('campers.index');
-//    Route::get('/{id?}', [CamperController::class, 'index'])->name('campers.index')->middleware('can:is-council');
-//    Route::post('/', [CamperController::class, 'store'])->name('campers.store');
-//});
-//
-//Route::group(['prefix' => 'payment', [middleware' => 'auth'], function () {
-//    Route::get('', [PaymentController::class, 'index'])->name('payment.index');
-//    Route::get('/{id?}', [PaymentController::class, 'index'])->name('payment.index')->middleware('can:is-council');
-//    Route::post('', [PaymentController::class, 'store'])->name('payment.store');
-//    Route::post('/{id?}', [PaymentController::class, 'write'])->name('payment.store')->middleware('can:is-super');
-//});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-//Route::group(['prefix' => 'household', [middleware' => 'auth'], function () {
-//    Route::get('', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:has-paid');
+Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
+    Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index');
+//    Route::get('/{id?}', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('can:is-council');
+    Route::post('/', [CamperSelectionController::class, 'store'])->name('camperselect.store');
+});
+
+Route::group(['prefix' => 'camperinfo', 'middleware' => 'auth'], function () {
+    Route::get('', [CamperInformationController::class, 'index'])->name('campers.index');
+//    Route::get('/{id?}', [CamperInformationController::class, 'index'])->name('campers.index')->middleware('can:is-council');
+    Route::post('/', [CamperInformationController::class, 'store'])->name('campers.store');
+});
+
+Route::group(['prefix' => 'payment', 'middleware' => 'auth'], function () {
+    Route::get('', [PaymentController::class, 'index'])->name('payment.index');
+//    Route::get('/{id?}', [PaymentController::class, 'index'])->name('payment.index')->middleware('can:is-council');
+    Route::post('', [PaymentController::class, 'store'])->name('payment.store');
+//    Route::post('/{id?}', [PaymentController::class, 'write'])->name('payment.store')->middleware('can:is-super');
+});
+
+Route::group(['prefix' => 'household', 'middleware' => 'auth'], function () {
+    Route::get('', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:has-paid');
 //    Route::get('/{id?}', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:is-council');
-//    Route::post('', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:has-paid');
+    Route::post('', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:has-paid');
 //    Route::post('/{id?}', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:is-super');
-//});
+});
 //
-//Route::group(['prefix' => 'roomselection', [middleware' => 'auth'], function () {
-//    Route::get('/', [RoomSelectionController::class, 'index'])->name('roomselection.index')->middleware('can:has-paid');
+Route::group(['prefix' => 'roomselection', 'middleware' => 'auth'], function () {
+    Route::get('/', [RoomSelectionController::class, 'index'])->name('roomselection.index')->middleware('can:has-paid');
 //    Route::get('/{id?}', [RoomSelectionController::class, 'index'])->name('roomselection.index')->middleware('can:is-council');
 //    Route::get('/assign/{id?}', [RoomSelectionController::class, 'read'])->name('roomselection.read')->middleware('can:is-council');
-//    Route::post('/', [RoomSelectionController::class, 'store'])->name('roomselection.store')->middleware('can:has-paid');
+    Route::post('/', [RoomSelectionController::class, 'store'])->name('roomselection.store')->middleware('can:has-paid');
 //    Route::post('/{id?}', [RoomSelectionController::class, 'store'])->name('roomselection.store')->middleware('can:is-super');
 //    Route::post('/assign/{id?}', [RoomSelectionController::class, 'write'])->name('roomselection.write')->middleware('can:is-super');
 //    Route::get('/map', [RoomSelectionController::class, 'map'])->name('roomselection.map')->middleware('can:is-council');
-//});
-//
-//Route::group(['prefix' => 'workshopchoice', [middleware' => 'auth'], function () {
-//    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:has-paid');
+});
+
+Route::group(['prefix' => 'workshopchoice', 'middleware' => 'auth'], function () {
+    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:has-paid');
 //    Route::get('/{id?}', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:is-council');
-//    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:has-paid');
+    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:has-paid');
 //    Route::post('/{id?}', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:is-super');
-//});
-//
-//Route::group(['prefix' => 'nametag', [middleware' => 'auth'], function () {
-//    Route::get('/', [NametagController::class, 'index'])->name('nametag.index')->middleware('can:has-paid');
-//    Route::post('/', [NametagController::class, 'store'])->name('nametag.store')->middleware('can:has-paid');
+});
+
+Route::group(['prefix' => 'nametag', 'middleware' => 'auth'], function () {
+    Route::get('/', [NametagController::class, 'index'])->name('nametag.index')->middleware('can:has-paid');
+    Route::post('/', [NametagController::class, 'store'])->name('nametag.store')->middleware('can:has-paid');
 //    Route::get('/nametag/{i}/{id}', [NametagController::class, 'read')->middleware('auth', [role:admin|council');
 //    Route::post('/nametag/f/{id}', [NametagController::class, 'write')->middleware('auth', [role:admin');
-//});
+});
+
+Route::group(['prefix' => 'medicalresponse', 'middleware' => 'auth'], function () {
+    Route::get('/', [MedicalResponseController::class, 'index'])->name('medicalresponse.index')->middleware('can:has-paid');
+    Route::post('/', [MedicalResponseController::class, 'store'])->name('medicalresponse.store')->middleware('can:has-paid');
+//    Route::get('/nametag/{i}/{id}', [MedicalResponseController::class, 'read')->middleware('auth', [role:admin|council');
+//    Route::post('/nametag/f/{id}', [MedicalResponseController::class, 'write')->middleware('auth', [role:admin');
+});
 //
 //Route::group(['prefix' => 'data'], function () {
 //    Route::get('loginsearch', [DataController::class, 'loginsearch');
@@ -105,7 +116,7 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports']
 //    Route::get('programs', [ReportController::class, 'programs'])->name('reports.programs');
 //    Route::get('rates', [ReportController::class, 'rates');
 //    Route::post('rates', [ReportController::class, 'ratesMark')->middleware('auth', [role:admin');
-    Route::get('roommates', [ReportController::class, 'roommates'])->name('reports.roommates');
+//    Route::get('roommates', [ReportController::class, 'roommates'])->name('reports.roommates');
 //    Route::get('rooms', [ReportController::class, 'rooms'])->name('reports.rooms');
 //    Route::get('rooms/{year}.xls', [ReportController::class, 'roomsExport');
 //    Route::get('rooms/{year?}/name', [ReportController::class, 'rooms');
@@ -147,7 +158,7 @@ Route::get('/brochure', function () {
     if (!is_file(public_path('MUUSA_' . $year . '_Brochure.pdf'))) $year--;
     return redirect('MUUSA_' . $year . '_Brochure.pdf');
 })->name('brochure');
-//Route::get('/troutlodge', function () {
-//    return redirect('Trout_Lodge.pdf');
-//})->name('troutlodgebrochure');
+Route::get('/troutlodge', function () {
+    return redirect('Trout_Lodge.pdf');
+})->name('troutlodgebrochure');
 

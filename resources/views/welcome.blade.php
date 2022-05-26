@@ -112,7 +112,7 @@
                     distancing, testing, etc. will be made in accordance with evidence-based public health
                     recommendations closer to camp. We will provide these to you by June 1st. Questions should be
                     directed to Jesse Hardin, the Omsbuddy and lead for the PC Covid Task Force using the <a
-                            href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
+                        href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
                 </p>
             </div>
         </div>
@@ -278,6 +278,19 @@
         </div>
     </div>
 
+    <div class="section bg-primary mt-5">
+        <div class="row">
+            <div class="my-3 pe-5 text-lg-end">
+                <div class="display-6">Located at YMCA of the Ozarks, outside Potosi, Missouri</div>
+            </div>
+            <div id="map-container-google-3" class="z-depth-1-half map-container-3">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2930.017719932353!2d-90.93029498484057!3d37.946753879728526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d99fbc4175e629%3A0xe1c9be8ab89a4075!2sTrout+Lodge%2C+Potosi%2C+MO+63664!5e1!3m2!1sen!2sus!4v1546112609663"
+                    width="100%" height="420" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
     <div class="section bg-secondary pt-lg-5 border border-top-5 border-primary" id="testimonial">
         <div class="container-fluid">
             <div class="row justify-content-center">
@@ -293,7 +306,8 @@
                 <div class="col-lg-4">
                     <div class="testi-box mt-4">
                         <div class="testi-desc p-4">
-                            <p class="text-muted mb-0">" I love that I started the week not knowing anyone except my
+                            <p class="text-muted mb-0">" I love that I started the week not knowing anyone
+                                except my
                                 children, but ended the week with lifelong friends. "</p>
                         </div>
                         <div class="p-4">
@@ -323,7 +337,8 @@
                 <div class="col-lg-4">
                     <div class="testi-box mt-4">
                         <div class="testi-desc p-4">
-                            <p class="text-muted mb-0">" MUUSA gives me a space to deepen family bonds and recharge
+                            <p class="text-muted mb-0">" MUUSA gives me a space to deepen family bonds and
+                                recharge
                                 connections with my inner humanity. "</p>
                         </div>
 

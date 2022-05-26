@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ConfirmController extends Controller
+class MedicalResponseController extends Controller
 {
     //
 }

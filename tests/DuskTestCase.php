@@ -7,6 +7,7 @@ use App\Models\Year;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Faker\Factory;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use NumberFormatter;
 
@@ -94,12 +95,23 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Return the number formatted into currency
      *
-     * @return String
+     * @return string
      */
     protected function moneyFormat($float)
     {
         $fmt = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
         $fmt->setAttribute(NumberFormatter::GROUPING_USED, 0);
         return $fmt->formatCurrency($float, "USD");
+    }
+
+    /**
+     * Return a birthdate within 18 years of the first date of camp
+     *
+     * @return string
+     */
+    protected function getChildBirthdate() {
+        $year = date('Y') - self::$year->year;
+        $faker = Factory::create();
+        return $faker->dateTimeBetween('-' . (17 + $year) . ' years', '-' . (1 + $year) . ' years')->format('Y-m-d');
     }
 }

@@ -9,7 +9,7 @@ $my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // cre
 // include theme styles
 @include mdb-theme($my-light-theme);
 
-h1, h2, h3  {
+h1, h2, h3, .display-4, .display-5, .display-6 {
     font-family: $font-family-primary;
 }
 
@@ -20,10 +20,10 @@ h1, h2, h3  {
 div.highlight {
     text-transform: uppercase;
     font-size: 1.1rem;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 3px 5px 10px;
     margin-right: 10px;
-    border: 2px dotted black;
-    border-radius: 15px;
+    border: 2px solid $my-theme-primary;
+    border-radius: 10px;
     line-height: 15px;
 }
 
@@ -31,6 +31,7 @@ div.highlight span {
     font-size: .85rem;
     text-transform: none;
 }
+
 
 span.select-invalid-feedback {
     display: block;
@@ -45,6 +46,50 @@ span.select-invalid-feedback {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
+
+.stepper-large .stepper-head-icon {
+    width: 3rem;
+    height: 3rem;
+}
+
+.stepper-large .stepper-head-text {
+    font-size: 1.4rem;
+}
+
+.stepper-success {
+    background-color: $green-300;
+}
+
+.stepper-success .stepper-head-icon {
+    background-color: $my-theme-primary;
+}
+
+.stepper-warning {
+    background-color: $yellow-400;
+}
+
+.stepper-blocked {
+    background-color: $gray-500;
+}
+
+.stepper-step .fa-diamond-exclamation {
+    color: $my-theme-secondary;
+}
+
+.stepper-step .fa-do-not-enter {
+    color: $black;
+}
+
+.stepper-step {
+    overflow: hidden;
+}
+
+.stepper-state-icon {
+    position: absolute;
+    right: -20px;
+    top: -20px;
+}
+
 
 #navbarMars svg {
     margin-right: 5px;
@@ -83,7 +128,8 @@ textarea {
 
 /* Color of the links AFTER scroll */
 .navbar-scrolled .nav-link,
-.navbar-scrolled .navbar-toggler-icon {
+.navbar-scrolled .navbar-toggler-icon,
+.navbar-scrolled .highlight {
     color: #4f4f4f;
     text-shadow: none;
 }

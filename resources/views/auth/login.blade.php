@@ -21,8 +21,11 @@
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}
                                 </div>
+                            @elseif(Session::has('warning'))
+                                <div class="alert alert-warning">
+                                    {!! Session::get('warning') !!}
+                                </div>
                             @endif
-
 
                             <x-form-group name="email" label="Email"/>
 

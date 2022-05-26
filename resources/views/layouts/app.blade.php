@@ -59,13 +59,21 @@
                         </a>
 
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item pe-3 dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="menuCampInfo"
                            data-mdb-toggle="dropdown"
                            aria-expanded="false">
                             Camp Information
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuCampInfo">
+                            @if($year->is_live)
+                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">
+                                            <i class="far fa-desktop fa-fw"></i> Web Brochure</a></h5>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider"/>
+                                </li>
+                            @endif
                             <li><a href="{{ route('housing') }}" class="dropdown-item"><i class="far fa-bath fa-fw"></i>
                                     Housing Options</a>
                             </li>
@@ -98,66 +106,59 @@
                                     <i class="far fa-binoculars fa-fw"></i> Excursions
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" id="menuDetails"
-                           data-mdb-toggle="dropdown"
-                           aria-expanded="false">
-                            Your Details
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="menuDetails">
-                            @if($year->is_live)
-                                <a href="{{ route('brochure') }}" class="dropdown-item">
-                                    <i class="far fa-desktop fa-fw"></i> Web Brochure</a>
-                            @endif
+                            <li>
+                                <hr class="dropdown-divider"/>
+                            </li>
+                            <span class="text-muted ms-2">For Campers Only</span>
                             @if($year->is_calendar)
-                                <a href="#" class="dropdown-item">
-                                    <i class="far fa-calendar-alt fa-fw"></i> Daily Schedule</a>
+                                <li>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="far fa-calendar-alt fa-fw"></i> Daily Schedule</a>
+                                </li>
                             @endif
-                            @if($year->next_muse !== false)
-                                <a href="#" class="dropdown-item">
-                                    <i class="fal fa-newspaper fa-fw"></i> {{ $year->next_muse }}</a>
-                            @endif
-                            <a href="{{ route('directory') }}" class="dropdown-item">
-                                <i class="far fa-address-book fa-fw"></i> Online Directory</a>
+                            <li>
+                                <a href="{{ route('directory') }}" class="dropdown-item">
+                                    <i class="far fa-address-book fa-fw"></i> Online Directory</a>
+                            </li>
                             @if($year->is_artfair)
-                                <a href="#" class="dropdown-item">
-                                    <i class="far fa-shopping-bag fa-fw"></i> Art Fair Submission</a>
+                                <li>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="far fa-shopping-bag fa-fw"></i> Art Fair Submission</a>
+                                </li>
                             @endif
                             @if($year->is_workshop_proposal)
-                                <a href="https://docs.google.com/forms/d/1uD1UCGI1F4nPlAmKIAkRuEci1NudqqPa140fDHXUMEs/edit"
-                                   class="dropdown-item">
-                                    <i class="fal fa-chalkboard-teacher fa-fw"></i> Workshop Proposal
-                                </a>
+                                <li>
+                                    <a href="https://docs.google.com/forms/d/1uD1UCGI1F4nPlAmKIAkRuEci1NudqqPa140fDHXUMEs/edit"
+                                       class="dropdown-item">
+                                        <i class="fal fa-chalkboard-teacher fa-fw"></i> Workshop Proposal
+                                    </a>
+                                </li>
                             @endif
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
+                    @if($year->next_muse !== false)
+                        <li class="nav-item pe-3"><a>{{ $year->next_muse }}</a>
+                        </li>
+                    @endif
+                    <li class="nav-item pe-3"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
+                    <li class="nav-item"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>
                 </ul>
 
                 <div class="d-flex align-items-center">
                     @auth
-                        {{--                        @if($year->next_muse !== false)--}}
-                        {{--                            <li class="list-inline-item">--}}
-                        {{--                                <a href="{{ route('themuse') }}">{{ $year->next_muse }}</a>--}}
-                        {{--                            </li>--}}
-                        {{--                        @else--}}
-                        {{--                            <li class="list-inline-item">--}}
-                        {{--                                @auth--}}
-                        {{--                                    <i class="fa fa-user"></i> {{ Auth::user()->email }}--}}
-                        {{--                                @else--}}
-                        {{--                                    <a href="mailto:muusa@muusa.org">--}}
-                        {{--                                        Questions? <i class="fas fa-mailbox"></i> muusa@muusa.org--}}
-                        {{--                                    </a>--}}
-                        {{--                                @endif--}}
-                        {{--                            </li>--}}
-                        {{--                        @endif--}}
-
-                        <div class="highlight pe-3">
-
+                        <div class="highlight">
+                            <a class="btn btn-link m-0 p-2 float-end"
+                               href="{{ route('logout') }}" data-mdb-toggle="tooltip" data-mdb-placement="bottom"
+                               title="Logout"
+                               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <i class="fad fa-sign-out-alt"></i>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">
+                                @csrf
+                            </form>
                             @if(Auth::user()->camper)
-                                <i class="fas fa-circle-user fa-2x float-start"></i>
+                                <i class="fas fa-circle-user fa-xl float-start"></i>
                                 {{ Auth::user()->camper->firstname . ' ' . Auth::user()->camper->lastname}}
                                 <span><br/>&lt;{{ Auth::user()->email }}&gt;</span>
                             @else
@@ -166,14 +167,76 @@
                             @endif
                         </div>
 
-                        <a class="btn btn-lg btn-ghost-secondary btn-no-focus me-2 me-lg-0" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                              style="display: none;">
-                            @csrf
-                        </form>
+                        <div class="btn-group">
+                            <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                    data-mdb-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <i class="far fa-users"></i> Camper Selection !!!
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <i class="far fa-home"></i> Billing Address
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <i class="far fa-user-gear"></i> Camper Information
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <i class="far fa-usd-square"></i> Account Statement
+                                    </a>
+                                </li>
+                                @if(!$year->is_live)
+                                    <li>
+                                        <hr class="dropdown-divider"/>
+                                    </li>
+                                    <h6 class="dropdown-header">
+                                        Opens {{ $year->brochure_date }}
+                                    </h6>
+                                    <li>
+                                        <a href="#" class="dropdown-item disabled">Workshop List</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item disabled">Room Selection</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item disabled">Nametags</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item disabled">Confirmation</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        {{--                                    <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">--}}
+                                        <i class="far fa-rocket fa-fw"></i> Workshops
+                                    </li>
+                                    <li>
+                                        {{--                                    <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
+                                        <i class="far fa-bed fa-fw"></i> Room Selection
+                                    </li>
+                                    <li>
+                                        {{--                                    <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
+                                        <i class="far fa-id-card fa-fw"></i> Nametags
+                                    </li>
+                                    <li>
+                                        {{--                                    <a href="{{ route('confirm') }}" class="dropdown-item">--}}
+                                        <i class="far fa-envelope fa-fw"></i> Confirmation
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
                     @else
                         <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
                            role="button">Login</a>
@@ -396,6 +459,14 @@
                     <h5>Camp Information</h5>
 
                     <ul class="list-unstyled mb-0">
+                        @if($year->is_live)
+                            <li><a class="text-white underlined-link" href="{{ route('brochure') }}">Web
+                                    Brochure</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider"/>
+                            </li>
+                        @endif
                         <li><a class="text-white underlined-link" href="{{ route('housing') }}">Housing
                                 Options</a></li>
                         <li><a class="text-white underlined-link"
@@ -424,22 +495,17 @@
                 </div>
                 <!--Grid column-->
 
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                    <h5>Your Details</h5>
 
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5>Questions?</h5>
+                    Email us at <a href="mailto:muusa@muusa.org"><i class="fas fa-mailbox"></i> muusa@muusa.org</a>
+
+                    <hr class="dropdown-divider"/>
+
+                    <h5 class="mt-5">For Registered Campers Only</h5>
                     <ul class="list-unstyled mb-0">
-                        @if($year->is_live)
-                            <li><a class="text-white underlined-link" href="{{ route('brochure') }}">Web
-                                    Brochure</a>
-                            </li>
-                        @endif
                         @if($year->is_calendar)
                             <li><a class="text-white underlined-link" href="#">Daily Schedule</a></li>
-                        @endif
-                        @if($year->next_muse !== false)
-                            <li><a class="text-white underlined-link" href="#">{{ $year->next_muse }}</a>
-                            </li>
                         @endif
                         <li><a class="text-white underlined-link" href="{{ route('directory') }}">Online
                                 Directory</a>
@@ -455,31 +521,40 @@
                         @endif
                     </ul>
                 </div>
-                <!--Grid column-->
 
                 <!--Grid column-->
-                {{--                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">--}}
-                {{--                        @can('has-paid')--}}
-                {{--                            <h5 class="footer-title text-white mb-3">Registration</h5>--}}
-                {{--                            <ul class="list-unstyled footer-list">--}}
-                {{--                                <li><a href="{{ route('household.index') }}">Household</a></li>--}}
-                {{--                                <li><a href="{{ route('campers.index') }}">Campers</a></li>--}}
-                {{--                                <li><a href="{{ route('payment.index') }}">Statement</a></li>--}}
-                {{--                                @if(!$year->is_live)--}}
-                {{--                                    <hr/>--}}
-                {{--                                    <h6 class="dropdown-header">Opens {{ $year->brochure_date }}</h6>--}}
-                {{--                                    <li>Workshop Preferences</li>--}}
-                {{--                                    <li>Room Selection</li>--}}
-                {{--                                    <li>Nametags</li>--}}
-                {{--                                    <li>Confirmation</li>--}}
-                {{--                                @else--}}
-                {{--                                    <li><a href="{{ route('workshopchoice.index') }}">Workshop Preferences</a></li>--}}
-                {{--                                    <li><a href="{{ route('roomselection.index') }}">Room Selection</a></li>--}}
-                {{--                                    <li><a href="{{ route('nametag.index') }}">Nametags</a></li>--}}
-                {{--                                    --}}{{--                                        <li><a href="{{ route('confirm') }}">Confirmation</a></li>--}}
-                {{--                                @endif--}}
-                {{--                            </ul>--}}
-                {{--            </div>--}}
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a></li>
+                        <hr class="dropdown-divider"/>
+                        <li><a class="text-white underlined-link"
+                               href="{{ route('household.index') }}">Camper Selection !!!</a></li>
+                        <li><a class="text-white underlined-link"
+                               href="{{ route('household.index') }}">Billing Address</a></li>
+                        <li><a class="text-white underlined-link" href="{{ route('campers.index') }}">Camper Information</a>
+                        </li>
+                        <li><a class="text-white underlined-link" href="{{ route('payment.index') }}">Account Statement</a>
+                        </li>
+                        @if(!$year->is_live)
+                            <hr/>
+                            <h6>Opens {{ $year->brochure_date }}</h6>
+                            <li>Workshop Preferences</li>
+                            <li>Room Selection</li>
+                            <li>Nametag Customization</li>
+                            <li>Confirmation !!!</li>
+                        @else
+                            <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
+                                    Preferences</a></li>
+                            <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room
+                                    Selection</a></li>
+                            <li><a class="text-white underlined-link"
+                                   href="{{ route('nametag.index') }}">Nametags</a></li>
+{{--                            <li><a class="text-white underlined-link" href="{{ route('confirm') }}">Confirmation</a>--}}
+{{--                            </li>--}}
+                        @endif
+                    </ul>
+                </div>
             </div>
             <!--Grid row-->
         </section>

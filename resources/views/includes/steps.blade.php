@@ -8,14 +8,11 @@
     <input type="hidden" id="camper-id" value="{{ session()->get('camper')->id }}"/>
 @endif
 @if(Gate::allows('has-paid') || (session()->has('camper') && Gate::allows('is-council')))
-    <ul id="littlesteps" class="nav nav-pills nav-fill mb-4">
-        <li class="nav-item mx-5">
-            <i id="household-success" class="far fa-check btn-success float-end d-none"></i>
-            <a href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}"
-               class="nav-link @if(preg_match('/\/household/', url()->current(), $matches)) active @endif"
-               data-toggle="tooltip" data-placement="bottom" data-container="ul#littlesteps"
-               title="Billing Information">
-                <i class="far fa-home"></i>
+    <ul id="littlesteps" class="stepper">
+        <li class="stepper-step">
+            <a href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                <span class="stepper-head-icon"><i class="far fa-home"></i></span>
+                Billing Information
             </a>
         </li>
         <li class="nav-item mx-5">
@@ -52,15 +49,15 @@
                     <i class="far fa-bed"></i>
                 </a>
             </li>
-{{--            <li class="nav-item mx-5">--}}
-{{--                <i id="nametag-success" class="far fa-check btn-success float-end d-none"></i>--}}
-{{--                <a href="{{ route('nametag.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"--}}
-{{--                   class="nav-link @if(preg_match('/\/nametag/', url()->current(), $matches)) active @endif"--}}
-{{--                   data-toggle="tooltip" data-placement="bottom" data-container="ul#littlesteps"--}}
-{{--                   title="Nametag Customization">--}}
-{{--                    <i class="far fa-id-card"></i>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            {{--            <li class="nav-item mx-5">--}}
+            {{--                <i id="nametag-success" class="far fa-check btn-success float-end d-none"></i>--}}
+            {{--                <a href="{{ route('nametag.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"--}}
+            {{--                   class="nav-link @if(preg_match('/\/nametag/', url()->current(), $matches)) active @endif"--}}
+            {{--                   data-toggle="tooltip" data-placement="bottom" data-container="ul#littlesteps"--}}
+            {{--                   title="Nametag Customization">--}}
+            {{--                    <i class="far fa-id-card"></i>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
             {{--            <li class="nav-item mx-5">--}}
             {{--                <i id="medical-success" class="far fa-check btn-success float-end d-none"></i>--}}
             {{--                <a href="{{ url('/confirm') . (preg_match('/\/(c|f)\/\d+$/', $_SERVER['REQUEST_URI'], $matches) ? substr($_SERVER['REQUEST_URI'], -7) : '') }}"--}}
@@ -83,12 +80,12 @@
                     <i class="far fa-bed"></i>
                 </a>
             </li>
-{{--            <li class="nav-item mx-5">--}}
-{{--                <a href="#" class="nav-link lighter" data-toggle="tooltip" data-placement="bottom"--}}
-{{--                   data-container="ul#littlesteps" title="Nametags Customization opens {{ $year->brochure_date }}">--}}
-{{--                    <i class="far fa-id-card"></i>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            {{--            <li class="nav-item mx-5">--}}
+            {{--                <a href="#" class="nav-link lighter" data-toggle="tooltip" data-placement="bottom"--}}
+            {{--                   data-container="ul#littlesteps" title="Nametags Customization opens {{ $year->brochure_date }}">--}}
+            {{--                    <i class="far fa-id-card"></i>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
             {{--            <li class="nav-item mx-5">--}}
             {{--                <a href="#" class="nav-link lighter" data-toggle="tooltip" data-placement="bottom"--}}
             {{--                   data-container="ul#littlesteps" title="Medical Responses open {{ $year->brochure_date }}">--}}

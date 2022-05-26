@@ -45,9 +45,10 @@ class ContactTest extends DuskTestCase
         $this->assertStringContainsString($fakedGraph, $body);
     }
 
+    // Can only send 2 emails per 10 seconds via Mailtrap
     public function testRandomEmailTst()
     {
-        $code = rand(0, 3);
+        $code = rand(0, 3); // Number of tst functions
         switch ($code) {
             case 0:
                 $this->tstMultipleContactboxEmails();
