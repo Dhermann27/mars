@@ -18,7 +18,7 @@ class Pronoun extends Model
 
     public function camper()
     {
-        return $this->belongsTo('App\Http\Camper');
+        return $this->belongsTo('App\Models\Camper');
     }
 
 }

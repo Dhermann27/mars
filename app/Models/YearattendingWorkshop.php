@@ -15,11 +15,11 @@ class YearattendingWorkshop extends Model
 
     public function yearattending()
     {
-        return $this->hasOne('App\Http\Yearattending', 'id', 'yearattending_id');
+        return $this->hasOne('App\Models\Yearattending', 'id', 'yearattending_id');
     }
 
     public function workshop()
     {
-        return $this->hasOne('App\Http\Workshop', 'id', 'workshop_id');
+        return $this->hasOne('App\Models\Workshop', 'id', 'workshop_id');
     }
 }

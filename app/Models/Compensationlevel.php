@@ -11,7 +11,7 @@ class Compensationlevel extends Model
 
     public function staffposition()
     {
-        return $this->belongsTo('App\Http\Staffposition');
+        return $this->belongsTo('App\Models\Staffposition');
     }
 
 }

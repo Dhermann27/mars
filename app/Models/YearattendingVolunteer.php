@@ -22,11 +22,11 @@ class YearattendingVolunteer extends Model
 
     public function yearattending()
     {
-        return $this->hasOne('App\Http\Yearattending');
+        return $this->hasOne('App\Models\Yearattending');
     }
 
     public function volunteerposition()
     {
-        return $this->hasOne('App\Http\Volunteerposition');
+        return $this->hasOne('App\Models\Volunteerposition');
     }
 }

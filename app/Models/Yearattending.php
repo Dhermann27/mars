@@ -20,43 +20,43 @@ class Yearattending extends Model
 
     public function camper()
     {
-        return $this->hasOne('App\Http\Camper', 'id', 'camper_id');
+        return $this->hasOne('App\Models\Camper', 'id', 'camper_id');
     }
 
     public function thisyearcamper()
     {
-        return $this->hasOne('App\Http\ThisyearCamper');
+        return $this->hasOne('App\Models\ThisyearCamper');
     }
 
     public function program()
     {
-        return $this->hasOne('App\Http\Program', 'id', 'program_id');
+        return $this->hasOne('App\Models\Program', 'id', 'program_id');
     }
 
     public function room()
     {
-        return $this->hasOne('App\Http\Room', 'id', 'room_id');
+        return $this->hasOne('App\Models\Room', 'id', 'room_id');
     }
 
     public function year()
     {
-        return $this->hasOne('App\Http\Year', 'id', 'year_id');
+        return $this->hasOne('App\Models\Year', 'id', 'year_id');
     }
 
     public function staffpositions()
     {
-        return $this->hasManyThrough('App\Http\Staffposition', 'App\YearattendingStaff',
+        return $this->hasManyThrough('App\Models\Staffposition', 'App\YearattendingStaff',
             'yearattending_id', 'id', 'id', 'staffposition_id');
     }
 
     public function volunteerpositions()
     {
-        return $this->belongsToMany('App\Http\Volunteerposition')->using('App\Http\YearattendingVolunteer');
+        return $this->belongsToMany('App\Models\Volunteerposition')->using('App\Models\YearattendingVolunteer');
     }
 
     public function workshops()
     {
-        return $this->hasManyThrough('App\Http\Workshop', 'App\Http\YearattendingWorkshop',
+        return $this->hasManyThrough('App\Models\Workshop', 'App\Models\YearattendingWorkshop',
             'yearattending_id', 'id', 'id', 'workshop_id');
     }
 

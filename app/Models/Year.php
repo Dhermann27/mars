@@ -13,32 +13,32 @@ class Year extends Model
 
     public function byyearcampers()
     {
-        return $this->hasMany('App\Http\ByyearCamper', 'year_id', 'id')->orderBy('birthdate');
+        return $this->hasMany('App\Models\ByyearCamper', 'year_id', 'id')->orderBy('birthdate');
     }
 
     public function yearsattending()
     {
-        return $this->hasMany('App\Http\Yearattending');
+        return $this->hasMany('App\Models\Yearattending');
     }
 
     public function chartdataNewcampers()
     {
-        return $this->hasMany('App\Http\ChartdataNewcampers', 'year', 'year');
+        return $this->hasMany('App\Models\ChartdataNewcampers', 'year', 'year');
     }
 
     public function chartdataOldcampers()
     {
-        return $this->hasMany('App\Http\ChartdataOldcampers', 'year', 'year');
+        return $this->hasMany('App\Models\ChartdataOldcampers', 'year', 'year');
     }
 
     public function chartdataVeryoldcampers()
     {
-        return $this->hasMany('App\Http\ChartdataVeryoldcampers', 'year', 'year');
+        return $this->hasMany('App\Models\ChartdataVeryoldcampers', 'year', 'year');
     }
 
     public function chartdataLostcampers()
     {
-        return $this->hasMany('App\Http\ChartdataLostcampers', 'year', 'year');
+        return $this->hasMany('App\Models\ChartdataLostcampers', 'year', 'year');
     }
 
     public function getBrochureDateAttribute()

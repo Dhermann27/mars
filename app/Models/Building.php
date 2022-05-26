@@ -18,7 +18,7 @@ class Building extends Model
 
     public function rooms()
     {
-        return $this->hasMany('App\Http\Room');
+        return $this->hasMany('App\Models\Room');
     }
     public function getImageArrayAttribute()
     {

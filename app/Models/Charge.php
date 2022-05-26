@@ -13,11 +13,11 @@ class Charge extends Model
 
     public function camper()
     {
-        return $this->hasOne('App\Http\Camper');
+        return $this->hasOne('App\Models\Camper');
     }
 
     public function chargetype()
     {
-        return $this->hasOne('App\Http\Chargetype');
+        return $this->hasOne('App\Models\Chargetype');
     }
 }

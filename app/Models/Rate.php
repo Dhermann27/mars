@@ -11,11 +11,11 @@ class Rate extends Model
 
     public function building()
     {
-        return $this->hasOne('App\Http\Building');
+        return $this->hasOne('App\Models\Building');
     }
 
     public function program()
     {
-        return $this->hasOne('App\Http\Program');
+        return $this->hasOne('App\Models\Program');
     }
 }

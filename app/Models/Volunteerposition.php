@@ -15,6 +15,6 @@ class Volunteerposition extends Model
 
     public function yearsattending()
     {
-        return $this->belongsToMany('App\Http\Yearattending')->using('App\Http\YearattendingVolunteer');
+        return $this->belongsToMany('App\Models\Yearattending')->using('App\Models\YearattendingVolunteer');
     }
 }

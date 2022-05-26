@@ -8,6 +8,6 @@ class ChartdataLostcampers extends Model
 {
     public function camper()
     {
-        return $this->hasOne('App\Http\Camper', 'id', 'camper_id');
+        return $this->hasOne('App\Models\Camper', 'id', 'camper_id');
     }
 }

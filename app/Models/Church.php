@@ -18,6 +18,6 @@ class Church extends Model
 
     public function province()
     {
-        return $this->hasOne('App\Http\Province', 'id', 'province_id');
+        return $this->hasOne('App\Models\Province', 'id', 'province_id');
     }
 }

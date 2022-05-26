@@ -33,12 +33,12 @@ class Workshop extends Model
 
     public function room()
     {
-        return $this->hasOne('App\Http\Room');
+        return $this->hasOne('App\Models\Room');
     }
 
     public function timeslot()
     {
-        return $this->hasOne('App\Http\Timeslot');
+        return $this->hasOne('App\Models\Timeslot');
     }
 
     public function getEmailsAttribute()

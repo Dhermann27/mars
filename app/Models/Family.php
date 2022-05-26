@@ -18,11 +18,11 @@ class Family extends Model
 
     public function province()
     {
-        return $this->hasOne('App\Http\Province', 'id', 'province_id');
+        return $this->hasOne('App\Models\Province', 'id', 'province_id');
     }
 
     public function campers()
     {
-        return $this->hasMany('App\Http\Camper');
+        return $this->hasMany('App\Models\Camper');
     }
 }

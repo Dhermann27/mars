@@ -14,11 +14,11 @@ class YearattendingStaff extends Model
 
     public function yearsattending()
     {
-        return $this->hasOne('App\Http\Yearattending', 'id', 'yearattending_id');
+        return $this->hasOne('App\Models\Yearattending', 'id', 'yearattending_id');
     }
 
     public function staffposition()
     {
-        return $this->hasOne('App\Http\Staffposition', 'id', 'staffposition_id');
+        return $this->hasOne('App\Models\Staffposition', 'id', 'staffposition_id');
     }
 }

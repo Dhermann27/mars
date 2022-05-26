@@ -15,26 +15,26 @@ class Campers_view extends Model
 
     public function family()
     {
-        return $this->hasOne('App\Http\Family');
+        return $this->hasOne('App\Models\Family');
     }
 
     public function pronoun()
     {
-        return $this->hasOne('App\Http\Pronoun');
+        return $this->hasOne('App\Models\Pronoun');
     }
 
     public function foodoption()
     {
-        return $this->hasOne('App\Http\Foodoption');
+        return $this->hasOne('App\Models\Foodoption');
     }
 
     public function church()
     {
-        return $this->hasOne('App\Http\Church', 'id', 'church_id');
+        return $this->hasOne('App\Models\Church', 'id', 'church_id');
     }
 
     public function yearsattending()
     {
-        return $this->hasMany('App\Http\Yearattending');
+        return $this->hasMany('App\Models\Yearattending');
     }
 }

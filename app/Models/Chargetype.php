@@ -18,15 +18,15 @@ class Chargetype extends Model
 
     public function charge()
     {
-        return $this->belongsTo('App\Http\Charge');
+        return $this->belongsTo('App\Models\Charge');
     }
 
     public function byyearcharges() {
-        return $this->hasMany('App\Http\ByyearCharge');
+        return $this->hasMany('App\Models\ByyearCharge');
     }
 
     public function thisyearcharges() {
-        return $this->hasMany('App\Http\ThisyearCharge');
+        return $this->hasMany('App\Models\ThisyearCharge');
     }
 
 }
