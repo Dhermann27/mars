@@ -19,6 +19,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', [ContactController::class, 'contactIndex'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'contactStore'])->name('contact.store');
+Route::post('/contactrefreshpage', [ContactController::class, 'contactRefresh'])->name('contact.contact-refresh-page');
 Route::get('/refreshcaptcha', [ContactController::class, 'refreshCaptcha'])->name('contact.refresh');
 
 Route::get('/cost', [HomeController::class, 'campcost'])->name('cost');
@@ -38,6 +39,8 @@ Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
     Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index');
 //    Route::get('/{id?}', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('can:is-council');
     Route::post('/', [CamperSelectionController::class, 'store'])->name('camperselect.store');
+    //    Route::get('/{id?}', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('can:is-super');
+
 });
 
 Route::group(['prefix' => 'camperinfo', 'middleware' => 'auth'], function () {

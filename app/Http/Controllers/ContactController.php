@@ -7,6 +7,7 @@ use App\Models\Contactbox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
@@ -42,6 +43,12 @@ class ContactController extends Controller
     public function contactIndex()
     {
         return view('contactus', ['mailboxes' => Contactbox::orderBy('id')->get()]);
+    }
+
+    public function contactRefresh(Request $request)
+    {
+        return redirect()->action([ContactController::class, 'contactIndex'])
+            ->withInput($request->except('captcha'));
     }
 
     public function refreshCaptcha()

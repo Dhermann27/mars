@@ -34,7 +34,8 @@ class ContactTest extends DuskTestCase
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph)
                 ->type('captcha', 'TEST')
-                ->click('button[type="submit"]')->waitFor('div.alert')->assertVisible('div.alert-success');
+                ->click('button[type="submit"]')->waitFor('div.alert')
+                ->assertVisible('div.alert-success');
 
         });
 
@@ -43,6 +44,33 @@ class ContactTest extends DuskTestCase
         $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']);
         $this->assertStringContainsString($fakedName . " <" . $fakedEmail . ">", $body);
         $this->assertStringContainsString($fakedGraph, $body);
+    }
+
+    public function testRefreshButton()
+    {
+        $faker = Factory::create();
+        $fakedName = $faker->name;
+        $fakedEmail = $faker->safeEmail;
+        $fakedGraph = $faker->paragraph;
+        $box = Contactbox::factory()->create();
+        $this->browse(function (Browser $browser) use ($box, $fakedName, $fakedEmail, $fakedGraph) {
+            $browser->visitRoute('contact.index')
+                ->assertSee('Contact Us')
+                ->type('yourname', $fakedName)
+                ->type('email', $fakedEmail)
+                ->select('mailbox', $box->id)
+                ->type('message', $fakedGraph)
+                ->waitForReload(function (Browser $browser) {
+                    $browser->click('#refreshcaptcha');
+                });
+            $browser->assertSee('Contact Us')
+                ->assertMissing('div.alert')
+                ->assertValue('#yourname', $fakedName)
+                ->assertValue('#email', $fakedEmail)
+                ->assertSelected('#mailbox', $box->id)
+                ->assertSeeIn('#message', $fakedGraph);
+
+        });
     }
 
     // Can only send 2 emails per 10 seconds via Mailtrap
@@ -133,8 +161,8 @@ class ContactTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($box, $user, $camper, $fakedGraph) {
             $browser->loginAs($user->id)->visitRoute('contact.index')
                 ->assertSee('Contact Us');
-            $this->assertEquals($browser->attribute('#yourname', 'placeholder'), $camper->firstname . ' ' . $camper->lastname);
-            $this->assertEquals($browser->attribute('#email', 'placeholder'), $camper->email);
+            $this->assertEquals($browser->attribute('#yourname', 'value'), $camper->firstname . ' ' . $camper->lastname);
+            $this->assertEquals($browser->attribute('#email', 'value'), $camper->email);
             $browser->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph)
@@ -163,7 +191,7 @@ class ContactTest extends DuskTestCase
             $browser->loginAs($user->id)->visitRoute('contact.index')
                 ->assertSee('Contact Us')
                 ->type('yourname', $fakedName);
-            $this->assertEquals($browser->attribute('#email', 'placeholder'), $user->email);
+            $this->assertEquals($browser->attribute('#email', 'value'), $user->email);
             $browser->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph)

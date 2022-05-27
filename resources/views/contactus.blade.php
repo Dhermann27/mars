@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <form class="form-horizontal m-5" role="form" method="POST" action="{{ route('contact.index') }}">
+    <form id="contactus" class="form-horizontal m-5" role="form" method="POST" action="{{ route('contact.index') }}">
         @include('includes.flash')
 
         @if(Auth::check() && !empty(Auth::user()->camper))
@@ -40,7 +40,7 @@
 
         <div class="col-md-6 offset-md-3 mb-1">
             <span id="captchaimg">{!! captcha_img() !!}</span>
-            <button type="button" id="refreshcaptcha" class="btn btn-primary" onclick="window.location.reload();"><i
+            <button type="button" id="refreshcaptcha" class="btn btn-primary" onclick="safeRefreshPage();"><i
                     class="fas fa-sync-alt"></i>
             </button>
         </div>
@@ -61,6 +61,11 @@
 
 @section('script')
     <script type="text/javascript">
+        function safeRefreshPage() {
+            var form = document.getElementById('contactus');
+            form.action = '{{ route('contact.contact-refresh-page') }}';
+            form.submit();
+        }
         // var refreshCap = function () {
         //     getAjax('/refreshcaptcha', function (data) {
         //         document.getElementById('captchaimg').innerHTML = data.captcha;
