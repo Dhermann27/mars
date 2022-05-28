@@ -29,6 +29,13 @@ class FormGroup extends Component
     public $label;
 
     /**
+     * Checkbox or radio selected state
+     *
+     * @var bool
+     */
+    public $checked;
+
+    /**
      * The form element readonly placeholder text
      *
      * @var string
@@ -40,11 +47,12 @@ class FormGroup extends Component
      *
      * @return void
      */
-    public function __construct($label, $name = null, $type = 'text', $readonly = null)
+    public function __construct($label, $name = null, $type = 'text', $checked = false, $readonly = null)
     {
         $this->name = $name;
         $this->label = $label;
         $this->type = $type;
+        $this->checked = $checked;
         $this->readonly = $readonly;
     }
 

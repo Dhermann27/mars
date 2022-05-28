@@ -31,6 +31,7 @@ return new class extends Migration
                         IF(COUNT(c.id) = 1, 200.0, 400.0)," . Chargetypename::Deposit . ", CONCAT(\"Deposit for \", y.year)
                       FROM families f, campers c, yearsattending ya, years y
                       WHERE f.id=c.family_id AND c.id=ya.camper_id AND ya.year_id=y.id AND y.id=myyear_id AND ya.room_id IS NULL
+                        AND (SELECT COUNT(*) FROM campers cp, yearsattending yap WHERE c.id!=cp.id AND c.family_id=cp.family_id AND cp.id=yap.camper_id AND yap.year_id=myyear_id AND yap.room_id IS NOT NULL)=0
                       GROUP BY f.id;
                     INSERT INTO gencharges (year_id, camper_id, charge, chargetype_id, memo)
                       SELECT

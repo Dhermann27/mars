@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('family_id')->references('id')->on('families');
             $table->unsignedBigInteger('pronoun_id')->nullable();
             $table->foreign('pronoun_id')->references('id')->on('pronouns');
-            $table->string('firstname')->nullable();
+            $table->string('firstname')->nullable()->default('New Camper');
             $table->string('lastname')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('phonenbr')->nullable();
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('roommate')->nullable();
             $table->string('sponsor')->nullable();
             $table->tinyInteger('is_handicap')->default(0);
-            $table->unsignedBigInteger('foodoption_id');
+            $table->unsignedBigInteger('foodoption_id')->nullable();
             $table->foreign('foodoption_id')->references('id')->on('foodoptions');
             $table->unsignedBigInteger('church_id')->nullable();
             $table->foreign('church_id')->references('id')->on('churches');

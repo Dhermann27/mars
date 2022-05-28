@@ -1,10 +1,11 @@
 @if($type=='checkbox')
-    <div class="mb-3 pb-1">
-        <div class="col-md-6 offset-md-3">
+    <div class="mb-3 pb-1 d-flex justify-content-center">
+        <div class="w-xs-90 w-lg-50">
             <div class="form-check">
+                <input type="hidden" value="0" name="{{ $name }}">
                 <input
                     {{ $attributes->class(['form-check-input','is-invalid' => $errors->has($name)]) }}
-                    type="checkbox" id="{{$name}}" @checked(old($name)) />
+                    type="checkbox" id="{{ $name }}" name="{{ $name }}" value="1" @checked(old($name) || $checked) />
                 <label class="form-check-label" for="{{$name}}">{{$label}}</label>
                 @error($name)
                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -13,8 +14,8 @@
         </div>
     </div>
 @elseif($type=='select')
-    <div class="mb-3 pb-1">
-        <div class="col-md-6 offset-md-3">
+    <div class="mb-3 pb-1 d-flex justify-content-center">
+        <div class="w-xs-90 w-lg-50">
             <select {{ $attributes->class(['select' => !$isDusk()]) }} id="{{ $name }}" name="{{ $name }}">
                 {{ $slot }}
             </select>
@@ -37,14 +38,14 @@
         </div>
     </div>
 @elseif($type=='submit')
-    <div class="col-md-6 offset-md-3 my-md-3 text-end">
+    <div class="m-3 text-end">
         <button type="submit" class="btn btn-lg btn-primary py-3 px-4">
             {{ $label }}
         </button>
     </div>
 @else
-    <div class="mb-3 pb-1">
-        <div class="form-outline col-md-6 offset-md-3">
+    <div class="mb-3 pb-1 d-flex justify-content-center">
+        <div class="form-outline w-xs-90 w-lg-50">
             @if($type=='textarea')
                 <textarea id="{{ $name }}" name="{{ $name }}"
                     {{ $attributes->class(['form-control','is-invalid' => $errors->has($name)]) }}>{{ old($name) }}</textarea>

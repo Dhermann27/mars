@@ -9,6 +9,15 @@ $my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // cre
 // include theme styles
 @include mdb-theme($my-light-theme);
 
+$sizes : (25: 25%, 50: 50%, 75: 75%, 90: 90%, 100: 100%);
+@each $breakpoint in map-keys($grid-breakpoints) {
+    @each $size, $length in $sizes {
+        @include media-breakpoint-up($breakpoint) {
+            .w-#{$breakpoint}-#{$size} {width: $length;}
+        }
+    }
+}
+
 h1, h2, h3, .display-4, .display-5, .display-6 {
     font-family: $font-family-primary;
 }
@@ -47,6 +56,7 @@ span.select-invalid-feedback {
     border-top-right-radius: 0px;
 }
 
+/* Registration Steps */
 .stepper-large .stepper-head-icon {
     width: 3rem;
     height: 3rem;
@@ -58,6 +68,18 @@ span.select-invalid-feedback {
 
 .stepper-success {
     background-color: $green-300;
+}
+
+.stepper-active {
+    background-color: $my-theme-primary;
+}
+
+.stepper-active .stepper-head-icon {
+    background-color: $my-theme-secondary;
+}
+
+.stepper-active .stepper-head-text {
+    color: $white;
 }
 
 .stepper-success .stepper-head-icon {
@@ -86,8 +108,20 @@ span.select-invalid-feedback {
 
 .stepper-state-icon {
     position: absolute;
-    right: -20px;
-    top: -20px;
+    right: -.50rem;
+    top: -.50rem;
+}
+
+.stepper-vertical .stepper-head {
+    padding: .5rem 1.5rem .5rem 1.5rem;
+}
+
+.stepper-large .stepper-head {
+     padding: 1.5rem;
+ }
+
+.stepper-mobile-footer {
+    position: static;
 }
 
 

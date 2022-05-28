@@ -1,10 +1,11 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Steps;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
 
-class StepsHeader extends Component
+class Header extends Component
 {
     /**
      * URL of the link
@@ -84,6 +85,7 @@ class StepsHeader extends Component
      */
     public function getDataState()
     {
+        if(Route::currentRouteName() == $this->url . '.index') return 'stepper-active';
         if ($this->stepdata !== null) {
             if ($this->dynamicCompare()) return 'stepper-success';
             else if ($this->isRequired === 'false') return '';
@@ -146,6 +148,6 @@ class StepsHeader extends Component
      */
     public function render()
     {
-        return view('components.steps-header');
+        return view('components.steps.header');
     }
 }

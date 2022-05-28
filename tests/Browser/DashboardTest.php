@@ -22,7 +22,7 @@ const STEPS = array('@step-camperselect', '@step-household', '@step-campers', '@
 const FA_ACTION = 'fa-diamond-exclamation';
 const FA_BLOCKED = 'fa-do-not-enter';
 const FA_SUCCESS = 'fa-square-check';
-const FA_BASE = 'svg-inline--fa fa-5x stepper-state-icon';
+const FA_BASE = 'svg-inline--fa stepper-state-icon fa-5x';
 /**
  * @group Register
  * @group Dashboard

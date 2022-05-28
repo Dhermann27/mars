@@ -176,8 +176,8 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
-                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-users"></i> Camper Selection !!!
+                                       href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <i class="far fa-users"></i> Camper Selection
                                     </a>
                                 </li>
                                 <li>
@@ -529,7 +529,7 @@
                             <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a></li>
                         <hr class="dropdown-divider"/>
                         <li><a class="text-white underlined-link"
-                               href="{{ route('household.index') }}">Camper Selection !!!</a></li>
+                               href="{{ route('camperselect.index') }}">Camper Selection</a></li>
                         <li><a class="text-white underlined-link"
                                href="{{ route('household.index') }}">Billing Address</a></li>
                         <li><a class="text-white underlined-link" href="{{ route('campers.index') }}">Camper Information</a>

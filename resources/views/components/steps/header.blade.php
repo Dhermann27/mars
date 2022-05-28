@@ -2,7 +2,8 @@
    @if(!$isLinkActive()) data-mdb-toggle="tooltip" data-mdb-placement="right"
    title="This link is not available until the marked step have been completed." @endif>
 {{--    @if($isRequired === true)--}}
-        <i {{ $attributes->class(['fas', 'fa-5x', 'stepper-state-icon', $getIconState()]) }} dusk="step-{{ $url }}"></i>
+        <i {{ $attributes->class(['fas', 'stepper-state-icon', 'fa-' . ($isLarge ? '5x' : '2x'), $getIconState()]) }}
+           dusk="step-{{ $url }}"></i>
 {{--    @endif--}}
     <div {{ $attributes->class(['stepper-head', $getDataState()]) }}>
         <span
