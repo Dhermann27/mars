@@ -36,7 +36,7 @@ class Steps extends Component
      * @param  bool   $isLarge
      * @return void
      */
-    public function __construct($stepdata, $isLarge = 1, $isVertical = 1)
+    public function __construct($stepdata, $isLarge = true, $isVertical = true)
     {
         $this->stepdata = $stepdata;
         $this->isLarge = $isLarge;
