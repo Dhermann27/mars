@@ -47,7 +47,8 @@
         <div class="mb-3 pb-1">
             <div class="form-outline col-md-6 offset-md-3">
                 <input id="captcha" name="captcha" type="text"
-                       class="form-control @error('captcha') is-invalid @enderror"/>
+                       class="form-control @error('captcha') is-invalid @enderror"
+                placeholder="Type the code you see in the box above to verify that you are a human."/>
                 <label for="captcha" class="form-label">CAPTCHA Test</label>
                 @error('captcha')
                 <div class="invalid-feedback"><strong>{{ $message }}</strong></div>

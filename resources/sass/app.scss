@@ -22,8 +22,9 @@ h1, h2, h3, .display-4, .display-5, .display-6 {
     font-family: $font-family-primary;
 }
 
-.btn-lg {
+.btn-lg, .nav-tabs .nav-link {
     font-size: 1.1rem;
+    border-left: 1px solid $gray-400;
 }
 
 div.highlight {

@@ -9,50 +9,47 @@
 @endsection
 
 @section('content')
-    @include('includes.steps')
-    <div class="container">
-        <form id="household" class="form-horizontal" role="form" method="POST"
-              action="{{ route('household.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
-            @include('includes.flash')
+    <div class="d-flex bg-light mb-3">
+        <div class="col-md-3 border-right d-none d-md-flex">
+            <x-steps :stepdata="$stepdata" :is-large="false"/>
+        </div>
+        <div class="offset-md-1 col-md-6 p-3">
+            <div class="display-6 mt-3 border-bottom text-end">Who is attending in {{ $year->year }}?</div>
+            <form id="household" class="form-horizontal" role="form" method="POST"
+                  action="{{ route('household.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+                @include('includes.flash')
 
-            <fieldset @can('readonly') disabled @endif>
-                @include('includes.formgroup', ['label' => 'Address Line #1', 'attribs' => ['name' => 'address1']])
+                <x-form-group label="Address Line #1" name="address1"/>
 
-                @include('includes.formgroup', ['label' => 'Address Line #2', 'attribs' => ['name' => 'address2']])
+                <x-form-group label="Address Line #2" name="address2"/>
 
-                @include('includes.formgroup', ['label' => 'City', 'attribs' => ['name' => 'city']])
+                <x-form-group label="City" name="city"/>
 
-                @include('includes.formgroup', ['type' => 'select', 'label' => 'State',
-                    'attribs' => ['name' => 'province_id'], 'default' => 'Choose a state', 'list' => $provinces,
-                    'option' => 'name'])
+                <x-form-group label="State" name="province_id">
+                    <option value="0">Choose a state</option>
+                    @foreach($provinces as $province)
+                        <option value="{{ $province->id }}" @selected(old('province_id'))>{{ $province->name }}</option>
+                    @endforeach
+                </x-form-group>
 
-                @include('includes.formgroup', ['label' => 'Postcal Code', 'attribs' => ['name' => 'zipcd',
-                        'placeholder' => 'Postal Code']])
+                <x-form-group label="Postal Code" name="zipcd"/>
 
-                @include('includes.formgroup', ['label' => 'Country', 'attribs' => ['name' => 'country',
-                    'placeholder' => 'USA']])
+                <x-form-group label="Country" name="country"/>
 
                 @can('is-council')
-                    @include('includes.question', ['name' => 'is_address_current',
-                        'label' => 'Please indicate if the address we have is current.',
-                        'list' => [['id' => '1', 'option' => 'Yes, mail to this address'],
-                                ['id' => '0', 'option' => 'No, do not use this address until it is updated']]])
+                    <x-form-group type="checkbox" name="is_address_current" label="Check if the address is current"/>
                 @endif
 
-                @include('includes.question', ['name' => 'is_ecomm',
-                    'label' => 'Please indicate if you would like to receive a paper brochure in the mail.',
-                    'list' => [['id' => '0', 'option' => 'Yes, please mail me a brochure'],
-                        ['id' => '1', 'option' => 'No, do not mail me anything']]])
+                <x-form-group type="checkbox" name="is_ecomm"
+                              label="Check if you would like to receive a paper brochure in the mail"/>
 
-                @include('includes.question', ['name' => 'is_scholar',
-                    'label' => 'Please indicate if you will be applying for a scholarship this year.',
-                    'list' => [['id' => '0', 'option' => 'No'],
-                            ['id' => '1', 'option' => 'Yes, I will be completing the separate process']]])
-            </fieldset>
+                <x-form-group type="checkbox" name="is_scholar"
+                              label="Check if you are applying for a scholarship this year"/>
 
-            @cannot('readonly')
-                @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => 'Save Changes']])
-            @endif
-        </form>
+                @cannot('readonly')
+                    <x-form-group type="submit" label="Save Changes"/>
+                @endif
+            </form>
+        </div>
     </div>
 @endsection

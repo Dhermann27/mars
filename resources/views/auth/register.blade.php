@@ -32,6 +32,14 @@
                                     Forgot Password?
                                 </a>
                             @endif
+                            @if (Route::has('login'))
+                                <a class="btn btn-lg btn-link float-md-end" href="{{ route('login') }}"
+                                   data-mdb-toggle="tooltip"
+                                   data-mdb-placement="top"
+                                   title="Returning camper? Login to your account to get started!">
+                                    Returning Camper?
+                                </a>
+                            @endif
                         </form>
                     </div>
                 </div>

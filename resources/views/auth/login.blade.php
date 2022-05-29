@@ -47,7 +47,7 @@
                                    data-mdb-toggle="tooltip"
                                    data-mdb-placement="top"
                                    title="New camper? Create a new account to get started!">
-                                    New Account?
+                                    New Camper?
                                 </a>
                             @endif
                         </form>

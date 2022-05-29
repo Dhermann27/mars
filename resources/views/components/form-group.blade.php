@@ -48,11 +48,11 @@
         <div class="form-outline w-xs-90 w-lg-50">
             @if($type=='textarea')
                 <textarea id="{{ $name }}" name="{{ $name }}"
-                    {{ $attributes->class(['form-control','is-invalid' => $errors->has($name)]) }}>{{ old($name) }}</textarea>
+                    {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>{{ old($name) }}</textarea>
             @else
                 <input id="{{ $name }}" name="{{ $name }}" type="{{ $type }}"
                        @if(old($name))) value="{{ old($name) }}" @endif
-                       {{ $attributes->class(['form-control','is-invalid' => $errors->has($name)]) }}
+                       {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}
                        @if(isset($readonly)) value="{{ $readonly }}" aria-label="{{ $readonly }}"
                        readonly @endif />
             @endif

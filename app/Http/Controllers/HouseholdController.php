@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Camper;
 use App\Enums\Foodoptionname;
-use App\Http\Family;
-use App\Http\Province;
+use App\Models\Camper;
+use App\Models\Family;
+use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -64,23 +64,13 @@ class HouseholdController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        if ($id != null && $id == 0) {
-            $family = new Family();
-            if(Gate::allows('is-super')) {
-                $camper = new Camper();
-                $camper->id = 0;
-                $request->session()->flash('camper', $camper);
-            }
-        } else {
-            if ($id != null && Gate::allows('is-council')) {
-                $camper = Camper::findOrFail($id);
-                $request->session()->flash('camper', $camper);
-                $family = Family::findOrFail($camper->family_id);
-            } else {
-                $family = Auth::user()->camper->family;
-            }
+        if($id == null && !Auth::user()->camper) {
+            $request->session()->flash('warning', 'Please begin by selecting which campers are attending this year.');
+            return redirect()->route('camperselect.index');
         }
-        return view('household', ['formobject' => $family, 'provinces' => Province::orderBy('name')->get()]);
+
+        return view('household', ['stepdata' => parent::getStepData(),
+            'provinces' => Province::orderBy('name')->get()]);
     }
 
 }

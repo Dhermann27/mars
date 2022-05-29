@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <div class="m-5">
+    <div id="campcost" class="m-5">
         <div class="note note-warning text-black m-3">
             Warning: this calculator only provides an estimate of your camp cost and your actual fees
             may vary.
@@ -121,7 +121,8 @@
         for (var i = 0; i < buttons.length; i++) {
             addEvent(buttons[i], 'click', spinnerClick);
         }
-        var radios = document.querySelectorAll('input[type=radio]');
+        var radios = document.querySelectorAll('#campcost input[type=radio], #campcost input[type=text]');
+        console.log(radios);
         for (var i = 0; i < radios.length; i++) {
             addEvent(radios[i], 'change', calcluateCampCost);
         }

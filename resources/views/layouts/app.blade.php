@@ -146,26 +146,6 @@
 
                 <div class="d-flex align-items-center">
                     @auth
-                        <div class="highlight">
-                            <a class="btn btn-link m-0 p-2 float-end"
-                               href="{{ route('logout') }}" data-mdb-toggle="tooltip" data-mdb-placement="bottom"
-                               title="Logout"
-                               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                <i class="fad fa-sign-out-alt"></i>
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                  style="display: none;">
-                                @csrf
-                            </form>
-                            @if(Auth::user()->camper)
-                                <i class="fas fa-circle-user fa-xl float-start"></i>
-                                {{ Auth::user()->camper->firstname . ' ' . Auth::user()->camper->lastname}}
-                                <span><br/>&lt;{{ Auth::user()->email }}&gt;</span>
-                            @else
-                                <i class="fas fa-circle-user float-start"></i>
-                                {{ Auth::user()->email }}
-                            @endif
-                        </div>
 
                         <div class="btn-group">
                             <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a>
@@ -173,7 +153,16 @@
                                     data-mdb-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        <i class="fas fa-circle-user"></i>
+                                        {{ Auth::user()->email }}
+                                    </h6>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider"/>
+                                </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
@@ -235,6 +224,20 @@
                                         <i class="far fa-envelope fa-fw"></i> Confirmation
                                     </li>
                                 @endif
+                                <li>
+                                    <hr class="dropdown-divider"/>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                        <i class="fad fa-sign-out-alt"></i> Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                          style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     @else
@@ -532,9 +535,11 @@
                                href="{{ route('camperselect.index') }}">Camper Selection</a></li>
                         <li><a class="text-white underlined-link"
                                href="{{ route('household.index') }}">Billing Address</a></li>
-                        <li><a class="text-white underlined-link" href="{{ route('campers.index') }}">Camper Information</a>
+                        <li><a class="text-white underlined-link" href="{{ route('campers.index') }}">Camper
+                                Information</a>
                         </li>
-                        <li><a class="text-white underlined-link" href="{{ route('payment.index') }}">Account Statement</a>
+                        <li><a class="text-white underlined-link" href="{{ route('payment.index') }}">Account
+                                Statement</a>
                         </li>
                         @if(!$year->is_live)
                             <hr/>
@@ -550,8 +555,8 @@
                                     Selection</a></li>
                             <li><a class="text-white underlined-link"
                                    href="{{ route('nametag.index') }}">Nametags</a></li>
-{{--                            <li><a class="text-white underlined-link" href="{{ route('confirm') }}">Confirmation</a>--}}
-{{--                            </li>--}}
+                            {{--                            <li><a class="text-white underlined-link" href="{{ route('confirm') }}">Confirmation</a>--}}
+                            {{--                            </li>--}}
                         @endif
                     </ul>
                 </div>

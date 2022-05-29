@@ -37,7 +37,7 @@ class CamperSelectionTest extends DuskTestCase
                 'year_id' => self::$year->id]);
 
             $browser->assertNotChecked('input#camper-' . $camper->id)
-                // ->assertSeeIn('label[for=camper-' . $camper->id . ']', 'New Camper') Unknown failure
+                ->assertSeeIn('label[for=camper-' . $camper->id . ']', 'New Camper')
                 ->check('camper-' . $camper->id)
                 ->click('button[type="submit"]')->waitFor('div.alert')
                 ->assertVisible('div.alert-success');

@@ -27,7 +27,7 @@ class CamperSelectionController extends Controller
                         Yearattending::updateOrCreate(['camper_id' => $matches[2], 'year_id' => $this->year->id]);
                     } else {
                         $ya = Yearattending::where('camper_id', $matches[2])->where('year_id', $this->year->id)->first();
-                        if($ya) {
+                        if ($ya) {
                             ChartdataNewcampers::where('yearattending_id', $ya->id)->delete();
                             ChartdataOldcampers::where('yearattending_id', $ya->id)->delete();
                             ChartdataVeryoldcampers::where('yearattending_id', $ya->id)->delete();
@@ -47,7 +47,7 @@ class CamperSelectionController extends Controller
                         $newcamper->firstname = $value;
                     }
                     $newcamper->save();
-                    if($request->input('newcheck-' . $matches[2]) == '1') {
+                    if ($request->input('newcheck-' . $matches[2]) == '1') {
                         Yearattending::create(['camper_id' => $newcamper->id, 'year_id' => $this->year->id]);
                     }
                 }
@@ -62,20 +62,22 @@ class CamperSelectionController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $campers = array();
-        if (Auth::user()->camper) {
-            $campers = Camper::where('family_id', Auth::user()->camper->family_id)
-                ->with(['yearsattending' => function ($query) {
-                    $query->where('year_id', $this->year->id);
-                }])->orderBy('birthdate')->get();
-        } else {
+        $family_id = 0;
+        if (!Auth::user()->camper) {
             $family = new Family();
             $family->save();
-            $campers[0] = new Camper();
-            $campers[0]->family_id = $family->id;
-            $campers[0]->email = Auth::user()->email;
-            $campers[0]->save();
+            $family_id = $family->id;
+            $newcamper = new Camper();
+            $newcamper->family_id = $family->id;
+            $newcamper->email = Auth::user()->email;
+            $newcamper->save();
+        } else {
+            $family_id = Auth::user()->camper->family_id;
         }
+        $campers = Camper::where('family_id', $family_id)
+            ->with(['yearsattending' => function ($query) {
+                $query->where('year_id', $this->year->id);
+            }])->orderBy('birthdate')->get();
         return view('register.camperselect', ['campers' => $campers, 'stepdata' => parent::getStepData()]);
     }
 }
