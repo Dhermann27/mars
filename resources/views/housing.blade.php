@@ -15,7 +15,7 @@
 @section('content')
     <div class="container px-3 py-5 px-lg-4 py-lg-6 bg-grey mb-5">
         @foreach($buildings as $building)
-            @component('components.blog', ['title' => $building->name])
+            @component('components.layouts.blog', ['title' => $building->name])
 
                 <div class="mt-2">{!! $building->blurb !!}</div>
 

@@ -21,7 +21,24 @@
 
                             <x-form-group name="email" label="Your Email"/>
 
-                            <x-form-group type="submit" :label="__('Send Password Reset Link')"/>                        </form>
+                            <x-form-group type="submit" :label="__('Send Password Reset Link')"/>
+                        </form>
+                        @if (Route::has('register'))
+                            <a class="btn btn-lg btn-link float-md-end" href="{{ route('register') }}"
+                               data-mdb-toggle="tooltip"
+                               data-mdb-placement="top"
+                               title="New camper? Create a new account to get started!">
+                                New Camper?
+                            </a>
+                        @endif
+                        @if (Route::has('login'))
+                            <a class="btn btn-lg btn-link" href="{{ route('login') }}"
+                               data-mdb-toggle="tooltip"
+                               data-mdb-placement="top"
+                               title="Returning camper? Login to your account to get started!">
+                                Returning Camper?
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

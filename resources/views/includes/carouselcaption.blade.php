@@ -10,9 +10,7 @@
     </h4>
     <p>
         @can('has-paid')
-            <a href="{{ route('campers.index') }}" class="btn btn-info btn-lg">
-                See Your Information for {{ $year->year }} <i class="fas fa-sign-in"></i>
-            </a>
+            <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Your Registration</a>
         @else
             <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
                     data-target="#modal-register">

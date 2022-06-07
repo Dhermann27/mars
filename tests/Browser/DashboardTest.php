@@ -16,24 +16,25 @@ use App\Models\YearattendingWorkshop;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-const ROUTE = 'dashboard';
-const STEPS = array('@step-camperselect', '@step-household', '@step-campers', '@step-payment', '@step-roomselection',
-    '@step-workshopchoice', '@step-nametag', '@step-medicalresponse');
-const FA_ACTION = 'fa-diamond-exclamation';
-const FA_BLOCKED = 'fa-do-not-enter';
-const FA_SUCCESS = 'fa-square-check';
-const FA_BASE = 'svg-inline--fa stepper-state-icon fa-5x';
 /**
  * @group Register
  * @group Dashboard
  */
 class DashboardTest extends DuskTestCase
 {
+    private const ROUTE = 'dashboard';
+    private const WAIT = 300;
+    private const STEPS = array('@step-camperselect', '@step-household', '@step-camperinfo', '@step-payment', '@step-roomselection',
+        '@step-workshopchoice', '@step-nametag', '@step-medicalresponse');
+    private const FA_ACTION = 'fa-diamond-exclamation';
+    private const FA_BLOCKED = 'fa-do-not-enter';
+    private const FA_SUCCESS = 'fa-square-check';
+    private const FA_BASE = 'svg-inline--fa stepper-state-icon fa-5x';
 
     public function testNewVisitor()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(route(ROUTE))->pause(500)->assertSee('You need to be logged in');
+            $browser->visit(route(self::ROUTE))->pause(self::WAIT)->assertSee('You need to be logged in');
         });
     }
 
@@ -41,9 +42,9 @@ class DashboardTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500)
-                ->assertAttributeContains(STEPS[0], 'class', FA_ACTION);
-            $this->assertAfter($browser, 0, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT)
+                ->assertAttributeContains(self::STEPS[0], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 0, self::FA_BLOCKED);
         });
     }
 
@@ -52,9 +53,9 @@ class DashboardTest extends DuskTestCase
         $user = User::factory()->create();
         $campers = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500)
-                ->assertAttributeContains(STEPS[0], 'class', FA_ACTION);
-            $this->assertAfter($browser, 0, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT)
+                ->assertAttributeContains(self::STEPS[0], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 0, self::FA_BLOCKED);
         });
 
     }
@@ -66,10 +67,10 @@ class DashboardTest extends DuskTestCase
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         GenerateCharges::dispatchSync(self::$year->id);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 3, FA_SUCCESS);
-            $browser->assertAttributeContains(STEPS[3], 'class', FA_ACTION);
-            $this->assertAfter($browser, 3, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 3, self::FA_SUCCESS);
+            $browser->assertAttributeContains(self::STEPS[3], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 3, self::FA_BLOCKED);
         });
     }
 
@@ -82,10 +83,10 @@ class DashboardTest extends DuskTestCase
             }]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500)
-                ->assertAttributeContains(STEPS[0], 'class', FA_SUCCESS)
-                ->assertAttributeContains(STEPS[1], 'class', FA_ACTION);
-            $this->assertAfter($browser, 1, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT)
+                ->assertAttributeContains(self::STEPS[0], 'class', self::FA_SUCCESS)
+                ->assertAttributeContains(self::STEPS[1], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 1, self::FA_BLOCKED);
         });
     }
 
@@ -98,10 +99,10 @@ class DashboardTest extends DuskTestCase
             }]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500)
-                ->assertAttributeContains(STEPS[0], 'class', FA_SUCCESS)
-                ->assertAttributeContains(STEPS[1], 'class', FA_ACTION);
-            $this->assertAfter($browser, 1, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT)
+                ->assertAttributeContains(self::STEPS[0], 'class', self::FA_SUCCESS)
+                ->assertAttributeContains(self::STEPS[1], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 1, self::FA_BLOCKED);
         });
     }
 
@@ -112,10 +113,10 @@ class DashboardTest extends DuskTestCase
             'birthdate' => null]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 2, FA_SUCCESS);
-            $browser->assertAttributeContains(STEPS[2], 'class', FA_ACTION);
-            $this->assertAfter($browser, 2, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 2, self::FA_SUCCESS);
+            $browser->assertAttributeContains(self::STEPS[2], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 2, self::FA_BLOCKED);
         });
     }
 
@@ -130,10 +131,10 @@ class DashboardTest extends DuskTestCase
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
             'program_id' => null]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 2, FA_SUCCESS);
-            $browser->assertAttributeContains(STEPS[2], 'class', FA_ACTION);
-            $this->assertAfter($browser, 2, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 2, self::FA_SUCCESS);
+            $browser->assertAttributeContains(self::STEPS[2], 'class', self::FA_ACTION);
+            $this->assertAfter($browser, 2, self::FA_BLOCKED);
         });
     }
 
@@ -145,12 +146,12 @@ class DashboardTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -200]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 4, FA_SUCCESS);
-            $browser->assertAttributeContains(STEPS[4], 'class', FA_ACTION)
-                ->assertAttribute(STEPS[5], 'class', FA_BASE)
-                ->assertAttribute(STEPS[6], 'class', FA_BASE);
-            $this->assertAfter($browser, 6, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 4, self::FA_SUCCESS);
+            $browser->assertAttributeContains(self::STEPS[4], 'class', self::FA_ACTION)
+                ->assertAttribute(self::STEPS[5], 'class', self::FA_BASE)
+                ->assertAttribute(self::STEPS[6], 'class', self::FA_BASE);
+            $this->assertAfter($browser, 6, self::FA_BLOCKED);
         });
     }
 
@@ -165,10 +166,10 @@ class DashboardTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -200]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 5, FA_SUCCESS);
-            $browser->assertAttribute(STEPS[6], 'class', FA_BASE);
-            $this->assertAfter($browser, 6, FA_BLOCKED);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 5, self::FA_SUCCESS);
+            $browser->assertAttribute(self::STEPS[6], 'class', self::FA_BASE);
+            $this->assertAfter($browser, 6, self::FA_BLOCKED);
         });
     }
 
@@ -193,10 +194,10 @@ class DashboardTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -400]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 5, FA_SUCCESS);
-            $browser->assertAttribute(STEPS[6], 'class', FA_BASE)
-                ->assertAttributeContains(STEPS[7], 'class', FA_ACTION);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 5, self::FA_SUCCESS);
+            $browser->assertAttribute(self::STEPS[6], 'class', self::FA_BASE)
+                ->assertAttributeContains(self::STEPS[7], 'class', self::FA_ACTION);
         });
     }
 
@@ -225,9 +226,9 @@ class DashboardTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -400]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 7, FA_SUCCESS);
-            $browser->assertAttributeContains(STEPS[7], 'class', FA_ACTION);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 7, self::FA_SUCCESS);
+            $browser->assertAttributeContains(self::STEPS[7], 'class', self::FA_ACTION);
         });
     }
 
@@ -256,8 +257,8 @@ class DashboardTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -400]);
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user->id)->visit(route(ROUTE))->pause(500);
-            $this->assertBefore($browser, 8, FA_SUCCESS);
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
+            $this->assertBefore($browser, 8, self::FA_SUCCESS);
         });
     }
 
@@ -267,8 +268,8 @@ class DashboardTest extends DuskTestCase
      */
     function assertAfter(Browser $browser, $index, $icon): void
     {
-        for ($i = $index + 1; $i < count(STEPS); $i++) {
-            $browser->assertAttributeContains(STEPS[$i], 'class', $icon);
+        for ($i = $index + 1; $i < count(self::STEPS); $i++) {
+            $browser->assertAttributeContains(self::STEPS[$i], 'class', $icon);
 
         }
     }
@@ -280,7 +281,7 @@ class DashboardTest extends DuskTestCase
     function assertBefore(Browser $browser, $index, $icon): void
     {
         for ($i = $index - 1; $i >= 0; $i--) {
-            $browser->assertAttributeContains(STEPS[$i], 'class', $icon);
+            $browser->assertAttributeContains(self::STEPS[$i], 'class', $icon);
 
         }
     }

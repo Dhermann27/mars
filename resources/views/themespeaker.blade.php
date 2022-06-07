@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="container px-3 py-5 px-lg-10 py-lg-6 bg-grey mb-5">
-        @component('components.blog', ['title' => 'Theme Speaker'])
+        @component('components.layouts.blog', ['title' => 'Theme Speaker'])
             <p>
                 <img class="float-end p-3" src="/images/drglensm.jpg"
                      alt="Dr. Glen Thomas Rideout" data-no-retina/>

@@ -9,45 +9,56 @@
 @endsection
 
 @section('content')
-    <div class="d-flex bg-light mb-3">
-        <div class="col-md-3 border-right d-none d-md-flex">
-            <x-steps :stepdata="$stepdata" :is-large="false"/>
-        </div>
-        <div class="offset-md-1 col-md-6 p-3">
-            <div class="display-6 mt-3 border-bottom text-end">Who is attending in {{ $year->year }}?</div>
-            <form id="camperselect" class="form-horizontal" role="form" method="POST"
-                  action="{{ route('camperselect.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
-                @include('includes.flash')
+    <x-layouts.register :stepdata="$stepdata" step="1" previous="#" next="household">
+        <div class="display-6 mt-3 border-bottom text-end">Who is attending in {{ $year->year }}?</div>
+        <form id="camperselect" class="form-horizontal" role="form" method="POST"
+              action="{{ route('camperselect.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+            @include('includes.flash')
 
-                <ul class="list-group list-group-light">
+            <ul class="list-group list-group-light container-md col-lg-6">
+                @if(count($campers) != 1 || $campers[0]->firstname != 'New Camper')
                     @foreach($campers as $camper)
                         <li class="list-group-item ps-3">
                             <x-form-group type="checkbox" name="camper-{{ $camper->id }}"
                                           :label="$camper->firstname . ' ' . $camper->lastname"
-                                          :checked="count($camper->yearsattending) == 1"/>
+                                          :value="count($camper->yearsattending) == 1"/>
                         </li>
                     @endforeach
-                    <li id="additem" class="list-group-item px-2">
-                        <button class="btn btn-info p-1 float-end" data-mdb-toggle="tooltip" data-mdb-html="true"
-                           title="Need to remove an existing camper from your family? Please use the Contact Us form to reach the Registrar.">
-                            <i class="far fa-circle-question fa-xl"></i>
-                        </button>
-                        <button id="addcamper" class="btn btn-lg btn-secondary" onclick="addCamper();" type="button">
-                            <i class="fas fa-user-plus"></i> Add New Camper
-                        </button>
+                @else
+                    <li class="list-group-item ps-3">
+                        <div class="input-group mb-3 pe-3">
+                            <div class="input-group-text border-0 ps-0">
+                                <input type="hidden" value="0" name="newcheck-{{ $campers[0]->id }}">
+                                <input class="form-check-input me-1" type="checkbox"
+                                       name="newcheck-{{ $campers[0]->id }}" value="1"
+                                       aria-label="Check this box if attending in {{ $year->year }}"
+                                    @checked(count($campers[0]->yearsattending) == 1) />
+                            </div>
+                            <input name="newname-{{ $campers[0]->id }}" type="text" class="form-control"
+                                   style="width: 50%;" value="New Camper" placeholder="Enter Camper Name"/>
+                            <label for="newname-{{ $campers[0]->id }}" class="visually-hidden">New Camper</label>
+                        </div>
                     </li>
-
-                    <x-form-group type="submit" label="Save Changes"/>
-                </ul>
-                <x-steps.progress :width="1/7" next="household"/>
-            </form>
-        </div>
-    </div>
+                @endif
+                <li id="additem" class="list-group-item px-2">
+                    <button class="btn btn-info p-1 float-end" data-mdb-toggle="tooltip" data-mdb-html="true"
+                            title="Need to remove an existing camper from your family? Please use the Contact Us form to reach the Registrar.">
+                        <i class="far fa-circle-question fa-xl"></i>
+                    </button>
+                    <button id="addcamper" class="btn btn-lg btn-secondary" onclick="addCamper();" type="button">
+                        <i class="fas fa-user-plus"></i> Add New Camper
+                    </button>
+                </li>
+            </ul>
+            <x-form-group type="submit" label="Save Changes"/>
+        </form>
+    </x-layouts.register>
 @endsection
 
 @section('script')
     <script>
         let i = 0;
+
         function addCamper() {
             var el = document.createElement('li');
             el.classList.add('list-group-item');
@@ -59,6 +70,7 @@
                         aria-label="Check this box if attending in {{ $year->year }}" checked />
                 </div>
                 <input name="newname-` + i + `" type="text" class="form-control" style="width: 50%;" placeholder="Enter Camper Name" />
+                <label for="newname-` + i + `" class="visually-hidden">New Camper</label>
                 <button id="delete-` + i++ + `" class="btn btn-outline-secondary" type="button" onclick="removeCamper(event);">
                     <i class="fas fa-user-xmark"></i> Remove Camper
                 </button>

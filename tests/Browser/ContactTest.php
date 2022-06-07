@@ -60,10 +60,8 @@ class ContactTest extends DuskTestCase
                 ->type('email', $fakedEmail)
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph)
-                ->waitForReload(function (Browser $browser) {
-                    $browser->click('#refreshcaptcha');
-                });
-            $browser->assertSee('Contact Us')
+                ->clickAndWaitForReload('#refreshcaptcha')
+                ->assertSee('Contact Us')
                 ->assertMissing('div.alert')
                 ->assertValue('#yourname', $fakedName)
                 ->assertValue('#email', $fakedEmail)

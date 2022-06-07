@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Chargetypename;
+use App\Models\Camper;
+use App\Models\Family;
 use App\Models\Medicalresponse;
 use App\Models\ThisyearCharge;
 use App\Models\Year;
@@ -32,10 +34,31 @@ class Controller extends BaseController
 
     }
 
+    /**
+     * If User has an associated camper, get the family_id, otherwise create one
+     * @return int
+     */
+    public function getFamilyId(): int
+    {
+        $family_id = 0;
+        if (!isset(Auth::user()->camper)) {
+            $family = new Family();
+            $family->save();
+            $family_id = $family->id;
+            $newcamper = new Camper();
+            $newcamper->family_id = $family->id;
+            $newcamper->email = Auth::user()->email;
+            if(config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
+            $newcamper->save();
+        } else {
+            $family_id = Auth::user()->camper->family_id;
+        }
+        return $family_id;
+    }
+
     public function getStepData()
     {
-
-        if (Auth::user()->camper && Auth::user()->camper->family) {
+        if (isset(Auth::user()->camper->family)) {
             $family = Auth::user()->camper->family;
             $campers = $family->campers;
             $yearsattending = Yearattending::where('year_id', $this->year->id)

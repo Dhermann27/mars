@@ -29,31 +29,63 @@ class FormGroup extends Component
     public $label;
 
     /**
-     * Checkbox or radio selected state
-     *
-     * @var bool
-     */
-    public $checked;
-
-    /**
-     * The form element readonly placeholder text
+     * The form element value.
      *
      * @var string
      */
-    public $readonly;
+    public $value;
+
+    /**
+     * The form element name with loop value, for the errors() array .
+     *
+     * @var string
+     */
+    public $errorKey;
+
+    /**
+     * The Model object that could contain the default value.
+     *
+     * @var string
+     */
+    public $formobject;
+
+    /**
+     * If the element is only viewable by PC members
+     *
+     * @var bool
+     */
+    public $isAdminonly;
+
+    /**
+     * If the element should be read-only
+     *
+     * @var bool
+     */
+    public $isReadonly;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label, $name = null, $type = 'text', $checked = false, $readonly = null)
+    public function __construct($label = null, $name = null, $value = null, $type = 'text', $errorKey = null,
+                                $formobject = null, $isAdminonly = false, $isReadonly = false)
     {
         $this->name = $name;
         $this->label = $label;
+        $this->value = $value;
         $this->type = $type;
-        $this->checked = $checked;
-        $this->readonly = $readonly;
+        $this->errorKey = $errorKey ? $errorKey : $name;
+        $this->formobject = $formobject;
+        $this->isAdminonly = $isAdminonly;
+        $this->isReadonly = $isReadonly;
+    }
+
+    public function getSafeDefault()
+    {
+        $name = preg_replace('/\\[\\]/', '', $this->name);
+        $value = $this->formobject->$name ?? $this->value;
+        return old($this->errorKey, $value);
     }
 
     /**

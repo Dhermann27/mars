@@ -146,16 +146,15 @@
                 @endswitch
             </h3>
             <div>
-                @can('has-paid')
-                    <a href="{{ route('campers.index') }}" class="btn btn-lg btn-secondary">
-                        See Your Information for {{ $year->year }} <i class="fas fa-sign-in"></i>
+                @auth
+                    <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                        Your Registration
                     </a>
                 @else
-                    <button type="button" class="btn btn-lg btn-secondary" data-toggle="modal"
-                            data-target="#modal-register">
-                        Register for {{ $year->year }} <i class="fas fa-sign-in"></i>
-                    </button>
-                @endif
+                    <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                        Get Started
+                    </a>
+                @endauth
             </div>
 
         </div>

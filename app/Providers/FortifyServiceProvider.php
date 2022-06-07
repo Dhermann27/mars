@@ -10,6 +10,7 @@ use App\Models\Year;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 
@@ -50,7 +51,7 @@ class FortifyServiceProvider extends ServiceProvider
 //        });
 
 
-        $this->year = Year::where('is_current', '1')->first();
+        $this->year = Schema::hasTable('years') ? Year::where('is_current', '1')->first() : date('Y');
         Fortify::loginView(function () {
             return view('auth.login', ['year' => $this->year]);
         });

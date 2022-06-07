@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
+use App\Models\CamperStaff;
 use App\Models\ChartdataNewcampers;
 use App\Models\ChartdataOldcampers;
 use App\Models\ChartdataVeryoldcampers;
-use App\Models\Family;
 use App\Models\Yearattending;
 use App\Models\YearattendingStaff;
 use App\Models\YearattendingWorkshop;
@@ -24,7 +24,16 @@ class CamperSelectionController extends Controller
             if (preg_match('/(camper|newname)-(\d+)/', $key, $matches)) {
                 if ($matches[1] == 'camper') {
                     if ($value == '1') {
-                        Yearattending::updateOrCreate(['camper_id' => $matches[2], 'year_id' => $this->year->id]);
+                        $ya = Yearattending::updateOrCreate(['camper_id' => $matches[2], 'year_id' => $this->year->id]);
+                        $staffs = CamperStaff::where('camper_id', $matches[2])->get();
+                        if (count($staffs) > 0) {
+                            foreach ($staffs as $staff) {
+                                YearattendingStaff::updateOrCreate(['yearattending_id' => $ya->id,
+                                    'staffposition_id' => $staff->staffposition_id]);
+                            }
+                            CamperStaff::where('camper_id', $matches[2])->delete();
+                        }
+
                     } else {
                         $ya = Yearattending::where('camper_id', $matches[2])->where('year_id', $this->year->id)->first();
                         if ($ya) {
@@ -38,7 +47,7 @@ class CamperSelectionController extends Controller
                     }
                 } elseif (strlen($value) >= 2) {
                     $newnames = explode(' ', $value);
-                    $newcamper = new Camper();
+                    $newcamper = $matches[2] >= 1000 ? Camper::find($matches[2]) : new Camper();
                     $newcamper->family_id = Auth::user()->camper->family_id;
                     if (count($newnames) == 2) {
                         $newcamper->firstname = $newnames[0];
@@ -62,22 +71,12 @@ class CamperSelectionController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = 0;
-        if (!Auth::user()->camper) {
-            $family = new Family();
-            $family->save();
-            $family_id = $family->id;
-            $newcamper = new Camper();
-            $newcamper->family_id = $family->id;
-            $newcamper->email = Auth::user()->email;
-            $newcamper->save();
-        } else {
-            $family_id = Auth::user()->camper->family_id;
-        }
+        $family_id = parent::getFamilyId();
         $campers = Camper::where('family_id', $family_id)
             ->with(['yearsattending' => function ($query) {
                 $query->where('year_id', $this->year->id);
             }])->orderBy('birthdate')->get();
         return view('register.camperselect', ['campers' => $campers, 'stepdata' => parent::getStepData()]);
     }
+
 }

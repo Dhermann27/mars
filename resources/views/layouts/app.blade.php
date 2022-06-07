@@ -177,13 +177,13 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
-                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                       href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
                                         <i class="far fa-user-gear"></i> Camper Information
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
-                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                       href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
                                         <i class="far fa-usd-square"></i> Account Statement
                                     </a>
                                 </li>
@@ -359,7 +359,7 @@
 {{--                                <div class="dropdown-menu dropdown-menu-right mt-0">--}}
 {{--                                    <a href="{{ route('household.index') }}" class="dropdown-item">--}}
 {{--                                        <i class="far fa-home fa-fw"></i> Household</a>--}}
-{{--                                    <a href="{{ route('campers.index') }}" class="dropdown-item">--}}
+{{--                                    <a href="{{ route('camperinfo.index') }}" class="dropdown-item">--}}
 {{--                                        <i class="far fa-users fa-fw"></i> Campers</a>--}}
 {{--                                    <a href="{{ route('payment.index') }}" class="dropdown-item">--}}
 {{--                                        <i class="far fa-usd-square fa-fw"></i> Statement</a>--}}
@@ -535,10 +535,12 @@
                                href="{{ route('camperselect.index') }}">Camper Selection</a></li>
                         <li><a class="text-white underlined-link"
                                href="{{ route('household.index') }}">Billing Address</a></li>
-                        <li><a class="text-white underlined-link" href="{{ route('campers.index') }}">Camper
+                        <li>
+                            <a class="text-white underlined-link" href="{{ route('camperinfo.index') }}">Camper
                                 Information</a>
                         </li>
-                        <li><a class="text-white underlined-link" href="{{ route('payment.index') }}">Account
+                        <li>
+                            <a class="text-white underlined-link" href="{{ route('payment.index') }}">Account
                                 Statement</a>
                         </li>
                         @if(!$year->is_live)

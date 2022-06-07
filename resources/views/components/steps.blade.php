@@ -29,7 +29,7 @@
         </div>
     </li>
     <li class="stepper-step">
-        <x-steps.header url="campers" :stepdata="$stepdata['isCamperDetail']" icon="user-gear" :is-large="$isLarge">
+        <x-steps.header url="camperinfo" :stepdata="$stepdata['isCamperDetail']" icon="user-gear" :is-large="$isLarge">
             Camper Information
         </x-steps.header>
         <div class="stepper-content">
