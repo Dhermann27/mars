@@ -55,6 +55,7 @@ class CamperSelectionController extends Controller
                     } else {
                         $newcamper->firstname = $value;
                     }
+                    if(config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
                     $newcamper->save();
                     if ($request->input('newcheck-' . $matches[2]) == '1') {
                         Yearattending::create(['camper_id' => $newcamper->id, 'year_id' => $this->year->id]);
