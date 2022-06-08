@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('yearattending_id')->references('id')->on('yearsattending');
             $table->unsignedBigInteger('staffposition_id');
             $table->foreign('staffposition_id')->references('id')->on('staffpositions');
-            $table->tinyInteger('is_eaf_paid');
+            $table->tinyInteger('is_eaf_paid')->default(0);
             $table->timestamps();
             $table->unique(array('yearattending_id', 'staffposition_id'), 'yaid__spid_index');
         });

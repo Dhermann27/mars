@@ -40,9 +40,7 @@
     </div>
 @elseif($type=='submit')
     <div class="m-3 text-end">
-        <button type="submit" class="btn btn-lg btn-primary py-3 px-4">
-            {{ $label }}
-        </button>
+        <button type="submit" class="btn btn-lg btn-primary py-3 px-4" name="{{ $label }}">{{ $label }}</button>
     </div>
 @elseif($type=='hidden')
     <input id="{{ $name }}" name="{{ $name }}" type="hidden" value="{{ $value }}"/>

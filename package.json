@@ -24,6 +24,7 @@
         "@fortawesome/fontawesome-pro": "^6.1.1",
         "bootstrap": "^5.1.3",
         "dom4": "^2.1.6",
+        "imask": "^6.4.2",
         "mdb-ui-kit": "git+https://oauth2:xzcN9sj21yoD8GXHtAQ5@git.mdbootstrap.com/mdb/standard/mdb-ui-kit-pro-essential"
     }
 }

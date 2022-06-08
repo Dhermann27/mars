@@ -24,7 +24,6 @@ h1, h2, h3, .display-4, .display-5, .display-6 {
 
 .btn-lg, .nav-tabs .nav-link {
     font-size: 1.1rem;
-    border-left: 1px solid $gray-400;
 }
 
 div.highlight {
@@ -42,8 +41,40 @@ div.highlight span {
     text-transform: none;
 }
 
+.select-helpbtn {
+    position: absolute;
+    right: -5%;
+    top: 8%;
+}
 
-span.select-invalid-feedback {
+.register-helpbtn {
+    position: absolute;
+    right: -8%;
+    top: 8%;
+}
+
+.admin-only {
+    background-image: url('/images/adminonly.png');
+}
+
+.not-attending {
+    background-image: url('/images/notattending.png');
+}
+
+.autocomplete-custom-item-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.autocomplete-custom-item-title {
+    font-weight: 500;
+}
+
+.autocomplete-custom-item-subtitle {
+    font-size: 0.8rem;
+}
+
+.muusa-invalid-feedback {
     display: block;
     position: absolute;
     width: auto;

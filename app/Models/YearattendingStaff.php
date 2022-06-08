@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class YearattendingStaff extends Model
 {
     use HasFactory;
+    protected $fillable = ['yearattending_id', 'staffposition_id'];
 
     public $incrementing = false;
     protected $table = 'yearsattending__staff';

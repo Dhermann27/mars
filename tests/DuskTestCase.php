@@ -114,4 +114,15 @@ abstract class DuskTestCase extends BaseTestCase
         $faker = Factory::create();
         return $faker->dateTimeBetween('-' . (17 + $year) . ' years', '-' . (1 + $year) . ' years')->format('Y-m-d');
     }
+
+    /**
+     * Return a birthdate within 18 years of the first date of camp
+     *
+     * @return string
+     */
+    protected function getYABirthdate() {
+        $year = date('Y') - self::$year->year;
+        $faker = Factory::create();
+        return $faker->dateTimeBetween('-' . (20 + $year) . ' years', '-' . (18 + $year) . ' years')->format('Y-m-d');
+    }
 }

@@ -26,8 +26,7 @@ class StaffpositionFactory extends Factory
             },
             'program_id' => function () {
                 return Program::factory()->create()->id;
-            },
-            'pctype' => 0
+            }
         ];
     }
 }

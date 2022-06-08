@@ -4,6 +4,7 @@ use App\Http\Controllers\CamperInformationController;
 use App\Http\Controllers\CamperSelectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HouseholdController;
@@ -12,7 +13,9 @@ use App\Http\Controllers\NametagController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomSelectionController;
 use App\Http\Controllers\WorkshopController;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -44,9 +47,10 @@ Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'camperinfo', 'middleware' => 'auth'], function () {
-    Route::get('', [CamperInformationController::class, 'index'])->name('campers.index');
-//    Route::get('/{id?}', [CamperInformationController::class, 'index'])->name('campers.index')->middleware('can:is-council');
-    Route::post('/', [CamperInformationController::class, 'store'])->name('campers.store');
+    Route::get('', [CamperInformationController::class, 'index'])->name('camperinfo.index');
+//    Route::get('/{id?}', [CamperInformationController::class, 'index'])->name('camperinfo.index')->middleware('can:is-council');
+    Route::post('/', [CamperInformationController::class, 'store'])->name('camperinfo.store');
+//    Route::get('/{id?}', [CamperInformationController::class, 'store'])->name('camperinfo.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'payment', 'middleware' => 'auth'], function () {
@@ -57,9 +61,9 @@ Route::group(['prefix' => 'payment', 'middleware' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'household', 'middleware' => 'auth'], function () {
-    Route::get('', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:has-paid');
+    Route::get('', [HouseholdController::class, 'index'])->name('household.index');
 //    Route::get('/{id?}', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:is-council');
-    Route::post('', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:has-paid');
+    Route::post('', [HouseholdController::class, 'store'])->name('household.store');
 //    Route::post('/{id?}', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:is-super');
 });
 //
@@ -94,13 +98,13 @@ Route::group(['prefix' => 'medicalresponse', 'middleware' => 'auth'], function (
 //    Route::post('/nametag/f/{id}', [MedicalResponseController::class, 'write')->middleware('auth', [role:admin');
 });
 //
-//Route::group(['prefix' => 'data'], function () {
+Route::group(['prefix' => 'data'], function () {
 //    Route::get('loginsearch', [DataController::class, 'loginsearch');
 //    Route::get('camperlist', [DataController::class, 'campers')->middleware('can:is-council');
-//    Route::get('churchlist', [DataController::class, 'churches')->middleware('auth');
+    Route::get('churchlist', [DataController::class, 'churches'])->middleware('auth');
 //    Route::get('steps', [DataController::class, 'steps')->middleware('can:has-paid');
 //    Route::get('steps/{id?}', [DataController::class, 'steps')->middleware('can:is-council');
-//});
+});
 Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports'], function () {
 //    Route::get('campers', [ReportController::class, 'campers'])->name('reports.campers');
 //    Route::get('campers/{year}.xls', [ReportController::class, 'campersExport'])->name('reports.campers.export');
@@ -155,7 +159,11 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports']
 //    Route::get('positions', [AdminController::class, 'positionIndex'])->name('admin.positions.index');
 //    Route::post('positions', [AdminController::class, 'positionStore'])->name('admin.positions.store');
 //});
-//
+Route::get('/muse', function () {
+    $muses = File::allFiles(public_path('muses'));
+    $muse = array_pop($muses);
+    return redirect('/muses/' . $muse->getBasename());//substr($muse, strpos($muse, '/20') + 1));
+});
 Route::get('/brochure', function () {
     $year = date('Y');
     if (!is_file(public_path('MUUSA_' . $year . '_Brochure.pdf'))) $year--;

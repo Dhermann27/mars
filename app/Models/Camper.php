@@ -29,6 +29,10 @@ class Camper extends Model
         return $this->hasOne('App\Models\Church', 'id', 'church_id');
     }
 
+    public function getChurchName() {
+        return $this->church->name . ' (' .  $this->church->city  . ', '  . $this->church->province->code . ')';
+    }
+
     public function yearsattending()
     {
         return $this->hasMany('App\Models\Yearattending');

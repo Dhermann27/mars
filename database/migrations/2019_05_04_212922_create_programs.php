@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('title')->nullable();
+            $table->string('subtitle')->nullable();
             $table->integer('order');
             $table->text('blurb')->nullable();
             $table->text('letter')->nullable();

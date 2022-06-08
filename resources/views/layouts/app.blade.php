@@ -166,25 +166,25 @@
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-users"></i> Camper Selection
+                                        <i class="far fa-users fa-fw"></i> Camper Selection
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-home"></i> Billing Address
+                                        <i class="far fa-home fa-fw"></i> Billing Address
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-user-gear"></i> Camper Information
+                                        <i class="far fa-user-gear fa-fw"></i> Camper Information
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-usd-square"></i> Account Statement
+                                        <i class="far fa-usd-square fa-fw"></i> Account Statement
                                     </a>
                                 </li>
                                 @if(!$year->is_live)
@@ -195,16 +195,24 @@
                                         Opens {{ $year->brochure_date }}
                                     </h6>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">Workshop List</a>
+                                        <a href="#" class="dropdown-item disabled">
+                                            <i class="far fa-rocket fa-fw"></i> Workshop List
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">Room Selection</a>
+                                        <a href="#" class="dropdown-item disabled">
+                                            <i class="far fa-bed fa-fw"></i> Room Selection
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">Nametags</a>
+                                        <a href="#" class="dropdown-item disabled">
+                                            <i class="far fa-id-card fa-fw"></i> Nametags
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">Confirmation</a>
+                                        <a href="#" class="dropdown-item disabled">
+                                            <i class="far fa-envelope fa-fw"></i> Confirmation
+                                        </a>
                                     </li>
                                 @else
                                     <li>

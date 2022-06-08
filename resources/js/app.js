@@ -1,5 +1,6 @@
 import '@fortawesome/fontawesome-pro/js/all.min.js';
 import * as mdb from 'mdb-ui-kit';
+import IMask from 'imask';
 
 require('./campcost.js');
 window.addEvent = function (el, type, handler) {
@@ -20,8 +21,14 @@ window.getAjax = function (url, success) {
     return xhr;
 }
 
+const churchFilter = async (query) => {
+    const url = `/data/churchlist?term=${encodeURI(query)}`;
+    const response = await fetch(url);
+    return await response.json();
+};
+
 let isDirty = false;
-window.checkDirty = function(e) {
+window.checkDirty = function (e) {
     if (!isDirty) {
         return;
     }
@@ -29,25 +36,55 @@ window.checkDirty = function(e) {
 }
 
 function runOnLoad() {
-    const inputs = document.querySelectorAll('input[type="checkbox"]', 'select', 'textarea', 'input[type="number"]', 'input[type="password"]', 'input[type="radio"]', 'input[type="text"]');
+    const inputs = document.querySelectorAll("select, textarea, input:not([type='hidden'])");
     for (let i = 0; i < inputs.length; i++) {
         window.addEvent(inputs[i], 'change', function () {
             isDirty = true;
         });
-    }
+        if (inputs[i].classList.contains('phone-mask')) {
+            IMask(inputs[i], {
+                mask: '000-000-0000'
+            });
+        }
+        if (inputs[i].classList.contains('days-mask')) {
+            IMask(inputs[i], {
+                mask: Number,
+                scale: 0,
+                min: 0,
+                max: 30
+            });
+        }
+        if (inputs[i].classList.contains('church-search')) {
+            new mdb.Autocomplete(inputs[i].parentNode, {
+                filter: churchFilter,
+                autoSelect: true,
+                threshold: 2,
+                displayValue: (value) => value.name + " (" + value.city + ", " + value.province.code + ")",
+                itemContent: (result) => {
+                    return `
+                        <div class="autocomplete-custom-item-content">
+                            <div class="autocomplete-custom-item-title">${result.name}</div>
+                            <div class="autocomplete-custom-item-subtitle">${result.city}, ${result.province.code}</div>
+                        </div>`;
+                },
+            });
+            window.addEvent(inputs[i].parentNode, 'itemSelect.mdb.autocomplete', (event) => {
+                event.target.querySelector('.autocomplete-custom-content').value = event.value.id;
+            })
+        }
 
-    window.addEvent(window, 'beforeunload', checkDirty);
+        window.addEvent(window, 'beforeunload', checkDirty);
 
-    const forms = document.querySelectorAll('form');
-    for (let i = 0; i < forms.length; i++) {
-        window.addEvent(forms[i], 'submit', function () {
-            window.removeEvent(window, 'beforeunload', checkDirty);
-        });
+        const forms = document.querySelectorAll('form');
+        for (let i = 0; i < forms.length; i++) {
+            window.addEvent(forms[i], 'submit', function () {
+                window.removeEvent(window, 'beforeunload', checkDirty);
+            });
+        }
     }
 }
 
 // in case the document is already rendered
-mdb.toString(); // For formatter
 if (document.readyState !== 'loading') runOnLoad();
 // modern browsers
 else if (document.addEventListener) document.addEventListener('DOMContentLoaded', runOnLoad);
