@@ -4,7 +4,7 @@
     </button>
     <div class='dropdown-menu'>
         <a class='dropdown-item' href='{{ route('household.index', ['id' => $id]) }}'><i class='far fa-home'></i> Billing</a>
-        <a class='dropdown-item' href='{{ route('campers.index', ['id' => $id]) }}'><i class='far fa-users'></i> Campers</a>
+        <a class='dropdown-item' href='{{ route('camperinfo.index', ['id' => $id]) }}'><i class='far fa-users'></i> Campers</a>
         <a class='dropdown-item' href='{{ route('payment.index', ['id' => $id]) }}'><i class='far fa-usd-circle'></i> Statement</a>
         <a class='dropdown-item' href='{{ route('workshopchoice.index', ['id' => $id]) }}'><i class='far fa-rocket'></i> Workshops</a>
         <a class='dropdown-item' href='{{ route('roomselection.index', ['id' => $id]) }}'><i class='far fa-bed'></i> Room Selection

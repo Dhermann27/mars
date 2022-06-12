@@ -54,7 +54,6 @@
                 @else
                     <input id="{{ $name }}" name="{{ $name }}" type="{{ $type }}" value="{{ $getSafeDefault() }}"
                            {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($errorKey)]) }}
-                           @if(isset($dataMdbInputMask)) data-mdb-input-mask="{{ $dataMdbMask }}" @endif
                            @can('readonly') aria-label="{{ $getSafeDefault() }}" readonly @endif />
                 @endif
 

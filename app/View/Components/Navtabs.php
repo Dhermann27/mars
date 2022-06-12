@@ -2,8 +2,6 @@
 
 namespace App\View\Components;
 
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\MessageBag;
 use Illuminate\View\Component;
 
 class Navtabs extends Component
@@ -52,7 +50,8 @@ class Navtabs extends Component
     public function getValue($i)
     {
         $option = $this->option;
-        return $this->option == 'fullname' ? $this->tabs[$i]->firstname . ' ' . $this->tabs[$i]->lastname : $this->tabs[$i]->$option;
+        return $this->option == 'fullname' ? $this->tabs[$i]->firstname . ' ' . $this->tabs[$i]->lastname :
+            ($this->tabs[$i]->$option ?? $this->tabs[$i]);
     }
 
     /**

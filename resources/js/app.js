@@ -21,6 +21,9 @@ window.getAjax = function (url, success) {
     return xhr;
 }
 
+const modal = document.getElementById('paypalModal');
+if(modal) window.paypalModal = new mdb.Modal(modal);
+
 const churchFilter = async (query) => {
     const url = `/data/churchlist?term=${encodeURI(query)}`;
     const response = await fetch(url);
@@ -52,6 +55,15 @@ function runOnLoad() {
                 scale: 0,
                 min: 0,
                 max: 30
+            });
+        }
+        if (inputs[i].classList.contains('amount-mask')) {
+            window.lastAmountMask = IMask(inputs[i], {
+                mask: Number,
+                radix: '.',
+                normalizeZeros: false,
+                min: 0,
+                max: 99999.99
             });
         }
         if (inputs[i].classList.contains('church-search')) {

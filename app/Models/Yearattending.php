@@ -9,14 +9,8 @@ class Yearattending extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'yearsattending';
-
-    protected $fillable = ['camper_id', 'year_id'];
+    protected $fillable = ['camper_id', 'year_id', 'room_id'];
 
     public function camper()
     {

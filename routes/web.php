@@ -15,7 +15,6 @@ use App\Http\Controllers\RoomSelectionController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');

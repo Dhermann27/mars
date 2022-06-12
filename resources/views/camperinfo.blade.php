@@ -51,38 +51,5 @@
         for(i=0; i<firstnames.length; i++) {
             window.addEvent(firstnames[i], 'change', firstnameChange);
         }
-
-        // function templateReschurch(data) {
-        //     if (!data.id) return data.text;
-        //     return replaceMarkup(data.name, data.term) + ' (' + replaceMarkup(data.city, data.term) + ', ' + data.province.code + ')';
-        // }
-        //
-        // function templateSelchurch(data) {
-        //     if (!data.name) return data.text;
-        //     return data.name + ' (' + data.city + ', ' + data.province.code + ')';
-        // }
-        //
-        // function bind(obj) {
-        //     obj.find("select.churchlist").select2({
-        //         ajax: {
-        //             url: '/data/churchlist',
-        //             dataType: 'json',
-        //             quietMillis: 250,
-        //             processResults: function (data) {
-        //                 return {
-        //                     results: data
-        //                 };
-        //             }
-        //         },
-        //         escapeMarkup: function (markup) {
-        //             return markup;
-        //         },
-        //         minimumInputLength: 3,
-        //         placeholder: 'Click here to search...',
-        //         templateResult: templateReschurch,
-        //         templateSelection: templateSelchurch,
-        //         theme: 'bootstrap4'
-        //     });
-        // }
     </script>
 @endsection

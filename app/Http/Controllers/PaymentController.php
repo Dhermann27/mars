@@ -3,27 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Chargetypename;
-use App\Http\ByyearCamper;
-use App\Http\ByyearCharge;
-use App\Http\Camper;
-use App\Http\Charge;
-use App\Http\Chargetype;
-use App\Http\Family;
-use App\Http\Province;
-use App\Http\ThisyearCamper;
-use App\Http\ThisyearCharge;
-use App\Http\Year;
-use App\Http\Yearattending;
 use App\Jobs\GenerateCharges;
 use App\Mail\Confirm;
-use App\PayPalClient;
+use App\Models\ByyearCamper;
+use App\Models\Charge;
+use App\Models\Family;
+use App\Models\Province;
+use App\Models\ThisyearCamper;
+use App\Models\ThisyearCharge;
+use App\Models\Year;
+use App\Models\Yearattending;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
-use PayPalCheckoutSdk\Orders\OrdersGetRequest;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use function date;
 use function preg_match;
 use function redirect;
@@ -77,163 +72,127 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'donation.max' => 'Please use the Contact Us form at the top of the screen (Subject: Treasurer) to commit to a donation above $100.00.',
+            'donation.max' => 'Please use the Contact Us form at the top of the screen (Subject: Treasurer) to commit to a donation above $1,000.00.',
         ];
 
         $this->validate($request, [
-            'donation' => 'nullable|min:0|max:100',
-            'addthree' => 'nullable|accepted',
-            'orderid' => 'alpha_num'
+            'donation' => 'nullable|numeric|min:0|max:1000',
+            'orderid' => 'nullable|alpha_num'
         ], $messages);
 
-        $thiscamper = Auth::user()->camper;
-        if ($thiscamper !== null) {
-            if (!empty($request->input('orderid'))) {
+        $charge = null;
+        $success = "";
+        if (!empty($request->input('orderid'))) {
 
-                $before = Gate::allows('has-paid');
-                $order = $this->getOrder($request->input('orderid'));
-                $txn = $order->purchase_units[0]->payments->captures[0]->id;
-                $charge = Charge::where(['camper_id' => $thiscamper->id,
-                    'chargetype_id' => Chargetypename::PayPalPayment, 'memo' => $txn])->first();
-                if (!$charge) {
-                    $charge = new Charge();
-                    $charge->camper_id = $thiscamper->id;
-                    $charge->chargetype_id = Chargetypename::PayPalPayment;
-                    $charge->memo = $txn;
-                }
-                $charge->amount = $order->purchase_units[0]->amount->value * -1;
-                $charge->year_id = $this->year->id;
-                $charge->timestamp = date("Y-m-d");
-                $charge->created_at = Carbon::now();
-                $charge->save();
+            $before = Gate::allows('has-paid');
+            $order = $this->getOrder($request->input('orderid'));
+            $txn = $order["purchase_units"][0]["payments"]["captures"][0]["id"];
+            $charge = Charge::updateOrCreate(['camper_id' => Auth::user()->camper->id,
+                'chargetype_id' => Chargetypename::PayPalPayment, 'memo' => $txn],
+                ['amount' => $order["purchase_units"][0]["amount"]["value"] * -1, 'year_id' => $this->year->id,
+                    'timestamp' => date("Y-m-d")]);
 
-                $paid = ThisyearCharge::where('family_id', Auth::user()->camper->family_id)
-                    ->where(function ($query) {
-                        $query->where('chargetype_id', Chargetypename::Deposit)->orWhere('amount', '<', 0);
-                    })->get()->sum('amount');
-                if (!$before && $paid <= 0) {
-                    $request->session()->flash('newreg', true);
-                    Mail::to(Auth::user()->email)
-                        ->send(new Confirm($this->year, ThisyearCamper::where('family_id', Auth::user()->camper->family_id)->get()));
-                }
+            $success = 'Payment received!';
 
-
-                $family = Family::where('id', $thiscamper->family_id)->whereNull('city')->first();
-                if ($family) {
-                    $family->address1 = $order->purchase_units[0]->shipping->address->address_line_1;
-                    if (isset($order->purchase_units[0]->shipping->address->address_line_2)) {
-                        $family->address2 = $order->purchase_units[0]->shipping->address->address_line_2;
-                    }
-                    $family->city = $order->purchase_units[0]->shipping->address->admin_area_2;
-                    $family->province_id = Province::where('code', $order->purchase_units[0]->shipping->address->admin_area_1)->first()->id;
-                    $family->zipcd = $order->purchase_units[0]->shipping->address->postal_code;
-                    $family->country = $order->purchase_units[0]->shipping->address->country_code;
-                    $family->is_address_current = 1;
-                    $family->save();
-                }
-
-                if (!empty($request->input('addthree'))) {
-                    $addthree = Charge::where(['camper_id' => $thiscamper->id,
-                        'memo' => 'Optional payment to offset PayPal Invoice #' . $txn])->first();
-                    if (!$addthree) {
-                        $addthree = new Charge();
-                        $addthree->camper_id = $thiscamper->id;
-                        $addthree->memo = 'Optional payment to offset PayPal Invoice #' . $txn;
-                    }
-                    $addthree->year_id = $this->year->id;
-                    $addthree->chargetype_id = Chargetypename::PayPalServiceCharge;
-                    $addthree->amount = $order->purchase_units[0]->amount->value / 1.03 * .03;
-                    $addthree->timestamp = date("Y-m-d");
-                    $addthree->parent_id = $charge->id;
-                    $addthree->save();
-                }
-
-
-                $success = 'Payment received! You should receive a receipt via email for your records.';
-                $campers = ByyearCamper::where('family_id', $thiscamper->family_id)
-                    ->where('year', ((int)$this->year->year) - 1)->where('is_program_housing', '0')->get();
-                if (!$this->year->is_live && count($campers) > 0 && ThisyearCharge::where('family_id', $thiscamper->family_id)
-                        ->where(function ($query) {
-                            $query->where('chargetype_id', 1003)->orWhere('amount', '<', '0');
-                        })->get()->sum('amount') <= 0) {
+            $paid = ThisyearCharge::where('family_id', Auth::user()->camper->family_id)
+                ->where(function ($query) {
+                    $query->where('chargetype_id', Chargetypename::Deposit)->orWhere('amount', '<', 0);
+                })->get()->sum('amount');
+            if (!$before && $paid <= 0) {
+                $success .= " You should receive a receipt via email for your records" .
+                    $campers = ByyearCamper::where('family_id', Auth::user()->camper->family_id)
+                        ->where('year', ((int)$this->year->year) - 1)->where('is_program_housing', '0')->get();
+                if (!$this->year->is_live && count($campers) > 0) {
                     foreach ($campers as $camper) {
-                        Yearattending::where('camper_id', $camper->id)->where('year_id', $this->year->id)
+                        Yearattending::whereIn('camper_id', $camper->id)->where('year_id', $this->year->id)
                             ->whereNull('room_id')->update(['room_id' => $camper->room_id]);
                     }
-                    GenerateCharges::dispatch($this->year->id);
 
-                    $success = 'Payment received! By paying your deposit, your room from ' . ((int)($this->year->year) - 1)
-                        . ' has been assigned. You should receive a receipt via email for your records.';
+                    $success .= ' By paying your deposit, your room from ' . ((int)($this->year->year) - 1)
+                        . ' has been assigned.';
                 }
 
-                $request->session()->flash('success', $success);
+                Mail::to(Auth::user()->email)
+                    ->send(new Confirm($this->year, ThisyearCamper::where('family_id', Auth::user()->camper->family_id)->get()));
+            }
+            GenerateCharges::dispatch($this->year->id);
+
+
+            $family = Family::where('id', Auth::user()->camper->family_id)->where('is_address_current', 0)->first();
+            if ($family) {
+                $family->address1 = $order->purchase_units[0]->shipping->address->address_line_1;
+                if (isset($order->purchase_units[0]->shipping->address->address_line_2)) {
+                    $family->address2 = $order->purchase_units[0]->shipping->address->address_line_2;
+                }
+                $family->city = $order->purchase_units[0]->shipping->address->admin_area_2;
+                $family->province_id = Province::where('code', $order->purchase_units[0]->shipping->address->admin_area_1)->first()->id;
+                $family->zipcd = $order->purchase_units[0]->shipping->address->postal_code;
+                $family->country = $order->purchase_units[0]->shipping->address->country_code;
+                $family->is_address_current = 1;
+                $family->save();
             }
 
-            if ($request->input('donation') > 0) {
-                $donation = Charge::where(['camper_id' => $thiscamper->id, 'chargetype_id' => Chargetypename::Donation,
-                    'year_id' => $this->year->id])->first();
-                if (!$donation) {
-                    $donation = new Charge();
-                    $donation->camper_id = $thiscamper->id;
-                    $donation->chargetype_id = Chargetypename::Donation;
-                    $donation->year_id = $this->year->id;
-                }
-                $donation->amount = $request->input('donation');
-                $donation->memo = 'MUUSA Scholarship Fund';
-                $donation->timestamp = date("Y-m-d");
-                if ($charge) {
-                    $donation->parent_id = $charge->id;
-                }
-                $donation->save();
+            if ($request->input('addthree') == '1') {
+                $addthree = Charge::updateOrCreate(['camper_id' => Auth::user()->camper->id,
+                    'memo' => 'Optional payment to offset PayPal Invoice #' . $txn],
+                    ['year_id' => $this->year->id, 'chargetype_id' => Chargetypename::PayPalServiceCharge,
+                        'amount' => $order["purchase_units"][0]["amount"]["value"] / 1.03 * .03,
+                        'timestamp' => date("Y-m-d"), 'parent_id' => $charge->id]);
+                $addthree->save();
             }
         } else {
-            $request->session()->flash('error', 'Payment was not processed by MUUSA. If you believe that PayPal has transmitted funds, please contact the Treasurer so we can confirm and update your account.');
+            $request->session()->flash('warning', 'Payment was not processed by MUUSA. If you believe that PayPal has transmitted funds, please contact the Treasurer.');
         }
 
-        return redirect()->action([PaymentController::class, 'index']);
+        if ($request->input('donation') > 0) {
+            $donation = Charge::updateOrCreate(['camper_id' => Auth::user()->camper->id,
+                'chargetype_id' => Chargetypename::Donation, 'year_id' => $this->year->id,
+                'timestamp' => date("Y-m-d"), 'amount' => $request->input('donation')]);
+            $donation->memo = 'MUUSA Scholarship Fund';
+            $donation->timestamp = date("Y-m-d");
+            if ($charge) {
+                $donation->parent_id = $charge->id;
+            }
+            $donation->save();
+            $success .= " Thank you for your donation. Your generosity will help others attend MUUSA.";
+        }
 
+        $request->session()->flash('success', $success);
+        return redirect()->action([PaymentController::class, 'index']);
     }
 
     public function index(Request $request, $id = null)
     {
         $chargetypes = array();
-        if ($id && Gate::allows('is-council')) {
-            $request->session()->flash('camper', Camper::findOrFail($id));
-            $chargetypes = Chargetype::where('is_shown', 1)->get();
-        }
-        $token = env('PAYPAL_CLIENT');
+//        if ($id && Gate::allows('is-council')) {
+//            $request->session()->flash('camper', Camper::findOrFail($id));
+//            $chargetypes = Chargetype::where('is_shown', 1)->get();
+//        }
         $deposit = 0.0;
 
-        if (!isset(Auth::user()->camper)) {
-            $request->session()->flash('warning', 'Please fill out your camper information to continue.');
-            return redirect()->action([CamperInformationController::class, 'index']);
-        } else {
-            if ($id && Gate::allows('is-council')) {
-                $family_id = $request->session()->get('camper')->family_id;
-                $years = ByyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get()->groupBy('year');
-            } else {
-                $years = ThisyearCharge::where('family_id', Auth::user()->camper->family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
-                if (count($years) == 0) {
-                    $request->session()->flash('warning', 'Please choose which campers are attending this year.');
-                    return redirect()->action([CamperInformationController::class, 'index']);
-                }
-                foreach ($years as $charge) {
-                    if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit) {
-                        $deposit += $charge->amount;
-                    }
-                }
-                $years = $years->groupBy('year');
+
+//        if ($id && Gate::allows('is-council')) {
+//            $family_id = Camper::findOrFail($id)->family_id;
+//            $years = ByyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get()->groupBy('year');
+//        } else {
+        $family_id = parent::getFamilyId();
+        $years = ThisyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
+        foreach ($years as $charge) {
+            if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit) {
+                $deposit += $charge->amount;
             }
         }
-
-        return view('payment', ['token' => $token, 'years' => $years,
-            'fiscalyears' => Year::orderBy('year', 'desc')->get(), 'deposit' => $deposit, 'chargetypes' => $chargetypes]);
+        $years = $years->groupBy('year');
+//        }
+        return view('payment', ['years' => $years, 'fiscalyears' => Year::orderBy('year', 'desc')->get(),
+            'deposit' => $deposit, 'chargetypes' => $chargetypes, 'stepdata' => parent::getStepData(),
+            'pastJune' => Carbon::now()->lt(Carbon::create($this->year->year, 5, 31))]);
     }
 
     protected function getOrder($orderId)
     {
-        $client = PayPalClient::client();
-        $response = $client->execute(new OrdersGetRequest($orderId));
-        return $response->result;
+        $provider = new PayPalClient;
+        $provider->getAccessToken();
+        return $provider->showOrderDetails($orderId);
     }
 }

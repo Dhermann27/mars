@@ -1,6 +1,5 @@
 @import 'mdb.pro.scss';
 
-
 $my-theme-primary: #17301c; // theme primary color, change this value to customize theme
 $my-theme-secondary: gray; // theme secondary color, change this value to customize theme
 
@@ -82,6 +81,20 @@ div.highlight span {
     color: #f93154;
     margin-top: -.75rem;
 }
+
+.amount::before {
+    content: '$';
+    float: left;
+}
+
+/*td.amount::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font: var(--fa-font-solid);
+    content: "\f155";
+    float: left;
+}*/
 
 #navbarMars .dropdown-menu {
     border-top-left-radius: 0px;

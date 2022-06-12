@@ -125,6 +125,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'paypal_client_id' => env('PAYPAL_CLIENT_ID'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -180,6 +182,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
 
         Mews\Captcha\CaptchaServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
     ],
 
@@ -196,6 +199,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
     ])->toArray(),
 
 ];
