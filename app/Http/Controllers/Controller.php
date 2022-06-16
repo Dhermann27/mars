@@ -50,6 +50,7 @@ class Controller extends BaseController
             $newcamper->email = Auth::user()->email;
             if(config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
             $newcamper->save();
+            Auth::user()->load('camper');
         } else {
             $family_id = Auth::user()->camper->family_id;
         }

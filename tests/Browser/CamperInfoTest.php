@@ -497,8 +497,8 @@ class CamperInfoTest extends DuskTestCase
     private function submitSuccess(Browser $browser)
     {
         $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Save Changes')->waitFor('div.alert')
-            ->assertVisible('div.alert-success');
+        $browser->pause(self::WAIT)->press('Save Changes')->waitUntilMissing('div.alert-danger')
+            ->waitFor('div.alert')->assertVisible('div.alert-success');
         return $browser;
     }
 

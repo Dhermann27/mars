@@ -22,13 +22,21 @@ return new class extends Migration
             $table->integer('capacity');
             $table->tinyInteger('is_workshop')->default(0);
             $table->tinyInteger('is_handicap')->default(0);
-            $table->integer('xcoord');
-            $table->integer('ycoord');
-            $table->integer('pixelsize');
-            $table->integer('connected_with')->default(0);
+            $table->integer('xcoord')->nullable();
+            $table->integer('ycoord')->nullable();
+            $table->integer('pixelsize')->nullable();
+            $table->integer('connected_with')->nullable();
             $table->timestamps();
         });
         DB::update('ALTER TABLE rooms AUTO_INCREMENT = 1000');
+
+        // TODO:
+        /*
+          UPDATE rooms SET connected_with=NULL WHERE connected_with=0
+          UPDATE rooms SET xcoord=NULL WHERE xcoord=0
+          UPDATE rooms SET ycoord=NULL WHERE ycoord=0
+          UPDATE rooms SET pixelsize=NULL WHERE pixelsize=0
+        */
     }
 
     /**

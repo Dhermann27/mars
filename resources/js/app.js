@@ -10,6 +10,20 @@ window.removeEvent = function (el, type, handler) {
     if (el.detachEvent) el.detachEvent('on' + type, handler); else el.removeEventListener(type, handler);
 }
 
+window.hasClass = function(el, className) {
+    return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+}
+
+window.addClass = function(el, className) {
+    if (el.classList) el.classList.add(className);
+    else if (!hasClass(el, className)) el.className += ' ' + className;
+}
+
+window.removeClass = function(el, className) {
+    if (el.classList) el.classList.remove(className);
+    else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+}
+
 window.getAjax = function (url, success) {
     const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open('GET', url);
@@ -23,6 +37,16 @@ window.getAjax = function (url, success) {
 
 const modal = document.getElementById('paypalModal');
 if(modal) window.paypalModal = new mdb.Modal(modal);
+
+window.setSelect = function(el, value) {
+    const select = document.querySelector(el);
+    if(window.hasClass(select, 'select-initialized')) {
+        const singleSelectInstance = mdb.Select.getInstance();
+        if (singleSelectInstance) singleSelectInstance.setValue(value);
+    } else {
+        select.value = value;
+    }
+}
 
 const churchFilter = async (query) => {
     const url = `/data/churchlist?term=${encodeURI(query)}`;
@@ -44,12 +68,12 @@ function runOnLoad() {
         window.addEvent(inputs[i], 'change', function () {
             isDirty = true;
         });
-        if (inputs[i].classList.contains('phone-mask')) {
+        if (window.hasClass(inputs[i], 'phone-mask')) {
             IMask(inputs[i], {
                 mask: '000-000-0000'
             });
         }
-        if (inputs[i].classList.contains('days-mask')) {
+        if (window.hasClass(inputs[i], 'days-mask')) {
             IMask(inputs[i], {
                 mask: Number,
                 scale: 0,
@@ -57,7 +81,7 @@ function runOnLoad() {
                 max: 30
             });
         }
-        if (inputs[i].classList.contains('amount-mask')) {
+        if (window.hasClass(inputs[i], 'amount-mask')) {
             window.lastAmountMask = IMask(inputs[i], {
                 mask: Number,
                 radix: '.',
@@ -66,7 +90,7 @@ function runOnLoad() {
                 max: 99999.99
             });
         }
-        if (inputs[i].classList.contains('church-search')) {
+        if (window.hasClass(inputs[i], 'church-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {
                 filter: churchFilter,
                 autoSelect: true,

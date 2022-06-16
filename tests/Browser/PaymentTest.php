@@ -418,8 +418,8 @@ class PaymentTest extends DuskTestCase
                 ->assertDontSee('Deposit for ' . self::$year->year)
                 ->assertSee('MUUSA Fees')
 //                ->assertSeeIn('span#amountNow', 200.00) TODO: Probably bad
-                ->assertSeeIn('span#amountArrival', $rate->rate * 6)
-                ->assertValue('input#payment', $rate->rate * 6);
+                ->assertSeeIn('span#amountArrival', number_format($rate->rate * 6, 2))
+                ->assertValue('input#payment', number_format($rate->rate * 6, 2, '.', ''));
 
             $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
                 'chargetype_id' => Chargetypename::CheckPayment, 'amount' => -300]);
@@ -429,8 +429,8 @@ class PaymentTest extends DuskTestCase
                 ->assertDontSee('Deposit for ' . self::$year->year)
                 ->assertSee('MUUSA Fees')
                 ->assertSeeIn('span#amountNow', 0.00)
-                ->assertSeeIn('span#amountArrival', $rate->rate * 6 + $charge->amount)
-                ->assertValue('input#payment', $rate->rate * 6 + $charge->amount);
+                ->assertSeeIn('span#amountArrival', number_format($rate->rate * 6 + $charge->amount, 2))
+                ->assertValue('input#payment', number_format($rate->rate * 6 + $charge->amount, 2, '.', ''));
         });
     }
 }

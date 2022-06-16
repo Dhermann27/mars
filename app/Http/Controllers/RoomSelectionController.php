@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Building;
-use App\Http\Camper;
-use App\Http\Family;
-use App\Http\Roomselection;
-use App\Http\ThisyearCamper;
-use App\Http\Yearattending;
+use App\Jobs\ExposeRoomselection;
 use App\Jobs\GenerateCharges;
+use App\Models\Camper;
+use App\Models\RoomselectionExpo;
+use App\Models\ThisyearCamper;
+use App\Models\Yearattending;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,14 +17,14 @@ class RoomSelectionController extends Controller
 {
     public function store(Request $request, $id = null)
     {
-        $this->validate($request, ['room_id' => 'required|exists:rooms,id']);
+        $this->validate($request, ['room_id' => 'nullable|exists:rooms,id']);
 
         $family_id = $id && Gate::allows('is-super') ? Camper::findOrFail($id)->family_id : Auth::user()->camper->family_id;
 
         $family = ThisyearCamper::where(['is_program_housing' => '0', 'family_id' => $family_id])->get();
         foreach ($family as $item) {
             $ya = Yearattending::findOrFail($item->yearattending_id);
-            $ya->room_id = $request->room_id;
+            $ya->room_id = $request->input('room_id');
             if ($id && Gate::allows('is-super')) {
                 $ya->is_setbyadmin = 1;
             }
@@ -32,74 +32,88 @@ class RoomSelectionController extends Controller
         }
 
         GenerateCharges::dispatch($this->year->id);
+        ExposeRoomselection::dispatch($this->year->id);
 
-        $success = 'Room selection complete! Your room is locked in for the ' . count($family) . ' eligible members of your household.';
+        $request->session()->flash('success', 'Room selection complete! Your room is locked in for the '
+            . count($family) . ' eligible members of your household. (This screen will update any lock changes in a few moments.');
 
-        $request->session()->flash('success', $success);
-
-        return redirect()->action('RoomSelectionController@index', ['id' => $id]);
+        return redirect()->action([RoomSelectionController::class, 'index'], ['id' => $id]);
     }
 
     public function index(Request $request, $id = null)
     {
-        $camper = 0;
         if ($id && Gate::allows('is-council')) {
-            $camper = Camper::findOrFail($id);
-            $request->session()->flash('camper', $camper);
+            $family_id = Camper::find($id)->family_id;
         } else {
-            $camper = Auth::user()->camper;
+            $family_id = parent::getFamilyId();
+        }
+        $step = parent::getStepData();
+        $locked = 0;
+        $ya = Yearattending::where('camper_id', Auth::user()->camper->id)->where('year_id', $this->year->id)->first();
+        $campers = ThisyearCamper::where('family_id', $family_id)->where('is_program_housing', '0')->orderBy('birthdate')->get();
+        if (!$id) {
+            if ($step["amountDueNow"] > 0) {
+                $request->session()->flash('warning', 'You need to pay your deposit before selecting a room.');
+                $locked = 1;
+            } elseif (count($campers) == 0) {
+                $request->session()->flash('warning', 'There are no campers whose rooms can be changed.');
+                $locked = 1;
+            } elseif ($ya && $ya->is_setbyadmin == '1') {
+                $request->session()->flash('warning', 'This room has been locked by the Registrar. Please use the Contact Us form above to request any changes at this point.');
+                $locked = 1;
+            }
         }
 
-        $ya = Yearattending::where('camper_id', $camper->id)->where('year_id', $this->year->id)->first();
-        $locked = ($ya->is_setbyadmin == '1' || $ya->program->is_program_housing == '1') && !($id && Gate::allows('is-super'));
-        $count = ThisyearCamper::where('family_id', $camper->family_id)->where('is_program_housing', '0')->count();
-        $rooms = Roomselection::all();
-
-        if ($locked) {
-            $request->session()->flash('warning', 'This room has been locked by the Registrar. Please use the Contact Us form above to request any changes at this point.');
+        $rooms = RoomselectionExpo::all();
+        if (count($rooms) == 0 || !Carbon::parse($rooms->first()->created_at)->isCurrentDay()) {
+            ExposeRoomselection::dispatchSync($this->year->id);
+            $rooms = RoomselectionExpo::with('room.building')->get();
+        } else {
+            $rooms->load('room.building');
         }
 
-        return view('roomselection', ['ya' => $ya, 'rooms' => $rooms, 'count' => $count, 'locked' => $locked]);
+        return view('roomselection', ['currentRoom' => $ya->room_id ?? 0, 'rooms' => $rooms, 'campers' => $campers,
+            'locked' => $locked, 'stepdata' => $step]);
     }
 
-    public function write(Request $request, $id)
-    {
-        $campers = ThisyearCamper::where('family_id', $id)->get();
-
-        foreach ($campers as $camper) {
-            $ya = Yearattending::find($camper->yearattending_id);
-            $ya->room_id = $request->input('roomid-' . $camper->id);
-            if ($ya->room_id == 0) $ya->room_id = null;
-            $ya->is_setbyadmin = '1';
-            $ya->save();
-        }
-
-        GenerateCharges::dispatch($this->year->id);
-
-        $request->session()->flash('success', 'Awwwwwwww yeahhhhhhhhh');
-
-        return redirect()->action('RoomSelectionController@read', ['id' => $campers[0]->id]);
-    }
-
-    public function read(Request $request, $id)
-    {
-        $family = Family::findOrFail(Camper::findOrFail($id)->family_id);
-        $campers = ThisyearCamper::where('family_id', $family->id)->with('yearsattending.year', 'yearsattending.room.building')
-            ->orderBy('birthdate')->get();
-
-        if (count($campers) == 0) {
-            $request->session()->flash('warning', 'No members of this family are registered for the current year.');
-        }
-
-        return view('assignroom', ['buildings' => Building::with('rooms.occupants')->get(),
-            'campers' => $campers]);
-    }
-
-    public function map()
-    {
-        $empty = new Yearattending();
-        $rooms = Roomselection::all();
-        return view('roomselection', ['ya' => $empty, 'rooms' => $rooms, 'count' => 0, 'locked' => true]);
-    }
+//    public function write(Request $request, $id)
+//    {
+//        $campers = ThisyearCamper::where('family_id', $id)->get();
+//
+//        foreach ($campers as $camper) {
+//            $ya = Yearattending::find($camper->yearattending_id);
+//            $ya->room_id = $request->input('roomid-' . $camper->id);
+//            if ($ya->room_id == 0) $ya->room_id = null;
+//            $ya->is_setbyadmin = '1';
+//            $ya->save();
+//        }
+//
+//        GenerateCharges::dispatch($this->year->id);
+//
+//        $request->session()->flash('success', 'Awwwwwwww yeahhhhhhhhh');
+//
+//        return redirect()->action([RoomSelectionController::class, 'read'], ['id' => $campers[0]->id]);
+//    }
+//
+//    public function read(Request $request, $id)
+//    {
+//        $family = Family::findOrFail(Camper::findOrFail($id)->family_id);
+//        $campers = ThisyearCamper::where('family_id', $family->id)->with('yearsattending.year', 'yearsattending.room.building')
+//            ->orderBy('birthdate')->get();
+//
+//        if (count($campers) == 0) {
+//            $request->session()->flash('warning', 'No members of this family are registered for the current year.');
+//        }
+//
+//        return view('assignroom', ['buildings' => Building::with('rooms.occupants')->get(),
+//            'campers' => $campers]);
+//    }
+//
+//    public function map()
+//    {
+//        $empty = new Yearattending();
+//        $rooms = RoomselectionExpo::all();
+//        return view('roomselection', ['ya' => $empty, 'rooms' => $rooms, 'count' => 0, 'locked' => true]);
+//    }
 
 }

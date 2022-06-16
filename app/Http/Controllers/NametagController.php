@@ -71,7 +71,7 @@ class NametagController extends Controller
 //
 //        $request->session()->flash('success', 'It worked, but did you ever consider that all of this is meaningless in the grand scheme of things?');
 //
-//        return redirect()->action('NametagController@read', ['i' => 'f', 'id' => $id]);
+//        return redirect()->action([NametagController::class, 'read'], ['i' => 'f', 'id' => $id]);
 //    }
 //
 //    public function read($i, $id)

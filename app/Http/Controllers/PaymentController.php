@@ -65,7 +65,7 @@ class PaymentController extends Controller
 
         $request->session()->flash('success', 'Rocking it today!');
 
-        return redirect()->action('PaymentController@index', ['id' => $id]);
+        return redirect()->action([PaymentController::class, 'index'], ['id' => $id]);
 
     }
 

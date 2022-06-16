@@ -67,7 +67,7 @@ Route::group(['prefix' => 'household', 'middleware' => 'auth'], function () {
 });
 //
 Route::group(['prefix' => 'roomselection', 'middleware' => 'auth'], function () {
-    Route::get('/', [RoomSelectionController::class, 'index'])->name('roomselection.index')->middleware('can:has-paid');
+    Route::get('/', [RoomSelectionController::class, 'index'])->name('roomselection.index');
 //    Route::get('/{id?}', [RoomSelectionController::class, 'index'])->name('roomselection.index')->middleware('can:is-council');
 //    Route::get('/assign/{id?}', [RoomSelectionController::class, 'read'])->name('roomselection.read')->middleware('can:is-council');
     Route::post('/', [RoomSelectionController::class, 'store'])->name('roomselection.store')->middleware('can:has-paid');
