@@ -216,20 +216,24 @@
                                     </li>
                                 @else
                                     <li>
-                                        {{--                                    <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">--}}
-                                        <i class="far fa-rocket fa-fw"></i> Workshops
+                                        <a href="{{ route('roomselection.index') }}" class="dropdown-item">
+                                            <i class="far fa-bed fa-fw"></i> Room Selection
+                                        </a>
                                     </li>
                                     <li>
-                                        {{--                                    <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
-                                        <i class="far fa-bed fa-fw"></i> Room Selection
+                                        <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
+                                            <i class="far fa-rocket fa-fw"></i> Workshops
+                                        </a>
                                     </li>
                                     <li>
-                                        {{--                                    <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
-                                        <i class="far fa-id-card fa-fw"></i> Nametags
+                                        <a href="{{ route('nametag.index') }}" class="dropdown-item">
+                                            <i class="far fa-id-card fa-fw"></i> Nametags
+                                        </a>
                                     </li>
                                     <li>
-                                        {{--                                    <a href="{{ route('confirm') }}" class="dropdown-item">--}}
-                                        <i class="far fa-envelope fa-fw"></i> Confirmation
+                                        <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">
+                                            <i class="far fa-envelope fa-fw"></i> Confirmation
+                                        </a>
                                     </li>
                                 @endif
                                 <li>
@@ -557,16 +561,17 @@
                             <li>Workshop Preferences</li>
                             <li>Room Selection</li>
                             <li>Nametag Customization</li>
-                            <li>Confirmation !!!</li>
+                            <li>Medical Response(s)</li>
                         @else
                             <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
                                     Preferences</a></li>
                             <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room
                                     Selection</a></li>
-                            <li><a class="text-white underlined-link"
-                                   href="{{ route('nametag.index') }}">Nametags</a></li>
-                            {{--                            <li><a class="text-white underlined-link" href="{{ route('confirm') }}">Confirmation</a>--}}
-                            {{--                            </li>--}}
+                            <li><a class="text-white underlined-link" href="{{ route('nametag.index') }}">Nametags</a>
+                            </li>
+                            <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical
+                                    Response(s)</a>
+                            </li>
                         @endif
                     </ul>
                 </div>

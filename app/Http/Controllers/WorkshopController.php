@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Camper;
 use App\Enums\Timeslotname;
+use App\Jobs\UpdateWorkshops;
+use App\Models\Camper;
 use App\Models\ThisyearCamper;
 use App\Models\Timeslot;
 use App\Models\YearattendingWorkshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class WorkshopController extends Controller
@@ -28,30 +28,22 @@ class WorkshopController extends Controller
 
             if ($request->input('workshops-' . $camper->id) != null) {
                 foreach (explode(',', $request->input('workshops-' . $camper->id)) as $choice) {
-                    $yw = YearattendingWorkshop::where(['yearattending_id' => $camper->yearattending_id, 'workshop_id' => $choice])->first();
-                    if (!$yw) {
-                        $yw = new YearattendingWorkshop();
-                        $yw->yearattending_id = $camper->yearattending_id;
-                        $yw->workshop_id = $choice;
-                    }
-                    $yw->save();
-
+                    $yw = YearattendingWorkshop::updateOrCreate(['yearattending_id' => $camper->yearattending_id,
+                        'workshop_id' => $choice]);
                     $choices->forget($choice);
                 }
             }
 
             if (count($choices) > 0) {
                 foreach ($choices as $choice) {
-                    DB::statement('DELETE FROM yearsattending__workshop WHERE yearattending_id=' .
-                        $choice->yearattending_id . ' AND workshop_id=' . $choice->workshop_id);
+                    YearattendingWorkshop::where('yearattending_id',$camper->yearattending_id)
+                        ->where('workshop_id', $choice->workshop_id)->delete();
                 }
             }
         }
 
-        DB::statement('CALL workshops();');
-
+        UpdateWorkshops::dispatch($this->year->id);
         $request->session()->flash('success', 'Your workshop selections have been updated.');
-
         return redirect()->action([WorkshopController::class, 'index'], ['id' => $id]);
     }
 
@@ -60,14 +52,23 @@ class WorkshopController extends Controller
         if ($id && Gate::allows('is-council')) {
             $camper = Camper::findOrFail($id);
             $request->session()->flash('camper', $camper);
+        } else {
+            $family_id = parent::getFamilyId();
         }
-        $campers = $this->getCampers($id ? $camper->family_id : Auth::user()->camper->family_id);
-        if (count($campers) == 0) {
-            $request->session()->flash('warning', 'There are no campers registered for this year.');
-            return redirect()->action([CamperInformationController::class, 'index'], ['id' => $id ? $id : null]);
+        $steps = parent::getStepData();
+        $campers = $this->getCampers($id ? $camper->family_id : $family_id);
+        if($steps["amountDueNow"] > 0) {
+            $request->session()->flash('error', 'You cannot register for workshops until your deposit has been paid.');
+        } else {
+            if (count($campers) == 0) {
+                $request->session()->flash('warning', 'There are no campers registered for this year.');
+            }
         }
-        return view('workshopchoice', ['timeslots' => Timeslot::with('workshops')->get(),
-            'campers' => $campers]);
+        $timeslots = Timeslot::with(['workshops' => function ($query) {
+            $query->where('year_id', $this->year->id);
+        }])->get();
+        return view('workshopchoice', ['timeslots' => $timeslots, 'campers' => $campers,
+            'stepdata' => $steps]);
 
     }
 

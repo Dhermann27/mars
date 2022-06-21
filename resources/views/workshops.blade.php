@@ -18,16 +18,16 @@
 @endsection
 
 @section('content')
-    @component('components.navtabs', ['tabs' => $timeslots, 'id'=> 'id', 'option' => 'name'])
+    <x-navtabs :tabs="$timeslots" option="name">
         @foreach($timeslots as $timeslot)
-            <div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $timeslot->id }}"
-                 role="tabpanel">
+            <div role="tabpanel" class="tab-pane fade {{ $loop->index == 0 ? 'active show' : ''}}"
+                 aria-expanded="{{ $loop->index ? 'true' : 'false' }}" id="tab-{{ $timeslot->id }}">
                 <div class="note note-info text-black m-3">Workshop Time: {{ $timeslot->start_time->format('g:i A') }}
                     - {{ $timeslot->end_time->format('g:i A') }}</div>
 
                 <div class="container px-3 py-5 px-lg-4 py-lg-6 bg-grey mb-5">
                     @foreach($timeslot->workshops->where('year_id', $year->id) as $workshop)
-                        @component('components.layouts.blog', ['title' => $workshop->name])
+                        <x-layouts.blog :title="$workshop->name">
 
                             @include('includes.filling', ['workshop' => $workshop])
 
@@ -39,10 +39,10 @@
                             </div>
 
                             <p>{!! $workshop->blurb !!}</p>
-                        @endcomponent
+                        </x-layouts.blog>
                     @endforeach
                 </div>
             </div>
         @endforeach
-    @endcomponent
+    </x-navtabs>
 @endsection

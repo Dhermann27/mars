@@ -77,22 +77,22 @@ Route::group(['prefix' => 'roomselection', 'middleware' => 'auth'], function () 
 });
 
 Route::group(['prefix' => 'workshopchoice', 'middleware' => 'auth'], function () {
-    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:has-paid');
+    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index');
 //    Route::get('/{id?}', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:is-council');
-    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:has-paid');
+    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store');
 //    Route::post('/{id?}', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'nametag', 'middleware' => 'auth'], function () {
-    Route::get('/', [NametagController::class, 'index'])->name('nametag.index')->middleware('can:has-paid');
-    Route::post('/', [NametagController::class, 'store'])->name('nametag.store')->middleware('can:has-paid');
+    Route::get('/', [NametagController::class, 'index'])->name('nametag.index');
+    Route::post('/', [NametagController::class, 'store'])->name('nametag.store');
 //    Route::get('/nametag/{i}/{id}', [NametagController::class, 'read')->middleware('auth', [role:admin|council');
 //    Route::post('/nametag/f/{id}', [NametagController::class, 'write')->middleware('auth', [role:admin');
 });
 
 Route::group(['prefix' => 'medicalresponse', 'middleware' => 'auth'], function () {
-    Route::get('/', [MedicalResponseController::class, 'index'])->name('medicalresponse.index')->middleware('can:has-paid');
-    Route::post('/', [MedicalResponseController::class, 'store'])->name('medicalresponse.store')->middleware('can:has-paid');
+    Route::get('/', [MedicalResponseController::class, 'index'])->name('medicalresponse.index');
+    Route::post('/', [MedicalResponseController::class, 'store'])->name('medicalresponse.store');
 //    Route::get('/nametag/{i}/{id}', [MedicalResponseController::class, 'read')->middleware('auth', [role:admin|council');
 //    Route::post('/nametag/f/{id}', [MedicalResponseController::class, 'write')->middleware('auth', [role:admin');
 });

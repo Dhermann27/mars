@@ -9,7 +9,7 @@ class YearattendingWorkshop extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['yearattending_id'];
+    protected $fillable = ['yearattending_id', 'workshop_id'];
     public $incrementing = false;
     protected $table = 'yearsattending__workshop';
 

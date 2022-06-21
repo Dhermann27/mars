@@ -158,7 +158,7 @@
                 @endcannot
             </form>
 
-            <x-steps.progress :width="5/7" previous="payment" next="workshops"/>
+            <x-steps.progress :width="5/8" previous="payment" next="workshopchoice"/>
 
         </div>
     </div>

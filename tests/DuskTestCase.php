@@ -8,6 +8,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Faker\Factory;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use NumberFormatter;
 
@@ -95,6 +96,7 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Return the number formatted into currency
      *
+     * @param float $float
      * @return string
      */
     protected function moneyFormat($float)
@@ -125,4 +127,29 @@ abstract class DuskTestCase extends BaseTestCase
         $faker = Factory::create();
         return $faker->dateTimeBetween('-' . (20 + $year) . ' years', '-' . (18 + $year) . ' years')->format('Y-m-d');
     }
+
+    /**
+     * Assert if an element matched by $selector has $class in its classList
+     *
+     * @param Browser $browser
+     * @param string $selector
+     * @param string $class
+     * @return void
+     */
+    protected function assertHasClass(Browser $browser, $selector, $class) {
+        $this->assertStringContainsString($class, $browser->attribute($selector, 'class'));
+    }
+
+    /**
+     * Assert if a element matched by $selector doesn't have $class in its classList
+     *
+     * @param Browser $browser
+     * @param string $selector
+     * @param string $class
+     * @return void
+     */
+    protected function assertMissingClass(Browser $browser, $selector, $class) {
+        $this->assertStringNotContainsString($class, $browser->attribute($selector, 'class'));
+    }
+
 }

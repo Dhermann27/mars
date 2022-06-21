@@ -31,7 +31,7 @@ class WorkshopFactory extends Factory
                 return Room::factory()->create()->id;
             },
             'timeslot_id' => $slots[array_rand($slots)],
-            'sequence' => $this->faker->randomNumber(2),
+            'sequence' => $this->faker->numberBetween(2, 99),
             'name' => $this->faker->catchPhrase(),
             'led_by' => $this->faker->name(),
             'blurb' => $this->faker->paragraph(),

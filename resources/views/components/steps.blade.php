@@ -110,7 +110,7 @@
     </li>
     <li class="stepper-step">
         <x-steps.header url="medicalresponse" :stepdata="$stepdata['medicalResponsesNeeded']" operation="eq"
-                        comparator="0" icon="envelope" :is-large="$isLarge">
+                        comparator="0" icon="clipboard-medical" :is-large="$isLarge">
             Medical Responses
         </x-steps.header>
         <div class="stepper-content">

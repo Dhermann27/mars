@@ -5,6 +5,6 @@
     <div class="container-md p-3">
         {{ $slot }}
 
-        <x-steps.progress :width="$step/7" :previous="$previous" :next="$next"/>
+        <x-steps.progress :width="$step/8" :previous="$previous" :next="$next"/>
     </div>
 </div>
