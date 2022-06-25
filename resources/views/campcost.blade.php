@@ -122,7 +122,6 @@
             addEvent(buttons[i], 'click', spinnerClick);
         }
         var radios = document.querySelectorAll('#campcost input[type=radio], #campcost input[type=text]');
-        console.log(radios);
         for (var i = 0; i < radios.length; i++) {
             addEvent(radios[i], 'change', calcluateCampCost);
         }

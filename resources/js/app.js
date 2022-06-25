@@ -10,18 +10,18 @@ window.removeEvent = function (el, type, handler) {
     if (el.detachEvent) el.detachEvent('on' + type, handler); else el.removeEventListener(type, handler);
 }
 
-window.hasClass = function(el, className) {
-    return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+window.hasClass = function (el, className) {
+    return el.classList ? el.classList.contains(className) : new RegExp('\\b' + className + '\\b').test(el.className);
 }
 
-window.addClass = function(el, className) {
+window.addClass = function (el, className) {
     if (el.classList) el.classList.add(className);
     else if (!hasClass(el, className)) el.className += ' ' + className;
 }
 
-window.removeClass = function(el, className) {
+window.removeClass = function (el, className) {
     if (el.classList) el.classList.remove(className);
-    else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+    else el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
 }
 
 window.getAjax = function (url, success) {
@@ -36,12 +36,12 @@ window.getAjax = function (url, success) {
 }
 
 const modal = document.getElementById('paypalModal');
-if(modal) window.paypalModal = new mdb.Modal(modal);
+if (modal) window.paypalModal = new mdb.Modal(modal);
 
-window.setSelect = function(el, value) {
+window.setSelect = function (el, value) {
     const select = document.querySelector(el);
-    if(window.hasClass(select, 'select-initialized')) {
-        const singleSelectInstance = mdb.Select.getInstance();
+    if (window.hasClass(select, 'select-initialized')) {
+        const singleSelectInstance = mdb.Select.getInstance(select);
         if (singleSelectInstance) singleSelectInstance.setValue(value);
     } else {
         select.value = value;
@@ -107,6 +107,19 @@ function runOnLoad() {
             window.addEvent(inputs[i].parentNode, 'itemSelect.mdb.autocomplete', (event) => {
                 event.target.querySelector('.autocomplete-custom-content').value = event.value.id;
             })
+        }
+        if (window.hasClass(inputs[i], 'fonts')) {
+            window.addEvent(inputs[i], 'open.mdb.select', function (e) {
+                setTimeout(function () {
+                    const options = document.querySelectorAll('.select-option');
+                    options[1].style.fontFamily = 'Indie Flower';
+                    options[2].style.fontFamily = 'Fredericka the Great';
+                    options[3].style.fontFamily = 'Mystery Quest';
+                    options[4].style.fontFamily = 'Great Vibes';
+                    options[5].style.fontFamily = 'Bangers';
+                    options[6].style.fontFamily = 'Comic Sans MS';
+                }, 100);
+            });
         }
 
         window.addEvent(window, 'beforeunload', checkDirty);

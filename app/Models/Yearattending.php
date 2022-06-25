@@ -39,7 +39,7 @@ class Yearattending extends Model
 
     public function staffpositions()
     {
-        return $this->hasManyThrough('App\Models\Staffposition', 'App\YearattendingStaff',
+        return $this->hasManyThrough('App\Models\Staffposition', 'App\Models\YearattendingStaff',
             'yearattending_id', 'id', 'id', 'staffposition_id');
     }
 
@@ -54,9 +54,21 @@ class Yearattending extends Model
             'yearattending_id', 'id', 'id', 'workshop_id');
     }
 
+    /*
+     * Default: 222215521
+     * Pos0 Display pronouns (2)
+     * Pos1 Name Display: First Last (2) First then Last (1) First only (4)
+     * Pos2 Namesize (1-5) .5x+.3em
+     * Pos3 Line 1 Church (1)
+     * Pos4 Line 2 Hometown (2)
+     * Pos5 Line 3 PC Position (3)
+     * Pos6 Line 4 Newcamper (4) Nothing (5)
+     * Pos7 Font apply to name (1)
+     * Pos8 Font
+     */
     public function getPronounValueAttribute()
     {
-        return $this->getPronounAttribute() == '2' ? $this->camper->pronoun->name : "";
+        return $this->camper->pronoun->name;
     }
 
     public function getPronounAttribute()
@@ -167,30 +179,34 @@ class Yearattending extends Model
     {
         switch ($this->getFontAttribute()) {
             case "2":
-                return "indie";
+                return "Indie Flower";
                 break;
             case "3":
-                return "ftg";
+                return "Fredericka the Great";
                 break;
             case "4":
-                return "quest";
+                return "Mystery Quest";
                 break;
             case "5":
-                return "vibes";
+                return "Great Vibes";
                 break;
             case "6":
-                return "bangers";
+                return "Bangers";
                 break;
             case "7":
-                return "comic";
+                return "Comic Sans MS";
                 break;
             default:
-                return "opensans";
+                return "Jost";
         }
     }
 
     public function getFontAttribute()
     {
         return substr($this->nametag, 8, 1);
+    }
+
+    public function getFirsttimeAttribute() {
+        return Yearattending::where('camper_id', $this->camper_id)->count() == 1;
     }
 }

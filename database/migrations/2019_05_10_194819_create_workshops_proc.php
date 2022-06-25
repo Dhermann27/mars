@@ -17,7 +17,7 @@ return new class extends Migration
                           BEGIN
                             DECLARE done INT DEFAULT FALSE;
                             DECLARE myid, mycapacity INT;
-                            DECLARE cur CURSOR FOR SELECT id, capacity - (IF(led_by LIKE '%and%',2,1)) FROM workshops WHERE year_id=myyear_id;
+                            DECLARE cur CURSOR FOR SELECT id, capacity - (IF(led_by LIKE '% and %',2,1)) FROM workshops WHERE year_id=myyear_id;
                             DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=TRUE;
                             SET sql_mode='';
 

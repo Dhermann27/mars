@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\ThisyearCamper;
+use App\Models\Camper;
+use App\Models\ThisyearCamper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use function redirect;
 
 class NametagController extends Controller
@@ -14,7 +16,15 @@ class NametagController extends Controller
         $campers = $this->getCampers();
 
         $this->validate($request, [
-            '*-nametag-*' => 'required|between:1,7'
+            'name-*' => 'required|between:1,4',
+            'namesize-*' => 'required|between:1,5',
+            'pronoun-*' => 'required|between:1,2',
+            'line1-*' => 'required|between:1,5',
+            'line2-*' => 'required|between:1,5',
+            'line3-*' => 'required|between:1,5',
+            'line4-*' => 'required|between:1,5',
+            'font-*' => 'required|between:1,7',
+            'fontapply-*' => 'required|between:1,2',
         ]);
 
         foreach ($campers as $camper) {
@@ -27,37 +37,46 @@ class NametagController extends Controller
 
     }
 
-    private function getCampers()
+    private function getCampers($id = null)
     {
-        return ThisyearCamper::where('family_id', Auth::user()->camper->family_id)
-            ->with('pronoun', 'church', 'family', 'yearattending.staffpositions')->orderBy('birthdate')->get();
+        return ThisyearCamper::where('family_id', $id ? $id : Auth::user()->camper->family_id)
+            ->with('pronoun', 'church', 'yearattending.staffpositions')->orderBy('birthdate')->get();
     }
 
     private function updateCamper($request, $camper)
     {
-        $nametag = $request->input($camper->id . '-nametag-pronoun');
-        $nametag .= $request->input($camper->id . '-nametag-name');
-        $nametag .= $request->input($camper->id . '-nametag-namesize');
-        $nametag .= $request->input($camper->id . '-nametag-line1');
-        $nametag .= $request->input($camper->id . '-nametag-line2');
-        $nametag .= $request->input($camper->id . '-nametag-line3');
-        $nametag .= $request->input($camper->id . '-nametag-line4');
-        $nametag .= $request->input($camper->id . '-nametag-fontapply');
-        $nametag .= $request->input($camper->id . '-nametag-font');
+        $nametag = $request->input('pronoun-' . $camper->id);
+        $nametag .= $request->input('name-' . $camper->id);
+        $nametag .= $request->input('namesize-' . $camper->id);
+        $nametag .= $request->input('line1-' . $camper->id);
+        $nametag .= $request->input('line2-' . $camper->id);
+        $nametag .= $request->input('line3-' . $camper->id);
+        $nametag .= $request->input('line4-' . $camper->id);
+        $nametag .= $request->input('fontapply-' . $camper->id);
+        $nametag .= $request->input('font-' . $camper->id);
         $camper->yearattending->nametag = $nametag;
         $camper->yearattending->save();
     }
 
-    public function index(Request $request, $campers = null)
+
+    public function index(Request $request, $id = null)
     {
-        if ($campers == null) {
-            $campers = $this->getCampers();
-            if(count($campers) == 0) {
-                $request->session()->flash('warning', 'You have no campers registered for this year.');
-                return redirect()->route('campers.index');
+        if ($id && Gate::allows('is-council')) {
+            $camper = Camper::findOrFail($id);
+            $request->session()->flash('camper', $camper);
+        } else {
+            $family_id = parent::getFamilyId();
+        }
+        $steps = parent::getStepData();
+        $campers = $this->getCampers($id && Gate::allows('is-council') ? $camper->family_id : $family_id);
+        if ($steps["amountDueNow"] > 0) {
+            $request->session()->flash('error', 'You cannot customize your nametags until your deposit has been paid.');
+        } else {
+            if (count($campers) == 0) {
+                $request->session()->flash('warning', 'There are no campers registered for this year.');
             }
         }
-        return view('nametags', ['campers' => $campers]);
+        return view('nametags', ['campers' => $campers, 'stepdata' => $steps]);
     }
 
 //    public function write(Request $request, $id)
@@ -81,9 +100,4 @@ class NametagController extends Controller
 //
 //        return view('nametags', ['campers' => $campers, 'readonly' => $readonly, 'steps' => $this->getSteps()]);
 //    }
-
-    private function getFamilyId($i, $id)
-    {
-//        return $i == 'c' ? \App\Thisyear_Camper::find($id)->familyid : $id;
-    }
 }

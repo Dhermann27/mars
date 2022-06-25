@@ -1,3 +1,4 @@
+@import '@fortawesome/fontawesome-pro/scss/fontawesome';
 @import 'mdb.pro.scss';
 
 $my-theme-primary: #17301c; // theme primary color, change this value to customize theme
@@ -87,14 +88,14 @@ div.highlight span {
     float: left;
 }
 
-/*td.amount::before {
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font: var(--fa-font-solid);
-    content: "\f155";
-    float: left;
-}*/
+//td.amount::before {
+//    display: inline-block;
+//    text-rendering: auto;
+//    -webkit-font-smoothing: antialiased;
+//    font: var(--fa-font-solid);
+//    content: "\f155";
+//    float: left;
+//}
 
 #navbarMars .dropdown-menu {
     border-top-left-radius: 0px;
@@ -286,3 +287,54 @@ textarea {
     transform: rotate(45deg);
 }
 
+// ******** Nametags
+div.label {
+    width: 3.6in;
+    height: 2.89in;
+    padding: .125in .3in 0;
+    float: left;
+    overflow: hidden;
+}
+
+div.label div.surname {
+    text-align: right;
+    margin-bottom: .25in;
+    font-size: 1.3em;
+}
+
+div.label div.pronoun {
+    text-align: right;
+    font-size: 1.3em;
+}
+
+div.label div.line1, div.label div.line2, div.label div.line3, div.label div.line4, div.label div.parent {
+    font-size: 1.3em;
+}
+
+.opensans {
+    font-family: 'Jost', Helvetica, sans-serif;
+}
+
+.indie {
+    font-family: 'Indie Flower', Gadget, sans-serif;
+}
+
+.ftg {
+    font-family: 'Fredericka the Great', Charcoal, sans-serif;
+}
+
+.quest {
+    font-family: 'Mystery Quest', 'Lucida Grande', sans-serif;
+}
+
+.vibes {
+    font-family: 'Great Vibes', Geneva, sans-serif;
+}
+
+.bangers {
+    font-family: 'Bangers', Monaco, sans-serif;
+}
+
+.comic {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}

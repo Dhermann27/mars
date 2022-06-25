@@ -1,0 +1,50 @@
+@media print {
+    body {
+        color: #000;
+        background: #fff;
+        font-family: 'Open Sans', sans-serif;
+        line-height: 1.5;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .tab-content > .tab-pane {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    div.header, nav, ul.nav-pills, .nav-tabs {
+        display: none;
+    }
+
+    footer {
+        page-break-after: always;
+    }
+
+    h1 {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h2, h3, h4, div.panel-heading, table.table thead {
+        page-break-after: avoid;
+        page-break-inside: avoid
+    }
+
+    article {
+        page-break-before: always;
+    }
+
+    img {
+        page-break-inside: avoid;
+        page-break-after: avoid;
+    }
+
+    blockquote, table, tfoot, pre {
+        page-break-inside: avoid
+    }
+
+    ul, ol, dl {
+        page-break-before: avoid
+    }
+}

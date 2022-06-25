@@ -21,6 +21,7 @@ use Tests\DuskTestCase;
 
 /**
  * @group Register
+ * @group Workshop
  * @group Workshops
  */
 class WorkshopTest extends DuskTestCase
@@ -139,7 +140,7 @@ class WorkshopTest extends DuskTestCase
 
         $user = User::factory()->create();
         $campers[0] = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
-        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         GenerateCharges::dispatchSync(self::$year->id);
