@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Timeslotname;
+use App\Jobs\GenerateCharges;
 use App\Jobs\UpdateWorkshops;
 use App\Models\Camper;
 use App\Models\ThisyearCamper;
@@ -36,13 +37,14 @@ class WorkshopController extends Controller
 
             if (count($choices) > 0) {
                 foreach ($choices as $choice) {
-                    YearattendingWorkshop::where('yearattending_id',$camper->yearattending_id)
+                    YearattendingWorkshop::where('yearattending_id', $camper->yearattending_id)
                         ->where('workshop_id', $choice->workshop_id)->delete();
                 }
             }
         }
 
         UpdateWorkshops::dispatch($this->year->id);
+        GenerateCharges::dispatch($this->year->id);
         $request->session()->flash('success', 'Your workshop selections have been updated.');
         return redirect()->action([WorkshopController::class, 'index'], ['id' => $id]);
     }
@@ -57,7 +59,7 @@ class WorkshopController extends Controller
         }
         $steps = parent::getStepData();
         $campers = $this->getCampers($id ? $camper->family_id : $family_id);
-        if($steps["amountDueNow"] > 0) {
+        if ($steps["amountDueNow"] > 0) {
             $request->session()->flash('error', 'You cannot register for workshops until your deposit has been paid.');
         } else {
             if (count($campers) == 0) {
@@ -74,7 +76,7 @@ class WorkshopController extends Controller
 
     public function display()
     {
-        return view('workshops', ['timeslots' => Timeslot::all()->where('id', '!=', Timeslotname::Excursions)]);
+        return view('workshops', ['timeslots' => Timeslot::where('id', '!=', Timeslotname::Excursions)->with('workshops')->get()]);
     }
 
     public function excursions()

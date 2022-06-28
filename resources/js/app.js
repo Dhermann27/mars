@@ -63,6 +63,12 @@ window.checkDirty = function (e) {
 }
 
 function runOnLoad() {
+    const menus = document.querySelectorAll('.navbar .dropdown-menu');
+    for (let i = 0; i < menus.length; i++) {
+        window.addEvent(menus[i], 'click', function (e) {
+            e.stopPropagation();
+        });
+    }
     const inputs = document.querySelectorAll("select, textarea, input:not([type='hidden'])");
     for (let i = 0; i < inputs.length; i++) {
         window.addEvent(inputs[i], 'change', function () {

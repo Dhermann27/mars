@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Enums\Chargetypename;
 use App\Enums\Programname;
 use App\Enums\Timeslotname;
 use App\Jobs\GenerateCharges;
@@ -26,7 +27,7 @@ use Tests\DuskTestCase;
  */
 class WorkshopTest extends DuskTestCase
 {
-    private const WAIT = 400;
+    private const WAIT = 500;
     private const ROUTE = 'workshopchoice.index';
     private const ACTIVETAB = 'form#workshops div.tab-content div.active';
     private const RANDOELEMENT = 'a.btn-primary';
@@ -161,12 +162,12 @@ class WorkshopTest extends DuskTestCase
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
             $this->pressTab($browser, $campers[0]->id);
             foreach ($workshops as $workshop) {
-                $browser->assertSee($workshop->name);
-                parent::assertHasClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshop->id, 'active');
+                $browser->assertSee($workshop->name)
+                    ->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshop->id, 'class', 'active');
             }
 
-            $this->pressTab($browser, $campers[1]->id);
-            $browser->assertMissing(self::ACTIVETAB . ' button.active');
+            $this->pressTab($browser, $campers[1]->id)->assertMissing(self::ACTIVETAB . ' button.active')
+                ->mouseover(self::RANDOELEMENT)->pause(self::WAIT);
             foreach ($workshops as $workshop) {
                 $browser->assertSee($workshop->name)
                     ->press('button#workshop-' . $campers[1]->id . '-' . $workshop->id)
@@ -203,9 +204,9 @@ class WorkshopTest extends DuskTestCase
                 ->waitFor(self::ACTIVETAB)
                 ->assertSee("automatically enrolled in Burt")
                 ->assertDontSee("Morning")->assertDontSee($workshops[0]->name)
-                ->press('button#workshop-' . $camper->id . '-' . $workshops[1]->id);
+                ->press('button#workshop-' . $camper->id . '-' . $workshops[1]->id)
 //                ->waitFor(self::ACTIVETAB . ' button.active')
-            parent::assertHasClass($browser, '#workshop-' . $camper->id . '-' . $workshops[1]->id, 'active');
+                ->assertAttributeContains('#workshop-' . $camper->id . '-' . $workshops[1]->id, 'class', 'active');
             $this->submitSuccess($browser);
         });
 
@@ -241,12 +242,14 @@ class WorkshopTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $head, $campers, $workshop) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
             $this->pressTab($browser, $head->id);
-            parent::assertHasClass($browser, '#workshop-' . $head->id . '-' . $workshop->id, 'active');
-            $browser->press('button#workshop-' . $head->id . '-' . $workshop->id);
+            $browser->assertAttributeContains('#workshop-' . $head->id . '-' . $workshop->id, 'class', 'active');
+            $browser->scrollIntoView('button#workshop-' . $head->id . '-' . $workshop->id)
+                ->pause(self::WAIT)
+                ->press('button#workshop-' . $head->id . '-' . $workshop->id);
             $this->pressTab($browser, $campers[0]->id);
-            parent::assertHasClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshop->id, 'active');
+            $browser->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshop->id, 'class', 'active');
             $this->pressTab($browser, $campers[1]->id);
-            parent::assertHasClass($browser, '#workshop-' . $campers[1]->id . '-' . $workshop->id, 'active');
+            $browser->assertAttributeContains('#workshop-' . $campers[1]->id . '-' . $workshop->id, 'class', 'active');
             $this->submitSuccess($browser);
         });
 
@@ -297,14 +300,14 @@ class WorkshopTest extends DuskTestCase
                 ->assertMissing('h6.alert')
                 ->press('button#workshop-' . $head->id . '-' . $workshopsC[0]->id)
                 ->press('button#workshop-' . $head->id . '-' . $workshopsC[1]->id)
-                ->assertPresent('h6.alert');
-            parent::assertHasClass($browser, '#workshop-' . $head->id . '-' . $workshopsC[0]->id, 'list-group-item-danger');
-            parent::assertHasClass($browser, '#workshop-' . $head->id . '-' . $workshopsC[1]->id, 'list-group-item-danger');
+                ->assertPresent('h6.alert')
+                ->assertAttributeContains('#workshop-' . $head->id . '-' . $workshopsC[0]->id, 'class', 'active')
+                ->assertAttributeContains('#workshop-' . $head->id . '-' . $workshopsC[1]->id, 'class', 'active');
             parent::assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
             parent::assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
             $this->pressTab($browser, $campers[0]->id);
-            parent::assertHasClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsC[0]->id, 'list-group-item-danger');
-            parent::assertHasClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsC[1]->id, 'list-group-item-danger');
+            $browser->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshopsC[0]->id, 'class', 'active')
+                ->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshopsC[1]->id, 'class', 'active');
             parent::assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
             parent::assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
             $browser->pause(self::WAIT)->press('button#workshop-' . $campers[0]->id . '-' . $workshopsC[1]->id)
@@ -344,7 +347,8 @@ class WorkshopTest extends DuskTestCase
         GenerateCharges::dispatchSync(self::$year->id);
         Charge::factory()->create(['camper_id' => $camper->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
 
-        $workshop = Workshop::factory()->create(['year_id' => self::$year->id, 'capacity' => 5]);
+        $workshop = Workshop::factory()->create(['year_id' => self::$year->id, 'capacity' => 5,
+            'timeslot_id' => Timeslotname::Morning]);
         $campers = Camper::factory()->count(5)->create(['roommate' => __FUNCTION__]);
         foreach ($campers as $onecamper) {
             $yap = Yearattending::factory()->create(['camper_id' => $onecamper->id, 'year_id' => self::$year->id]);
@@ -379,11 +383,58 @@ class WorkshopTest extends DuskTestCase
 
     }
 
+    public function testReturningFamilyFees()
+    {
+        $user = User::factory()->create();
+        $head = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+        $campers[0] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__]);
+        $campers[1] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__,
+            'birthdate' => parent::getChildBirthdate()]);
+        $yah = Yearattending::factory()->create(['camper_id' => $head->id, 'year_id' => self::$year->id]);
+        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
+        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
+            'program_id' => Programname::Cratty]);
+        GenerateCharges::dispatchSync(self::$year->id);
+        Charge::factory()->create(['camper_id' => $head->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
+
+        $workshop = Workshop::factory()->create(['year_id' => self::$year->id, 'timeslot_id' => Timeslotname::Excursions,
+            'fee' => rand(1, 100)]);
+
+        $this->browse(function (Browser $browser) use ($user, $head, $campers, $workshop) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
+            $this->pressTab($browser, $head->id);
+            $browser->scrollIntoView('button#workshop-' . $head->id . '-' . $workshop->id)
+                ->pause(self::WAIT)->press('button#workshop-' . $head->id . '-' . $workshop->id);
+            $this->pressTab($browser, $campers[0]->id);
+            $browser->scrollIntoView('button#workshop-' . $campers[0]->id . '-' . $workshop->id)
+                ->pause(self::WAIT)->press('button#workshop-' . $campers[0]->id . '-' . $workshop->id);
+            $this->pressTab($browser, $campers[1]->id);
+            $browser->scrollIntoView('button#workshop-' . $campers[1]->id . '-' . $workshop->id)
+                ->pause(self::WAIT)->press('button#workshop-' . $campers[1]->id . '-' . $workshop->id);
+            $this->submitSuccess($browser);
+        });
+
+        $this->assertDatabaseHas('workshops', ['id' => $workshop->id, 'enrolled' => 3]);
+        $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $yah->id,
+            'workshop_id' => $workshop->id]);
+        $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $yas[0]->id,
+            'workshop_id' => $workshop->id]);
+        $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $yas[1]->id,
+            'workshop_id' => $workshop->id]);
+
+        $this->assertDatabaseHas('gencharges', ['camper_id' => $head->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Workshopfee, 'charge' => $workshop->fee]);
+        $this->assertDatabaseHas('gencharges', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Workshopfee, 'charge' => $workshop->fee]);
+        $this->assertDatabaseHas('gencharges', ['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Workshopfee, 'charge' => $workshop->fee]);
+    }
+
     public function testWorkshops()
     {
         $timeslots = Timeslot::all()->except(Timeslotname::Excursions);
         foreach ($timeslots as $timeslot) {
-            Workshop::factory()->count(rand(1, 10))->create(['timeslot_id' => $timeslot->id, 'year_id' => self::$year->id]);
+            Workshop::factory()->create(['timeslot_id' => $timeslot->id, 'year_id' => self::$year->id]);
             $wrongshops[] = Workshop::factory()->create(['timeslot_id' => $timeslot->id,
                 'name' => 'This is the wrong workshop', 'year_id' => self::$lastyear]);
         }
@@ -408,7 +459,7 @@ class WorkshopTest extends DuskTestCase
 
     public function testExcursions()
     {
-        Workshop::factory()->count(rand(1, 10))->create(['timeslot_id' => Timeslotname::Excursions, 'year_id' => self::$year->id]);
+        Workshop::factory()->create(['timeslot_id' => Timeslotname::Excursions, 'year_id' => self::$year->id]);
         $wrongshop = Workshop::factory()->create(['timeslot_id' => Timeslotname::Excursions,
             'year_id' => self::$lastyear->id]);
         $this->browse(function (Browser $browser) use ($wrongshop) {
@@ -426,15 +477,15 @@ class WorkshopTest extends DuskTestCase
 
     private function submitSuccess(Browser $browser)
     {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Save Changes')->waitUntilMissing('div.alert-danger')
+        $browser->pause(self::WAIT)->scrollIntoView('button[type=submit]')->pause(self::WAIT)
+            ->press('Save Changes')->waitUntilMissing('div.alert-danger')
             ->waitFor('div.alert')->assertVisible('div.alert-success');
         return $browser;
     }
 
     private function pressTab(Browser $browser, $id)
     {
-        $browser->script('window.scrollTo(0,0)');
+        $browser->pause(self::WAIT)->script('window.scrollTo(0,0)');
         $browser->pause(self::WAIT)->press('#tablink-' . $id)->pause(self::WAIT);
         return $browser;
     }

@@ -11,6 +11,7 @@ use Faker\Factory;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use NumberFormatter;
+use Tests\Browser\MuusaBrowser;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -126,18 +127,6 @@ abstract class DuskTestCase extends BaseTestCase
         $year = date('Y') - self::$year->year;
         $faker = Factory::create();
         return $faker->dateTimeBetween('-' . (20 + $year) . ' years', '-' . (18 + $year) . ' years')->format('Y-m-d');
-    }
-
-    /**
-     * Assert if an element matched by $selector has $class in its classList
-     *
-     * @param Browser $browser
-     * @param string $selector
-     * @param string $class
-     * @return void
-     */
-    protected function assertHasClass(Browser $browser, $selector, $class) {
-        $this->assertStringContainsString($class, $browser->attribute($selector, 'class'));
     }
 
     /**

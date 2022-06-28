@@ -158,10 +158,12 @@ class ContactTest extends DuskTestCase
         $box = Contactbox::factory()->create();
         $this->browse(function (Browser $browser) use ($box, $user, $camper, $fakedGraph) {
             $browser->loginAs($user->id)->visitRoute('contact.index')
-                ->assertSee('Contact Us');
-            $this->assertEquals($browser->attribute('#yourname', 'value'), $camper->firstname . ' ' . $camper->lastname);
-            $this->assertEquals($browser->attribute('#email', 'value'), $camper->email);
-            $browser->assertSeeIn('select#mailbox', $box->name)
+                ->assertSee('Contact Us')
+                ->assertValue('#yourname', $camper->firstname . ' ' . $camper->lastname)
+                ->assertValue('#email', $camper->email)
+//            $this->assertEquals($browser->attribute('#yourname', 'value'), $camper->firstname . ' ' . $camper->lastname);
+//            $this->assertEquals($browser->attribute('#email', 'value'), $camper->email);
+                ->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph)
                 ->type('captcha', 'TEST')

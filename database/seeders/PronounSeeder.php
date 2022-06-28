@@ -20,7 +20,9 @@ class PronounSeeder extends Seeder
             'A' => 'All/any',
             'X' => 'Xe/Xir',
             'Z' => 'Ze/Zir',
-            'O' => 'Other');
+            'O' => 'Other',
+            'N' => 'No pronouns',
+            'K' => 'Ask me about my pronouns');
         foreach ($pronouns as $code => $name) {
             DB::table('pronouns')->insert([
                 'code' => $code,

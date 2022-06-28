@@ -3,10 +3,13 @@
 namespace Tests\Browser;
 
 use App\Enums\Chargetypename;
+use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\CamperStaff;
+use App\Models\Room;
 use App\Models\User;
 use App\Models\Yearattending;
+use App\Models\YearattendingStaff;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -43,9 +46,8 @@ class CamperSelectionTest extends DuskTestCase
 
             $browser->assertNotChecked('newcheck-' . $camper->id)->check('newcheck-' . $camper->id)
                 ->assertInputValue('newname-' . $camper->id, $camper->firstname)
-                ->type('newname-' . $camper->id, $changes->firstname . ' ' . $changes->lastname)
-                ->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success');
+                ->type('newname-' . $camper->id, $changes->firstname . ' ' . $changes->lastname);
+            $this->submitSuccess($browser);
 
             $this->assertDatabaseHas('campers', ['email' => $user->email, 'family_id' => $camper->family_id,
                 'firstname' => $changes->firstname, 'lastname' => $changes->lastname]);
@@ -87,10 +89,9 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertSeeIn('label[for="camper-' . $campers[1]->id . '"]',
                     $campers[1]->firstname . ' ' . $campers[1]->lastname)
                 ->uncheck('camper-' . $campers[0]->id)
-                ->uncheck('camper-' . $campers[1]->id)
-                ->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success')
-                ->assertNotChecked('camper-' . $campers[0]->id)
+                ->uncheck('camper-' . $campers[1]->id);
+            $this->submitSuccess($browser);
+            $browser->assertNotChecked('camper-' . $campers[0]->id)
                 ->assertNotChecked('camper-' . $campers[1]->id);
         });
 
@@ -124,11 +125,10 @@ class CamperSelectionTest extends DuskTestCase
                 $browser->click('button#addcamper')->check('newcheck-' . $index)
                     ->type('newname-' . $index, $newcamper->firstname . ' ' . $newcamper->lastname);
             }
-            $browser->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success');
+            $this->submitSuccess($browser);
 
             $this->assertDatabaseHas('campers', ['email' => $user->email, 'family_id' => $camper->family_id,
-                    'firstname' => $changes->firstname, 'lastname' => $changes->lastname]);
+                'firstname' => $changes->firstname, 'lastname' => $changes->lastname]);
             foreach ($campers as $newcamper) {
                 $this->assertDatabaseHas('campers', ['family_id' => $camper->family_id,
                     'firstname' => $newcamper->firstname, 'lastname' => $newcamper->lastname]);
@@ -167,10 +167,9 @@ class CamperSelectionTest extends DuskTestCase
                 ->click('button#delete-1')
                 ->assertMissing('input#newname-1')
                 ->check('newcheck-2')
-                ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname)
-                ->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success')
-                ->assertChecked('camper-' . $campers[0]->id)
+                ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname);
+            $this->submitSuccess($browser);
+            $browser->assertChecked('camper-' . $campers[0]->id)
                 ->assertNotChecked('camper-' . $campers[1]->id);
 
             $this->assertDatabaseMissing('campers', ['family_id' => $campers[0]->family_id,
@@ -191,6 +190,7 @@ class CamperSelectionTest extends DuskTestCase
         $this->assertDatabaseHas('thisyear_charges', ['family_id' => $campers[0]->family_id,
             'chargetype_id' => Chargetypename::Deposit, 'amount' => 400.0]);
     }
+
     public function testReturningFamilyMisclick()
     {
         $user = User::factory()->create();
@@ -214,10 +214,9 @@ class CamperSelectionTest extends DuskTestCase
                 ->click('button#delete-1')
                 ->assertMissing('input#newname-1')
                 ->check('newcheck-2')
-                ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname)
-                ->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success')
-                ->assertChecked('camper-' . $campers[0]->id)
+                ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname);
+            $this->submitSuccess($browser);
+            $browser->assertChecked('camper-' . $campers[0]->id)
                 ->assertChecked('camper-' . $campers[1]->id);
 
             $this->assertDatabaseMissing('campers', ['family_id' => $campers[0]->family_id,
@@ -250,10 +249,9 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertNotChecked('camper-' . $camper->id)
                 ->assertSeeIn('label[for="camper-' . $camper->id . '"]',
                     $camper->firstname . ' ' . $camper->lastname)
-                ->check('camper-' . $camper->id)
-                ->click('button[type="submit"]')->waitFor('div.alert')
-                ->assertVisible('div.alert-success')
-                ->assertChecked('camper-' . $camper->id);
+                ->check('camper-' . $camper->id);
+            $this->submitSuccess($browser);
+            $browser->assertChecked('camper-' . $camper->id);
         });
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         $ya = Yearattending::where(['camper_id' => $camper->id, 'year_id' => self::$year->id])->firstOrFail();
@@ -272,4 +270,46 @@ class CamperSelectionTest extends DuskTestCase
 
     }
 
+    public function testReturningFamilyJobCancel()
+    {
+        $user = User::factory()->create();
+        $campers[0] = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
+        $campers[2] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
+        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'room_id' => Room::factory()->create()->id]);
+        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
+            'room_id' => $yas[0]->room_id]);
+        $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[2]->id, 'year_id' => self::$year->id,
+            'room_id' => $yas[0]->room_id]);
+        $ys = YearattendingStaff::factory()->create(['yearattending_id' => $yas[2]->id]);
+        GenerateCharges::dispatchSync(self::$year->id);
+
+        $this->assertDatabaseHas('thisyear_charges', ['family_id' => $campers[2]->family_id,
+            'chargetype_id' => Chargetypename::Staffcredit, 'memo' => $ys->staffposition->name]);
+        $this->browse(function (Browser $browser) use ($user, $campers) {
+            $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT)
+                ->assertSee('Who is attending')
+                ->assertChecked('camper-' . $campers[0]->id)
+                ->assertChecked('camper-' . $campers[1]->id)
+                ->assertChecked('camper-' . $campers[2]->id)
+                ->uncheck('camper-' . $campers[2]->id);
+            $this->submitSuccess($browser);
+            $browser->assertNotChecked('camper-' . $campers[2]->id);
+        });
+        $this->assertDatabaseMissing('yearsattending', ['camper_id' => $campers[2]->id, 'year_id' => self::$year->id]);
+        $this->assertDatabaseMissing('yearsattending__staff', ['yearattending_id' => $ys->yearattending_id,
+            'staffposition_id' => $ys->staffposition_id]);
+        $this->assertDatabaseMissing('thisyear_charges', ['family_id' => $campers[2]->family_id,
+            'chargetype_id' => Chargetypename::Staffcredit, 'memo' => $ys->staffposition->name]);
+
+    }
+
+    private function submitSuccess(Browser $browser)
+    {
+        $browser->script('window.scrollTo(9999,9999)');
+        $browser->pause(self::WAIT)->press('Save Changes')->waitUntilMissing('div.alert-danger')
+            ->waitFor('div.alert')->assertVisible('div.alert-success');
+        return $browser;
+    }
 }

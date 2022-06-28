@@ -21,7 +21,8 @@ class TimeslotSeeder extends Seeder
             Timeslotname::Early_Afternoon => ['Early Afternoon', 'EA', '2001-01-01 13:30:00', '2001-01-01 15:30:00'],
             Timeslotname::Late_Afternoon => ['Late Afternoon', 'LA', '2001-01-01 16:00:00', '2001-01-01 17:30:00'],
             Timeslotname::Evening => ['Evening', 'SS', '2001-01-01 19:30:00', '2001-01-01 20:30:00'],
-            Timeslotname::Excursions => ['Excursions', 'EX', '2001-01-01 00:00:00', '2001-01-01 06:00:00']
+            Timeslotname::Excursions => ['Excursions', 'EX', '2001-01-01 00:00:00', '2001-01-01 06:00:00'],
+            Timeslotname::Dinnertime => ['Dinnertime', 'D', '2001-01-01 18:15:00', '2001-01-01 19:15:00']
         );
         foreach ($timeslots as $id => $info) {
             DB::table('timeslots')->insert([

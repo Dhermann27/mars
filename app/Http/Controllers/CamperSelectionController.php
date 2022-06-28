@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ExposeParentsChild;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\CamperStaff;
@@ -64,6 +65,7 @@ class CamperSelectionController extends Controller
             }
         }
         GenerateCharges::dispatch($this->year->id);
+        ExposeParentsChild::dispatch($this->year->id);
 
         $request->session()->flash('success', 'Your information has been saved successfully.');
         return redirect()->route('camperselect.index', ['id' => $id]);

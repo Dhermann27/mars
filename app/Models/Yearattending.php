@@ -43,11 +43,6 @@ class Yearattending extends Model
             'yearattending_id', 'id', 'id', 'staffposition_id');
     }
 
-    public function volunteerpositions()
-    {
-        return $this->belongsToMany('App\Models\Volunteerposition')->using('App\Models\YearattendingVolunteer');
-    }
-
     public function workshops()
     {
         return $this->hasManyThrough('App\Models\Workshop', 'App\Models\YearattendingWorkshop',
@@ -64,7 +59,7 @@ class Yearattending extends Model
      * Pos5 Line 3 PC Position (3)
      * Pos6 Line 4 Newcamper (4) Nothing (5)
      * Pos7 Font apply to name (1)
-     * Pos8 Font
+     * Pos8 Font TODO: Expose in nametag_expo
      */
     public function getPronounValueAttribute()
     {

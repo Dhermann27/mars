@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Programname;
+use App\Enums\Pronounname;
+use App\Enums\Timeslotname;
 use Illuminate\Database\Eloquent\Model;
 
 class ThisyearCamper extends Model
@@ -38,6 +41,12 @@ class ThisyearCamper extends Model
         return $this->hasOne(Pronoun::class, 'id', 'pronoun_id');
     }
 
+    public function staffpositions()
+    {
+        return $this->hasManyThrough(Staffposition::class, YearattendingStaff::class,
+            'yearattending_id', 'id', 'id', 'staffposition_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -65,8 +74,8 @@ class ThisyearCamper extends Model
 
     public function parents()
     {
-        return $this->hasMany(ThisyearCamper::class, 'family_id', 'family_id')
-            ->where('age', '>', '17')->orderBy('birthdate');
+        return $this->hasManyThrough(Yearattending::class, ParentsChildExpo::class,
+            'child_yearattending_id', 'id', 'yearattending_id', 'parent_yearattending_id');
     }
 
     public function getEachCalendarAttribute()
@@ -94,20 +103,48 @@ class ThisyearCamper extends Model
 
     public function getNametagBackAttribute()
     {
-        switch ($this->programid) {
-            case 1001:
+        switch ($this->program_id) {
+            case Programname::Meyer:
                 return "Leader: ________________________________<br /><br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________";
-                break;
-            case 1002:
-            case 1007:
+            case Programname::Cratty:
+            case Programname::Lumens:
                 $parents = "";
-                foreach ($this->family->campers()->where('age', '>', '17')->orderBy('birthdate')->get() as $parent) {
-                    $parents .= "<u>" . $parent->firstname . " " . $parent->lastname . "</u><br />";
-                    $parents .= "Room: " . $parent->buildingname . " " . $parent->room_number . "<br />";
-                    if (count($parent->yearattending->workshops()->where('is_enrolled', '1')->get()) > 0) {
-                        foreach ($parent->yearattending->workshops()->where('is_enrolled', '1')->get() as $workshop) {
-                            if ($workshop->workshop->timeslotid == 1001 || $workshop->workshop->timeslotid == 1002) {
-                                $parents .= $workshop->workshop->timeslot->name . " (" . $workshop->workshop->display_days . ") " . $workshop->workshop->room->room_number . "<br />";
+                $pyas = $this->parents->sortBy('camper.birthdate');
+                if (count($pyas) == 2) {
+                    if (($pyas[0]->camper->pronoun_id == Pronounname::HeHim && $pyas[1]->camper->pronoun_id == Pronounname::SheHer)
+                        || ($pyas[1]->camper->pronoun_id == Pronounname::HeHim && $pyas[0]->camper->pronoun_id == Pronounname::SheHer)) {
+                        $icon = '<i class="fa-solid fa-family"></i>';
+                    } elseif ($pyas[0]->camper->pronoun_id == Pronounname::SheHer && $pyas[1]->camper->pronoun_id == Pronounname::SheHer) {
+                        $icon = '<i class="fa-solid fa-family-dress"></i>';
+                    } else {
+                        $icon = '<i class="fa-solid fa-family-pants"></i>';
+                    }
+                } elseif (count($pyas) == 1) {
+                    $icon = '<span class="fa-layers">
+                                <i class="fa-solid fa-person" data-fa-transform="grow-10 left-7 down-1" style="color: darkgray"></i>
+                                <i class="fa-solid fa-child" data-fa-transform="down-6"></i>
+                            </span>';
+                    if ($pyas[0]->camper->pronoun_id == Pronounname::SheHer) {
+                        $icon = preg_replace('/fa-person/', 'fa-person-dress', $icon);
+                    }
+                } elseif (count($pyas) == 0) {
+                    return "SPONSOR NEEDED";
+                } else {
+                    $icon = '<i class="fa-solid fa-people-group"></i>';
+                }
+                foreach ($pyas as $pya) {
+                    $parents .= $icon . " " . $pya->camper->firstname . " " . $pya->camper->lastname;
+                    if (isset($pya->room)) {
+                        $parents .= " (Room: " . $pya->room->building->buildingname . " " . $pya->room->room_number . ")<br />";
+                    } else {
+                        $parents .= " (NO ROOM ASSIGNED)<br />";
+                    }
+                    $yws = YearattendingWorkshop::where('yearattending_id', $pya->id)
+                        ->where('is_enrolled', '1')->with('workshop.timeslot')->get();
+                    if (count($yws) > 0) {
+                        foreach ($yws as $yw) {
+                            if ($yw->workshop->timeslot_id == Timeslotname::Morning || $yw->workshop->timeslot_id == Timeslotname::Early_Afternoon) {
+                                $parents .= $yw->workshop->timeslot->name . " (" . $yw->workshop->display_days . "): " . $yw->workshop->name . " in " . $yw->workshop->room->room_number . "<br />";
                             }
                         }
                     }
@@ -116,9 +153,11 @@ class ThisyearCamper extends Model
                 break;
             default:
                 $workshops = "";
-                if (count($this->yearattending->workshops()->where('is_enrolled', '1')->get()) > 0) {
-                    foreach ($this->yearattending->workshops()->where('is_enrolled', '1')->get() as $workshop) {
-                        $workshops .= $workshop->workshop->timeslot->name . " (" . $workshop->workshop->display_days . "): " . $workshop->workshop->name . " in " . $workshop->workshop->room->room_number . "<br />";
+                $yws = YearattendingWorkshop::where('yearattending_id', $this->yearattending_id)
+                    ->where('is_enrolled', '1')->with('workshop.timeslot')->get();
+                if (count($yws) > 0) {
+                    foreach ($yws as $yw) {
+                        $workshops .= $yw->workshop->timeslot->name . " (" . $yw->workshop->display_days . "): " . $yw->workshop->name . " in " . $yw->workshop->room->room_number . "<br />";
                     }
                 }
                 return $workshops;

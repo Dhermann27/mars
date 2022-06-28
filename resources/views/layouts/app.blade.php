@@ -141,13 +141,90 @@
                         </li>
                     @endif
                     <li class="nav-item pe-3"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
-                    <li class="nav-item"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>
+                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>
+
+                    @can('is-council')
+                        <li class="nav-item pe-3 dropdown has-megamenu">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="menuAdmin"
+                               data-mdb-toggle="dropdown"
+                               aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu megamenu" role="menu">
+                                <div class="row g-3">
+                                    <div class="col-lg-3 col-6">
+                                        <div class="col-megamenu">
+                                            <h6 class="title"><a href="#">Dashboard</a></h6>
+                                            <ul class="list-unstyled">
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                            </ul>
+                                        </div>  <!-- col-megamenu.// -->
+                                    </div><!-- end col-3 -->
+                                    <div class="col-lg-3 col-6">
+                                        <div class="col-megamenu">
+                                            <h6 class="title">Reports</h6>
+                                            <ul class="list-unstyled">
+                                                {{-- +X campers in last week, most recent campers or payments?                                               --}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                            </ul>
+                                        </div>  <!-- col-megamenu.// -->
+                                    </div><!-- end col-3 -->
+                                    <div class="col-lg-3 col-6">
+                                        <div class="col-megamenu">
+                                            <h6 class="title">Tools</h6>
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <a href="{{ route('tools.nametags.all') }}"
+                                                       data-mdb-toggle="tooltip" title="Firefox only">
+                                                        Print All Nametags
+                                                        <i class="fa-brands fa-firefox-browser fa-xl"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>  <!-- col-megamenu.// -->
+                                    </div><!-- end col-3 -->
+                                    @can('is-super')
+                                        <div class="col-lg-3 col-6">
+                                            <div class="col-megamenu">
+                                                <h6 class="title">Superuser</h6>
+                                                <ul class="list-unstyled">
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                </ul>
+                                            </div>  <!-- col-megamenu.// -->
+                                        </div>
+                                    @endcan
+                                </div><!-- end row -->
+
+                                {{--                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">--}}
+                                {{--                                            <i class="far fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
+                                {{--                                </li>--}}
+                                {{--                                <li>--}}
+                                {{--                                    <hr class="dropdown-divider"/>--}}
+                                {{--                                </li>--}}
+                            </div>
+                        </li>
+                    @endcan
                 </ul>
 
                 <div class="d-flex align-items-center">
                     @auth
 
-                        <div class="btn-group">
+                        <div class="btn-group ms-4">
                             <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a>
                             <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                                     data-mdb-toggle="dropdown" aria-expanded="false">

@@ -12,5 +12,6 @@ enum Timeslotname: int
     const Late_Afternoon = 1003;
     const Evening = 1004;
     const Excursions = 1005;
+    const Dinnertime = 1006;
 
 }

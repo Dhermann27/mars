@@ -128,15 +128,14 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports']
 //    Route::get('rooms/{year?}/name', [ReportController::class, 'rooms');
 //    Route::get('states', [ReportController::class, 'states');
 //    Route::get('unassigned', [ReportController::class, 'unassigned');
-//    Route::get('volunteers', [ReportController::class, 'volunteers');
 //    Route::get('workshops', [ReportController::class, 'workshops'])->name('reports.workshops');
 });
 
-//Route::group(['middleware' => ['auth', [can:is-council'], 'prefix' => 'tools'], function () {
+Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'tools'], function () {
 //    Route::get('cognoscenti', [ToolsController::class, 'cognoscenti'])->name('tools.cognoscenti');
 //    Route::get('nametags', [ToolsController::class, 'nametagsList');
 //    Route::post('nametags', [ToolsController::class, 'nametagsPrint');
-//    Route::get('nametags/all', [ToolsController::class, 'nametags');
+    Route::get('nametags/all', [NametagController::class, 'all'])->name('tools.nametags.all');
 //    Route::get('nametags/{i}/{id}', [ToolsController::class, 'nametagsFamily');
 //    Route::get('programs', [ToolsController::class, 'programIndex');
 //    Route::post('programs', [ToolsController::class, 'programStore');
@@ -144,7 +143,7 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports']
 //    Route::post('staffpositions', [ToolsController::class, 'positionStore'])->name('tools.staff.store');
 //    Route::get('workshops', [ToolsController::class, 'workshopIndex');
 //    Route::post('workshops', [ToolsController::class, 'workshopStore');
-//});
+});
 //
 //Route::group(['middleware' => ['can:is-super'], 'prefix' => 'admin'], function () {
 //    Route::get('distlist', [AdminController::class, 'distlistIndex'])->name('admin.distlist.index');

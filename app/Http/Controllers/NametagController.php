@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ExposeParentsChild;
 use App\Models\Camper;
+use App\Models\ParentsChildExpo;
 use App\Models\ThisyearCamper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +79,18 @@ class NametagController extends Controller
             }
         }
         return view('nametags', ['campers' => $campers, 'stepdata' => $steps]);
+    }
+
+    public function all()
+    {
+        ExposeParentsChild::dispatchSync($this->year->id);
+        $cqb = ThisyearCamper::with(['pronoun', 'church.province', 'staffpositions']);
+        if(config('app.name') != 'MUUSADusk'){
+            $cqb->orderBy('familyname')->orderBy('family_id')->orderBy('birthdate');
+        }
+        $campers = $cqb->get();
+        $campers->where('age', '<', '18')->load(['parents.room.building', 'parents.camper']);
+        return view('layouts.nametags', ['campers' => $campers]);
     }
 
 //    public function write(Request $request, $id)

@@ -9,11 +9,13 @@ $my-light-theme: mdb-light-theme($my-theme-primary, $my-theme-secondary); // cre
 // include theme styles
 @include mdb-theme($my-light-theme);
 
-$sizes : (25: 25%, 50: 50%, 75: 75%, 90: 90%, 100: 100%);
+$sizes: (25: 25%, 50: 50%, 75: 75%, 90: 90%, 100: 100%);
 @each $breakpoint in map-keys($grid-breakpoints) {
     @each $size, $length in $sizes {
         @include media-breakpoint-up($breakpoint) {
-            .w-#{$breakpoint}-#{$size} {width: $length;}
+            .w-#{$breakpoint}-#{$size} {
+                width: $length;
+            }
         }
     }
 }
@@ -102,6 +104,38 @@ div.highlight span {
     border-top-right-radius: 0px;
 }
 
+
+.navbar .megamenu {
+    padding: 1rem;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+    .navbar .has-megamenu {
+        position: static !important;
+    }
+
+    .navbar .megamenu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0;
+    }
+}
+
+/* ============ desktop view .end// ============ */
+
+/* ============ mobile view ============ */
+@media (max-width: 991px) {
+    .navbar.fixed-top .navbar-collapse, .navbar.sticky-top .navbar-collapse {
+        overflow-y: auto;
+        max-height: 90vh;
+        margin-top: 10px;
+    }
+}
+
+/* ============ mobile view .end// ============ */
+
 /* Registration Steps */
 .stepper-large .stepper-head-icon {
     width: 3rem;
@@ -163,8 +197,8 @@ div.highlight span {
 }
 
 .stepper-large .stepper-head {
-     padding: 1.5rem;
- }
+    padding: 1.5rem;
+}
 
 .stepper-mobile-footer {
     position: static;
@@ -196,9 +230,20 @@ textarea {
 /* ANIMATED NAVBAR */
 /* Color of the links BEFORE scroll */
 .navbar-scroll .nav-link,
-.navbar-scroll .navbar-toggler-icon {
+.navbar-scroll .navbar-toggler .fa-bars {
     color: #fff;
     text-shadow: 2px 2px $teal-900;
+}
+
+@media(max-width: 991px) {
+    .navbar-scroll .navbar-collapse {
+        background-color: #fff;
+    }
+    .navbar-scroll .nav-link {
+        color: #4f4f4f;
+        text-shadow: none;
+        padding-left: 8px;
+    }
 }
 
 .navbar-scroll .nav-link:hover,
@@ -215,7 +260,8 @@ textarea {
 }
 
 .navbar-scrolled .nav-link:hover,
-.navbar-scrolled .nav-link:focus {
+.navbar-scrolled .nav-link:focus,
+.navbar-scrolled .navbar-toggler .fa-bars {
     color: $gray-800;
 }
 
@@ -289,9 +335,9 @@ textarea {
 
 // ******** Nametags
 div.label {
-    width: 3.6in;
-    height: 2.89in;
-    padding: .125in .3in 0;
+    width: 4.125in;
+    height: 3.125in;
+    padding: .125in .15in 0 .25in;
     float: left;
     overflow: hidden;
 }
