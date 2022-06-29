@@ -63,8 +63,7 @@
     @if((!$loop->first && ($loop->index+1) % 6 == 0) || $loop->last)
         <div class="page-break"></div>
         @foreach($backs as $back)
-            <div class="label" dusk="back-{{ $loop->index }}">
-                <p>&nbsp;</p>
+            <div class="label pt-3" dusk="back-{{ $loop->index }}">
                 <p>{!! $back !!}</p>
             </div>
         @endforeach

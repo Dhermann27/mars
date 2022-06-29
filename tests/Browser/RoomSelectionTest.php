@@ -10,7 +10,6 @@ use App\Models\Charge;
 use App\Models\Program;
 use App\Models\Rate;
 use App\Models\Room;
-use App\Models\RoomselectionExpo;
 use App\Models\User;
 use App\Models\Yearattending;
 use Carbon\Carbon;
@@ -89,7 +88,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
@@ -106,7 +105,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->mouseover('rect#room-' . $newroom->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $newroom->room_number)
                 ->click('rect#room-' . $newroom->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->browse(function (Browser $browser) use ($user, $camper, $room, $newroom) {
@@ -225,7 +224,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->assertDatabaseMissing('yearsattending', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
@@ -238,7 +237,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->mouseover('rect#room-' . $newroom->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $newroom->room_number)
                 ->click('rect#room-' . $newroom->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
@@ -277,7 +276,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $head->id, 'year_id' => self::$year->id,
@@ -292,7 +291,7 @@ class RoomSelectionTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'is_setbyadmin' => '1', 'room_id' => Room::factory()->create(['is_workshop' => 0])->id]);
         GenerateCharges::dispatchSync(self::$year->id);
@@ -353,7 +352,7 @@ class RoomSelectionTest extends DuskTestCase
         $user = User::factory()->create();
         $head = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers = Camper::factory()->count(3)->create(['family_id' => $head->family_id,
-            'roommate' => __FUNCTION__, 'birthdate' => parent::getChildBirthdate()]);
+            'roommate' => __FUNCTION__, 'birthdate' => $this->getChildBirthdate()]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $head->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
@@ -378,7 +377,7 @@ class RoomSelectionTest extends DuskTestCase
                 ->resize(2048, 3072)
                 ->mouseover('rect.active')->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $newroom->room_number);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $head->id, 'year_id' => self::$year->id,
@@ -393,19 +392,4 @@ class RoomSelectionTest extends DuskTestCase
 
     // TODO: Add previous year assignment tests
 
-    private function submitError(Browser $browser)
-    {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Lock Room')->waitFor('div.alert')
-            ->assertVisible('div.alert-danger');
-        return $browser;
-    }
-
-    private function submitSuccess(Browser $browser)
-    {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Lock Room')->waitUntilMissing('div.alert-danger')
-            ->waitFor('div.alert')->assertVisible('div.alert-success');
-        return $browser;
-    }
 }

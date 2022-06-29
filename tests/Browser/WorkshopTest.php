@@ -160,20 +160,21 @@ class WorkshopTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $campers, $workshops) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
-            $this->pressTab($browser, $campers[0]->id);
+            $this->pressTab($browser, $campers[0]->id, self::WAIT);
             foreach ($workshops as $workshop) {
                 $browser->assertSee($workshop->name)
                     ->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshop->id, 'class', 'active');
             }
 
-            $this->pressTab($browser, $campers[1]->id)->assertMissing(self::ACTIVETAB . ' button.active')
-                ->mouseover(self::RANDOELEMENT)->pause(self::WAIT);
+            $this->pressTab($browser, $campers[1]->id, self::WAIT)
+                ->assertMissing(self::ACTIVETAB . ' button.active', self::WAIT)
+                ->mouseover(self::RANDOELEMENT)->waitUntilMissing('div.tooltip-inner');
             foreach ($workshops as $workshop) {
                 $browser->assertSee($workshop->name)
                     ->press('button#workshop-' . $campers[1]->id . '-' . $workshop->id)
                     ->mouseover(self::RANDOELEMENT)->pause(self::WAIT);
             }
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         foreach ($workshops as $workshop) {
@@ -188,7 +189,7 @@ class WorkshopTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'program_id' => Programname::Burt]);
         GenerateCharges::dispatchSync(self::$year->id);
@@ -207,7 +208,7 @@ class WorkshopTest extends DuskTestCase
                 ->press('button#workshop-' . $camper->id . '-' . $workshops[1]->id)
 //                ->waitFor(self::ACTIVETAB . ' button.active')
                 ->assertAttributeContains('#workshop-' . $camper->id . '-' . $workshops[1]->id, 'class', 'active');
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $ya->id,
@@ -241,16 +242,16 @@ class WorkshopTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $head, $campers, $workshop) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
-            $this->pressTab($browser, $head->id);
+            $this->pressTab($browser, $head->id, self::WAIT);
             $browser->assertAttributeContains('#workshop-' . $head->id . '-' . $workshop->id, 'class', 'active');
             $browser->scrollIntoView('button#workshop-' . $head->id . '-' . $workshop->id)
                 ->pause(self::WAIT)
                 ->press('button#workshop-' . $head->id . '-' . $workshop->id);
-            $this->pressTab($browser, $campers[0]->id);
+            $this->pressTab($browser, $campers[0]->id, self::WAIT);
             $browser->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshop->id, 'class', 'active');
-            $this->pressTab($browser, $campers[1]->id);
+            $this->pressTab($browser, $campers[1]->id, self::WAIT);
             $browser->assertAttributeContains('#workshop-' . $campers[1]->id . '-' . $workshop->id, 'class', 'active');
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseMissing('yearsattending__workshop', ['yearattending_id' => $hw->id,
@@ -268,7 +269,7 @@ class WorkshopTest extends DuskTestCase
         $head = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[0] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $yah = Yearattending::factory()->create(['camper_id' => $head->id, 'year_id' => self::$year->id]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
@@ -293,7 +294,7 @@ class WorkshopTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $head, $campers, $workshopsC, $workshopsNC) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
-            $this->pressTab($browser, $head->id);
+            $this->pressTab($browser, $head->id, self::WAIT);
             $browser->assertMissing('h6.alert')
                 ->press('button#workshop-' . $head->id . '-' . $workshopsNC[0]->id)
                 ->press('button#workshop-' . $head->id . '-' . $workshopsNC[1]->id)
@@ -303,17 +304,17 @@ class WorkshopTest extends DuskTestCase
                 ->assertPresent('h6.alert')
                 ->assertAttributeContains('#workshop-' . $head->id . '-' . $workshopsC[0]->id, 'class', 'active')
                 ->assertAttributeContains('#workshop-' . $head->id . '-' . $workshopsC[1]->id, 'class', 'active');
-            parent::assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
-            parent::assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
-            $this->pressTab($browser, $campers[0]->id);
+            $this->assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
+            $this->assertMissingClass($browser, '#workshop-' . $head->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
+            $this->pressTab($browser, $campers[0]->id, self::WAIT);
             $browser->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshopsC[0]->id, 'class', 'active')
                 ->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshopsC[1]->id, 'class', 'active');
-            parent::assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
-            parent::assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
+            $this->assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[0]->id, 'list-group-item-danger');
+            $this->assertMissingClass($browser, '#workshop-' . $campers[0]->id . '-' . $workshopsNC[1]->id, 'list-group-item-danger');
             $browser->pause(self::WAIT)->press('button#workshop-' . $campers[0]->id . '-' . $workshopsC[1]->id)
                 ->assertMissing('h6.alert');
-            $this->pressTab($browser, $campers[1]->id); // Tooltip won't drop
-            $this->submitSuccess($browser);
+            $this->pressTab($browser, $campers[1]->id, self::WAIT); // Tooltip won't drop
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $yah->id,
@@ -363,7 +364,7 @@ class WorkshopTest extends DuskTestCase
                 ->mouseover('button#workshop-' . $camper->id . '-' . $workshop->id)
                 ->waitFor('div.tooltip-inner')->assertSeeIn('div.tooltip-inner', 'Workshop Full')
                 ->press('button#workshop-' . $camper->id . '-' . $workshop->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $ya->id,
@@ -389,7 +390,7 @@ class WorkshopTest extends DuskTestCase
         $head = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[0] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $head->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $yah = Yearattending::factory()->create(['camper_id' => $head->id, 'year_id' => self::$year->id]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
@@ -398,20 +399,20 @@ class WorkshopTest extends DuskTestCase
         Charge::factory()->create(['camper_id' => $head->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
 
         $workshop = Workshop::factory()->create(['year_id' => self::$year->id, 'timeslot_id' => Timeslotname::Excursions,
-            'fee' => rand(1, 100)]);
+            'fee' => rand(1, 100), 'led_by' => $campers[0]->firstname . ' ' . $campers[0]->lastname]);
+        UpdateWorkshops::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $head, $campers, $workshop) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
-            $this->pressTab($browser, $head->id);
+            $this->pressTab($browser, $head->id, self::WAIT);
             $browser->scrollIntoView('button#workshop-' . $head->id . '-' . $workshop->id)
                 ->pause(self::WAIT)->press('button#workshop-' . $head->id . '-' . $workshop->id);
-            $this->pressTab($browser, $campers[0]->id);
-            $browser->scrollIntoView('button#workshop-' . $campers[0]->id . '-' . $workshop->id)
-                ->pause(self::WAIT)->press('button#workshop-' . $campers[0]->id . '-' . $workshop->id);
-            $this->pressTab($browser, $campers[1]->id);
+            $this->pressTab($browser, $campers[0]->id, self::WAIT);
+            $browser->assertAttributeContains('#workshop-' . $campers[0]->id . '-' . $workshop->id, 'class', 'active');
+            $this->pressTab($browser, $campers[1]->id, self::WAIT);
             $browser->scrollIntoView('button#workshop-' . $campers[1]->id . '-' . $workshop->id)
                 ->pause(self::WAIT)->press('button#workshop-' . $campers[1]->id . '-' . $workshop->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseHas('workshops', ['id' => $workshop->id, 'enrolled' => 3]);
@@ -442,8 +443,8 @@ class WorkshopTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($timeslots, $wrongshops) {
             $browser->visitRoute('workshops.display')->waitFor('div.tab-content div.active');
             foreach ($timeslots as $timeslot) {
-                $this->pressTab($browser, $timeslot->id);
-                $browser->assertSee($timeslot->start_time->format('g:i A'));
+                $this->pressTab($browser, $timeslot->id, self::WAIT);
+                $browser->pause(self::WAIT)->assertSee($timeslot->start_time->format('g:i A'));
                 foreach ($timeslot->workshops()->where('year_id', self::$year->id) as $workshop) {
                     $browser->assertSee($workshop->name)
                         ->assertSee($workshop->display_days);
@@ -473,20 +474,5 @@ class WorkshopTest extends DuskTestCase
             }
             $browser->assertDontSee($wrongshop->name)->assertDontSee(Timeslotname::Morning);
         });
-    }
-
-    private function submitSuccess(Browser $browser)
-    {
-        $browser->pause(self::WAIT)->scrollIntoView('button[type=submit]')->pause(self::WAIT)
-            ->press('Save Changes')->waitUntilMissing('div.alert-danger')
-            ->waitFor('div.alert')->assertVisible('div.alert-success');
-        return $browser;
-    }
-
-    private function pressTab(Browser $browser, $id)
-    {
-        $browser->pause(self::WAIT)->script('window.scrollTo(0,0)');
-        $browser->pause(self::WAIT)->press('#tablink-' . $id)->pause(self::WAIT);
-        return $browser;
     }
 }

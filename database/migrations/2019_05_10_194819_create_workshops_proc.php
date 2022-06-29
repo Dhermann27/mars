@@ -30,10 +30,13 @@ return new class extends Migration
                                               FROM yearsattending__workshop yw
                                               WHERE w.id=yw.workshop_id)
                             WHERE w.year_id=myyear_id;
-                            UPDATE yearsattending__workshop yw, thisyear_campers tc, workshops w
-                            SET yw.is_leader=1
-                            WHERE yw.workshop_id=w.id AND yw.yearattending_id=tc.yearattending_id
-                                  AND w.led_by LIKE CONCAT('%', tc.firstname, ' ', tc.lastname, '%');
+
+                            INSERT INTO yearsattending__workshop (yearattending_id, workshop_id, is_leader, created_at)
+                                SELECT ya.id, w.id, 1, NOW()
+                                    FROM yearsattending ya, campers c, workshops w
+                                    WHERE ya.year_id=myyear_id AND ya.camper_id=c.id AND w.year_id=myyear_id AND
+                                        w.led_by LIKE CONCAT('%', c.firstname, ' ', c.lastname, '%')
+                            ON DUPLICATE KEY UPDATE is_leader=1;
 
                             OPEN cur;
 

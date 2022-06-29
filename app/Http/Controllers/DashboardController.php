@@ -7,7 +7,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard', ['stepdata' => parent::getStepData()]);
+        return view('dashboard', ['stepdata' => $this->getStepData()]);
     }
 
 }

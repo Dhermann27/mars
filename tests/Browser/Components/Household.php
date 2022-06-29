@@ -45,8 +45,7 @@ class Household extends BaseComponent
             '@country' => 'input[name="country"]',
             '@iac' => 'input[type="checkbox"][name="is_address_current"]',
             '@ie' => 'input[type="checkbox"][name="is_ecomm"]',
-            '@is' => 'input[type="checkbox"][name="is_scholar"]',
-            '@submit' => 'button[type="submit"]'
+            '@is' => 'input[type="checkbox"][name="is_scholar"]'
         ];
     }
 
@@ -63,7 +62,6 @@ class Household extends BaseComponent
             ->type('@country', $hh->country);
         if ($hh->is_ecomm == 1) $browser->check('@ie', $hh->is_ecomm); else $browser->uncheck('@ie', $hh->is_ecomm);
         if ($hh->is_scholar == 1) $browser->check('@is', $hh->is_scholar); else $browser->uncheck('@is', $hh->is_scholar);
-        $browser->click('@submit')->waitFor('div.alert')->assertVisible('div.alert-success');
     }
 
 
@@ -82,7 +80,6 @@ class Household extends BaseComponent
         if ($to->is_ecomm) $browser->check('@ie'); else $browser->uncheck('@ie');
         if ($from->is_scholar) $browser->assertChecked('@is'); else $browser->assertNotChecked('@is');
         if ($to->is_scholar) $browser->check('@is'); else $browser->uncheck('@is');
-        $browser->click('@submit')->waitFor('div.alert')->assertVisible('div.alert-success');
     }
 
     public function viewHousehold(Browser $browser, $hh)
@@ -97,6 +94,6 @@ class Household extends BaseComponent
         if ($hh->is_ecomm) $browser->assertChecked('@ie'); else $browser->assertNotChecked('@ie');
         if ($hh->is_scholar) $browser->assertChecked('@is'); else $browser->assertNotChecked('@is');
         $browser->assertDisabled('@iac')->assertDisabled('@ie')->assertDisabled('@is')
-            ->assertMissing('@submit');
+            ->assertMissing('button[type=submit]');
     }
 }

@@ -67,9 +67,9 @@ class NametagController extends Controller
             $camper = Camper::findOrFail($id);
             $request->session()->flash('camper', $camper);
         } else {
-            $family_id = parent::getFamilyId();
+            $family_id = $this->getFamilyId();
         }
-        $steps = parent::getStepData();
+        $steps = $this->getStepData();
         $campers = $this->getCampers($id && Gate::allows('is-council') ? $camper->family_id : $family_id);
         if ($steps["amountDueNow"] > 0) {
             $request->session()->flash('error', 'You cannot customize your nametags until your deposit has been paid.');

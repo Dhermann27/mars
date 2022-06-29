@@ -26,7 +26,6 @@ class PaymentTest extends DuskTestCase
 
     private const ROUTE = 'payment.index';
     private const WAIT = 250;
-    private const ACTIVETAB = 'form#muusapayment div.tab-content div.active';
 
     public function testNewVisitor()
     {
@@ -406,7 +405,7 @@ class PaymentTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $room = Room::factory()->create();
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'room_id' => $room->id]);

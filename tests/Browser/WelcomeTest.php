@@ -12,6 +12,7 @@ use Tests\DuskTestCase;
 
 /**
  * @group Home
+ * @group Welcome
  */
 class WelcomeTest extends DuskTestCase
 {

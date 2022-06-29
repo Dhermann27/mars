@@ -36,6 +36,7 @@ class HouseholdTest extends DuskTestCase
                 ->waitFor('form#household')
                 ->within(new Household, function ($browser) use ($changes) {
                     $browser->createHousehold($changes);
+                    $this->submitSuccess($browser, 0);
                 });
         });
 
@@ -60,6 +61,7 @@ class HouseholdTest extends DuskTestCase
                 ->waitFor('form#household')
                 ->within(new Household, function ($browser) use ($family, $changes) {
                     $browser->changeHousehold($family, $changes);
+                    $this->submitSuccess($browser, 0);
                 });
         });
 

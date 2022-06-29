@@ -175,7 +175,7 @@ class PaymentController extends Controller
 //            $family_id = Camper::findOrFail($id)->family_id;
 //            $years = ByyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get()->groupBy('year');
 //        } else {
-        $family_id = parent::getFamilyId();
+        $family_id = $this->getFamilyId();
         $years = ThisyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
         foreach ($years as $charge) {
             if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit) {
@@ -185,7 +185,7 @@ class PaymentController extends Controller
         $years = $years->groupBy('year');
 //        }
         return view('payment', ['years' => $years, 'fiscalyears' => Year::orderBy('year', 'desc')->get(),
-            'deposit' => $deposit, 'chargetypes' => $chargetypes, 'stepdata' => parent::getStepData(),
+            'deposit' => $deposit, 'chargetypes' => $chargetypes, 'stepdata' => $this->getStepData(),
             'pastJune' => Carbon::now()->lt(Carbon::create($this->year->year, 5, 31))]);
     }
 

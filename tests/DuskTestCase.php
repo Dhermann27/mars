@@ -16,6 +16,7 @@ use Tests\Browser\MuusaBrowser;
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+
     protected static $hasSetupRun = false;
     protected static $year, $lastyear, $years;
 
@@ -27,7 +28,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        if (! static::runningInSail()) {
+        if (!static::runningInSail()) {
             static::startChromeDriver();
         }
     }
@@ -90,7 +91,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function hasHeadlessDisabled()
     {
         return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
-               isset($_ENV['DUSK_HEADLESS_DISABLED']);
+            isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 
 
@@ -112,7 +113,8 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @return string
      */
-    protected function getChildBirthdate() {
+    protected function getChildBirthdate()
+    {
         $year = date('Y') - self::$year->year;
         $faker = Factory::create();
         return $faker->dateTimeBetween('-' . (17 + $year) . ' years', '-' . (1 + $year) . ' years')->format('Y-m-d');
@@ -123,21 +125,75 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @return string
      */
-    protected function getYABirthdate() {
+    protected function getYABirthdate()
+    {
         $year = date('Y') - self::$year->year;
         $faker = Factory::create();
         return $faker->dateTimeBetween('-' . (20 + $year) . ' years', '-' . (18 + $year) . ' years')->format('Y-m-d');
     }
 
     /**
-     * Assert if a element matched by $selector doesn't have $class in its classList
+     * Submit a form but get an error back
+     *
+     * @param Browser $browser
+     * @param int $wait
+     * @param string $buttontext
+     * @return Browser
+     */
+    protected function submitError(Browser $browser, $wait, string $buttontext='Save Changes')
+    {
+        $browser->pause($wait)->scrollIntoView('button[type=submit]')->pause($wait)
+            ->press($buttontext)->waitFor('div.alert')->assertVisible('div.alert-danger')
+            ->assertPresent('span.muusa-invalid-feedback');
+        return $browser;
+    }
+
+
+    /**
+     * Submit a form and get a successful response
+     *
+     * @param Browser $browser
+     * @param int $wait
+     * @param string $buttontext
+     * @return Browser
+     */
+    protected function submitSuccess(Browser $browser, $wait, $buttontext='Save Changes')
+    {
+        $browser->pause($wait)->scrollIntoView('button[type=submit]')->pause($wait)
+            ->press($buttontext)->waitUntilMissing('div.alert-danger')
+            ->waitFor('div.alert')->assertVisible('div.alert-success');
+        return $browser;
+    }
+
+
+    /**
+     * Press the navtab with the parameter id and wait until the new tab is shown
+     *
+     * @param Browser $browser
+     * @param int $id
+     * @param int $wait
+     * @return Browser
+     */
+    protected function pressTab(Browser $browser, $id, $wait)
+    {
+        $browser->script('window.scrollTo(0,0)');
+        $browser->pause($wait);
+        if (!str_contains($browser->attribute('#tablink-' . $id, 'class'), 'active')) {
+            $browser->press('#tablink-' . $id)->waitForEvent('shown.mdb.tab', '#nav-tab');
+        }
+        return $browser;
+    }
+
+    /**
+     * Assert if an element matched by $selector doesn't have $class in its classList
      *
      * @param Browser $browser
      * @param string $selector
      * @param string $class
      * @return void
      */
-    protected function assertMissingClass(Browser $browser, $selector, $class) {
+    protected function assertMissingClass(Browser $browser, $selector, $class)
+    {
         $this->assertStringNotContainsString($class, $browser->attribute($selector, 'class'));
     }
 

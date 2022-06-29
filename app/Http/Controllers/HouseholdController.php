@@ -51,9 +51,9 @@ class HouseholdController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = parent::getFamilyId();
+        $family_id = $this->getFamilyId();
         $family = Family::find($family_id);
-        return view('household', ['stepdata' => parent::getStepData(), 'family' => $family,
+        return view('household', ['stepdata' => $this->getStepData(), 'family' => $family,
             'provinces' => Province::orderBy('name')->get()]);
     }
 

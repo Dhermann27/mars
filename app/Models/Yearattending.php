@@ -53,7 +53,7 @@ class Yearattending extends Model
      * Default: 222215521
      * Pos0 Display pronouns (2)
      * Pos1 Name Display: First Last (2) First then Last (1) First only (4)
-     * Pos2 Namesize (1-5) .5x+.3em
+     * Pos2 Namesize (1-5) .5x+.8em
      * Pos3 Line 1 Church (1)
      * Pos4 Line 2 Hometown (2)
      * Pos5 Line 3 PC Position (3)

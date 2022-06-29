@@ -47,7 +47,7 @@ class CamperSelectionTest extends DuskTestCase
             $browser->assertNotChecked('newcheck-' . $camper->id)->check('newcheck-' . $camper->id)
                 ->assertInputValue('newname-' . $camper->id, $camper->firstname)
                 ->type('newname-' . $camper->id, $changes->firstname . ' ' . $changes->lastname);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
 
             $this->assertDatabaseHas('campers', ['email' => $user->email, 'family_id' => $camper->family_id,
                 'firstname' => $changes->firstname, 'lastname' => $changes->lastname]);
@@ -90,7 +90,7 @@ class CamperSelectionTest extends DuskTestCase
                     $campers[1]->firstname . ' ' . $campers[1]->lastname)
                 ->uncheck('camper-' . $campers[0]->id)
                 ->uncheck('camper-' . $campers[1]->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
             $browser->assertNotChecked('camper-' . $campers[0]->id)
                 ->assertNotChecked('camper-' . $campers[1]->id);
         });
@@ -125,7 +125,7 @@ class CamperSelectionTest extends DuskTestCase
                 $browser->click('button#addcamper')->check('newcheck-' . $index)
                     ->type('newname-' . $index, $newcamper->firstname . ' ' . $newcamper->lastname);
             }
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
 
             $this->assertDatabaseHas('campers', ['email' => $user->email, 'family_id' => $camper->family_id,
                 'firstname' => $changes->firstname, 'lastname' => $changes->lastname]);
@@ -168,7 +168,7 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertMissing('input#newname-1')
                 ->check('newcheck-2')
                 ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
             $browser->assertChecked('camper-' . $campers[0]->id)
                 ->assertNotChecked('camper-' . $campers[1]->id);
 
@@ -215,7 +215,7 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertMissing('input#newname-1')
                 ->check('newcheck-2')
                 ->type('newname-2', $campers[2]->firstname . ' ' . $campers[2]->lastname);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
             $browser->assertChecked('camper-' . $campers[0]->id)
                 ->assertChecked('camper-' . $campers[1]->id);
 
@@ -250,7 +250,7 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertSeeIn('label[for="camper-' . $camper->id . '"]',
                     $camper->firstname . ' ' . $camper->lastname)
                 ->check('camper-' . $camper->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
             $browser->assertChecked('camper-' . $camper->id);
         });
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id]);
@@ -294,7 +294,7 @@ class CamperSelectionTest extends DuskTestCase
                 ->assertChecked('camper-' . $campers[1]->id)
                 ->assertChecked('camper-' . $campers[2]->id)
                 ->uncheck('camper-' . $campers[2]->id);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
             $browser->assertNotChecked('camper-' . $campers[2]->id);
         });
         $this->assertDatabaseMissing('yearsattending', ['camper_id' => $campers[2]->id, 'year_id' => self::$year->id]);
@@ -302,14 +302,5 @@ class CamperSelectionTest extends DuskTestCase
             'staffposition_id' => $ys->staffposition_id]);
         $this->assertDatabaseMissing('thisyear_charges', ['family_id' => $campers[2]->family_id,
             'chargetype_id' => Chargetypename::Staffcredit, 'memo' => $ys->staffposition->name]);
-
-    }
-
-    private function submitSuccess(Browser $browser)
-    {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Save Changes')->waitUntilMissing('div.alert-danger')
-            ->waitFor('div.alert')->assertVisible('div.alert-success');
-        return $browser;
     }
 }

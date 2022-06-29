@@ -74,12 +74,12 @@ class CamperSelectionController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = parent::getFamilyId();
+        $family_id = $this->getFamilyId();
         $campers = Camper::where('family_id', $family_id)
             ->with(['yearsattending' => function ($query) {
                 $query->where('year_id', $this->year->id);
             }])->orderBy('birthdate')->get();
-        return view('register.camperselect', ['campers' => $campers, 'stepdata' => parent::getStepData()]);
+        return view('register.camperselect', ['campers' => $campers, 'stepdata' => $this->getStepData()]);
     }
 
 }

@@ -179,7 +179,7 @@ class DashboardTest extends DuskTestCase
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[0] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
 
         $yas[0] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'room_id' => function () {
@@ -207,7 +207,7 @@ class DashboardTest extends DuskTestCase
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[0] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
 
         $yas[0] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'room_id' => function () {
@@ -237,7 +237,7 @@ class DashboardTest extends DuskTestCase
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers = Camper::factory()->count(3)->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
 
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'room_id' => function () {

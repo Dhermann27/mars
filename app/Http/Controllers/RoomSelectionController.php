@@ -45,9 +45,9 @@ class RoomSelectionController extends Controller
         if ($id && Gate::allows('is-council')) {
             $family_id = Camper::find($id)->family_id;
         } else {
-            $family_id = parent::getFamilyId();
+            $family_id = $this->getFamilyId();
         }
-        $step = parent::getStepData();
+        $step = $this->getStepData();
         $locked = 0;
         $ya = Yearattending::where('camper_id', Auth::user()->camper->id)->where('year_id', $this->year->id)->first();
         $campers = ThisyearCamper::where('family_id', $family_id)->where('is_program_housing', '0')->orderBy('birthdate')->get();

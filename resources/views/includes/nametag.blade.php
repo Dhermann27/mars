@@ -1,7 +1,7 @@
 <div class="label" dusk="label-{{ $loop->index }}"
      style="font-family: {{ $camper->yearattending->fontapply == '2' ? $camper->yearattending->font_value : 'Jost' }};">
     <div class="name"
-         style="font-family: {{ $camper->yearattending->font_value }}; font-size: {{ $camper->yearattending->namesize*.5+.3 }}em;">
+         style="font-weight: bold; font-family: {{ $camper->yearattending->font_value }}; font-size: {{ $camper->yearattending->namesize*.5+.8 }}em;">
         {{ $camper->yearattending->name_value }}
     </div>
     <div class="surname">{{ $camper->yearattending->surname_value  }}</div>

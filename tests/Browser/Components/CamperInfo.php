@@ -68,7 +68,7 @@ class CamperInfo extends BaseComponent
         $browser->assertInputValue('@room', $from[0]->roommate)->type('@room', $to[0]->roommate)
             ->assertInputValue('@spon', $from[0]->sponsor)->type('@spon', $to[0]->sponsor)
             ->assertInputValue('@churchid', $from[0]->church_id)
-            ->clear('@churchname')->type('@churchname', substr($to[0]->church->name, 0, 15))
+            ->clear('@churchname')->type('@churchname', substr($to[0]->church->name, 0, -1))
             ->pause(self::WAIT)->keys('@churchname', '{arrow_down}', '{tab}');
         if ($from[0]->is_handicap == 1) $browser->assertChecked('@ih'); else $browser->assertNotChecked('@ih');
         if ($to[0]->is_handicap == 1) $browser->check('@ih'); else $browser->uncheck('@ih');

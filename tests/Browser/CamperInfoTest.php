@@ -53,7 +53,7 @@ class CamperInfoTest extends DuskTestCase
                 ->within(new CamperInfo, function ($browser) use ($camper, $ya, $changes, $cya) {
                     $browser->changeCamper([$camper, $ya], [$changes, $cya]);
                 });
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseHas('users', ['email' => $changes->email]);
@@ -136,15 +136,15 @@ class CamperInfoTest extends DuskTestCase
 
             $browser->loginAs($users[0]->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
             for ($i = 0; $i < count($campers); $i++) {
-                $this->pressTab($browser, $campers[$i]->id)
+                $this->pressTab($browser, $campers[$i]->id, self::WAIT)
                     ->within(new CamperInfo, function ($browser) use ($i, $campers, $yas, $changes, $cyas) {
                         $browser->changeCamper([$campers[$i], $yas[$i]], [$changes[$i], $cyas[$i]]);
                     });
             }
-            $this->submitError($browser);
+            $this->submitError($browser, self::WAIT);
             $changes[0]->email = $otheremail;
             $browser->type('email[]', $otheremail);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
 
         });
 
@@ -241,12 +241,12 @@ class CamperInfoTest extends DuskTestCase
         $user = User::factory()->create();
 
         $camper = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
-            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => parent::getYABirthdate()]);
+            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate()]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'program_id' => Programname::YoungAdult]);
 
         $snowflake = Camper::factory()->create(['roommate' => __FUNCTION__]);
-        $changes = Camper::factory()->make(['roommate' => __FUNCTION__, 'birthdate' => parent::getYABirthdate()]);
+        $changes = Camper::factory()->make(['roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate()]);
         $oldemail = $changes->email;
         $changes->email = $snowflake->email;
         $cya = Yearattending::factory()->make(['camper_id' => $camper->id, 'year_id' => self::$year->id,
@@ -256,11 +256,11 @@ class CamperInfoTest extends DuskTestCase
                 ->within(new CamperInfo, function ($browser) use ($camper, $ya, $changes, $cya) {
                     $browser->changeCamper([$camper, $ya], [$changes, $cya]);
                 });
-            $this->submitError($browser);
+            $this->submitError($browser, self::WAIT);
 
             $changes->email = $oldemail;
             $browser->type('email[]', $oldemail);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->adh($changes);
@@ -277,11 +277,11 @@ class CamperInfoTest extends DuskTestCase
 
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email,
-            'birthdate' => parent::getChildBirthdate(), 'roommate' => __FUNCTION__]);
+            'birthdate' => $this->getChildBirthdate(), 'roommate' => __FUNCTION__]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
 
         $snowflake = User::factory()->create();
-        $changes = Camper::factory()->make(['birthdate' => parent::getChildBirthdate(), 'roommate' => __FUNCTION__]);
+        $changes = Camper::factory()->make(['birthdate' => $this->getChildBirthdate(), 'roommate' => __FUNCTION__]);
         $oldemail = $changes->email;
         $changes->email = $snowflake->email;
         $cya = Yearattending::factory()->make(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
@@ -291,11 +291,11 @@ class CamperInfoTest extends DuskTestCase
                 ->within(new CamperInfo, function ($browser) use ($camper, $ya, $changes, $cya) {
                     $browser->changeCamper([$camper, $ya], [$changes, $cya]);
                 });
-            $this->submitError($browser);
+            $this->submitError($browser, self::WAIT);
 
             $changes->email = $oldemail;
             $browser->type('email[]', $oldemail);
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->adh($changes);
@@ -372,9 +372,9 @@ class CamperInfoTest extends DuskTestCase
             'email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $campers[2] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $campers[3] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => parent::getChildBirthdate()]);
+            'birthdate' => $this->getChildBirthdate()]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[2]->id, 'year_id' => self::$year->id]);
@@ -389,12 +389,12 @@ class CamperInfoTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $campers, $yas, $changes, $cyas) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB);
             for ($i = 0; $i < count($campers); $i++) {
-                $this->pressTab($browser, $campers[$i]->id)
+                $this->pressTab($browser, $campers[$i]->id, self::WAIT)
                     ->within(new CamperInfo, function ($browser) use ($i, $campers, $yas, $changes, $cyas) {
                         $browser->changeCamper([$campers[$i], $yas[$i]], [$changes[$i], $cyas[$i]]);
                     });
             }
-            $this->submitSuccess($browser);
+            $this->submitSuccess($browser, self::WAIT);
         });
 
         $this->assertDatabaseMissing('users', ['email' => $user->email]);
@@ -484,29 +484,6 @@ class CamperInfoTest extends DuskTestCase
             'phonenbr' => str_replace('-', '', $camper->phonenbr), 'birthdate' => $camper->birthdate,
             'roommate' => $camper->roommate, 'sponsor' => $camper->sponsor, 'is_handicap' => $camper->is_handicap,
             'foodoption_id' => $camper->foodoption_id, 'church_id' => $camper->church_id]);
-    }
-
-    private function submitError(Browser $browser)
-    {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Save Changes')->waitFor('div.alert')
-            ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback');
-        return $browser;
-    }
-
-    private function submitSuccess(Browser $browser)
-    {
-        $browser->script('window.scrollTo(9999,9999)');
-        $browser->pause(self::WAIT)->press('Save Changes')->waitUntilMissing('div.alert-danger')
-            ->waitFor('div.alert')->assertVisible('div.alert-success');
-        return $browser;
-    }
-
-    private function pressTab(Browser $browser, $id)
-    {
-        $browser->script('window.scrollTo(0,0)');
-        $browser->pause(self::WAIT)->press('#tablink-' . $id)->pause(self::WAIT);
-        return $browser;
     }
 
 }

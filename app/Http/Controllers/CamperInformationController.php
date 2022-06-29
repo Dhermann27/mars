@@ -88,9 +88,9 @@ class CamperInformationController extends Controller
         if ($id && Gate::allows('is-council')) {
             $family_id = Camper::find($id)->family_id;
         } else {
-            $family_id = parent::getFamilyId();
+            $family_id = $this->getFamilyId();
         }
-        $step = parent::getStepData();
+        $step = $this->getStepData();
         if (!$step["isAddressCurrent"]) {
             $request->session()->flash('warning', 'Please update your address before proceeding.');
             return redirect()->route('household.index');
