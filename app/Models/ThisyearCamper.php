@@ -105,7 +105,7 @@ class ThisyearCamper extends Model
     {
         switch ($this->program_id) {
             case Programname::Meyer:
-                return "Leader: ________________________________<br /><br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________";
+                return "Leader: _________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________<br />________________________________";
             case Programname::Cratty:
             case Programname::Lumens:
                 $parents = "";
@@ -113,16 +113,16 @@ class ThisyearCamper extends Model
                 if (count($pyas) == 2) {
                     if (($pyas[0]->camper->pronoun_id == Pronounname::HeHim && $pyas[1]->camper->pronoun_id == Pronounname::SheHer)
                         || ($pyas[1]->camper->pronoun_id == Pronounname::HeHim && $pyas[0]->camper->pronoun_id == Pronounname::SheHer)) {
-                        $icon = '<i class="fa-solid fa-family"></i>';
+                        $icon = '<i class="fas fa-family"></i>';
                     } elseif ($pyas[0]->camper->pronoun_id == Pronounname::SheHer && $pyas[1]->camper->pronoun_id == Pronounname::SheHer) {
-                        $icon = '<i class="fa-solid fa-family-dress"></i>';
+                        $icon = '<i class="fas fa-family-dress"></i>';
                     } else {
-                        $icon = '<i class="fa-solid fa-family-pants"></i>';
+                        $icon = '<i class="fas fa-family-pants"></i>';
                     }
                 } elseif (count($pyas) == 1) {
                     $icon = '<span class="fa-layers">
-                                <i class="fa-solid fa-person" data-fa-transform="grow-10 left-7 down-1" style="color: darkgray"></i>
-                                <i class="fa-solid fa-child" data-fa-transform="down-6"></i>
+                                <i class="fas fa-person" data-fa-transform="grow-10 left-7 down-1" style="color: darkgray"></i>
+                                <i class="fas fa-child" data-fa-transform="down-6"></i>
                             </span>';
                     if ($pyas[0]->camper->pronoun_id == Pronounname::SheHer) {
                         $icon = preg_replace('/fa-person/', 'fa-person-dress', $icon);
@@ -130,7 +130,7 @@ class ThisyearCamper extends Model
                 } elseif (count($pyas) == 0) {
                     return "SPONSOR NEEDED";
                 } else {
-                    $icon = '<i class="fa-solid fa-people-group"></i>';
+                    $icon = '<i class="fas fa-people-group"></i>';
                 }
                 foreach ($pyas as $pya) {
                     $parents .= $icon . " " . $pya->camper->firstname . " " . $pya->camper->lastname;

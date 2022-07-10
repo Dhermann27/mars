@@ -1,12 +1,16 @@
 @media print {
     body {
+        width: 8.5in;
+        margin: 0in .25in 0 .25in;
         color: #000;
         background: #fff;
         font-family: 'Open Sans', sans-serif;
         line-height: 1.5;
-        width: 100%;
-        margin: 0;
         padding: 0;
+    }
+
+    @page {
+        margin: .875in 0px 0px 0px;
     }
 
     .tab-content > .tab-pane {
@@ -26,7 +30,7 @@
         font-family: 'Open Sans', sans-serif;
     }
 
-    h2, h3, h4, div.panel-heading, table.table thead {
+    h2, h3, h4, div.panel-heading, table.table thead, div.label {
         page-break-after: avoid;
         page-break-inside: avoid
     }

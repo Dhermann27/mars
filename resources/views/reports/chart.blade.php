@@ -45,7 +45,7 @@
                            {{ $item->camper->firstname }} {{ $item->camper->lastname}}@if(!$loop->last),@endif
                            @if(($loop->index+1) % 4 == 0) <br /> @endif
                            @endforeach
-                               "><i class="far fa-info"></i></a>
+                               "><i class="fas fa-info"></i></a>
                     @endif
                 </td>
                 <td>+
@@ -57,7 +57,7 @@
                            {{ $item->yearattending->camper->lastname}}@if(!$loop->last),@endif
                            @if(($loop->index+1) % 4 == 0) <br /> @endif
                            @endforeach
-                               "><i class="far fa-info"></i></a>
+                               "><i class="fas fa-info"></i></a>
                     @endif
                 </td>
                 <td>+
@@ -69,7 +69,7 @@
                            {{ $item->yearattending->camper->lastname}}@if(!$loop->last),@endif
                            @if(($loop->index+1) % 4 == 0) <br /> @endif
                            @endforeach
-                               "><i class="far fa-info"></i></a>
+                               "><i class="fas fa-info"></i></a>
                     @endif
                 </td>
                 <td>+
@@ -81,7 +81,7 @@
                            {{ $item->yearattending->camper->lastname}}@if(!$loop->last),@endif
                            @if(($loop->index+1) % 4 == 0) <br /> @endif
                            @endforeach
-                               "><i class="far fa-info"></i></a>
+                               "><i class="fas fa-info"></i></a>
                     @endif
                 </td>
                 <td>{{ count($year->yearsattending) }}</td>

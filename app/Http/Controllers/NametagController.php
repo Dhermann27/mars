@@ -90,7 +90,7 @@ class NametagController extends Controller
         }
         $campers = $cqb->get();
         $campers->where('age', '<', '18')->load(['parents.room.building', 'parents.camper']);
-        return view('layouts.nametags', ['campers' => $campers]);
+        return view('layouts.allnametags', ['campers' => $campers]);
     }
 
 //    public function write(Request $request, $id)

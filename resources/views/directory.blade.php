@@ -13,7 +13,7 @@
         <ul class="pagination justify-content-center pt-3">
             <li class="page-item">
                 <button class="page-link" id="prev" aria-label="Previous">
-                    <i class="far fa-chevron-left fa-fw"></i> Previous
+                    <i class="fas fa-chevron-left fa-fw"></i> Previous
                 </button>
             </li>
             @foreach($letters->groupBy('firstletter') as $letter => $families)
@@ -23,7 +23,7 @@
             @endforeach
             <li class="page-item">
                 <button class="page-link" id="next" aria-label="Next">
-                    Next <i class="far fa-chevron-right fa-fw"></i>
+                    Next <i class="fas fa-chevron-right fa-fw"></i>
                 </button>
             </li>
         </ul>

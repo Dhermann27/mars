@@ -22,11 +22,11 @@ class Chargetype extends Model
     }
 
     public function byyearcharges() {
-        return $this->hasMany('App\Models\ByyearCharge');
+        return $this->hasMany(ByyearCharge::class);
     }
 
     public function thisyearcharges() {
-        return $this->hasMany('App\Models\ThisyearCharge');
+        return $this->hasMany(ThisyearCharge::class);
     }
 
 }

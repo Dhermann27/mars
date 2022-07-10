@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function camper()
     {
-        return $this->hasOne('App\Models\Camper', 'email', 'email');
+        return $this->hasOne(Camper::class, 'email', 'email');
     }
 
     public function sendPasswordResetNotification($token)

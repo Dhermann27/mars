@@ -33,20 +33,20 @@ class Workshop extends Model
 
     public function room()
     {
-        return $this->hasOne('App\Models\Room', 'id', 'room_id');
+        return $this->hasOne(Room::class, 'id', 'room_id');
     }
 
     public function timeslot()
     {
-        return $this->hasOne('App\Models\Timeslot', 'id', 'timeslot_id');
+        return $this->hasOne(Timeslot::class, 'id', 'timeslot_id');
     }
 
-    public function getEmailsAttribute()
-    {
-        return DB::table('yearsattending__workshop')
-            ->join('yearsattending', 'yearsattending.id', '=', 'yearsattending__workshop.yearattending_id')
-            ->join('campers', 'campers.id', '=', 'yearsattending.camper_id')
-            ->where('yearsattending__workshop.workshop_id', $this->id)->whereNotNull('campers.email')
-            ->implode('email', '; ');
-    }
+//    public function getEmailsAttribute()
+//    {
+//        return DB::table('yearsattending__workshop')
+//            ->join('yearsattending', 'yearsattending.id', '=', 'yearsattending__workshop.yearattending_id')
+//            ->join('campers', 'campers.id', '=', 'yearsattending.camper_id')
+//            ->where('yearsattending__workshop.workshop_id', $this->id)->whereNotNull('campers.email')
+//            ->implode('email', '; ');
+//    }
 }

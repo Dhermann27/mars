@@ -76,19 +76,19 @@ class NametagTest extends DuskTestCase
                 ->assertSeeIn(self::ACTIVETAB . ' .label .name', $camper->firstname . ' ' . $camper->lastname)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .pronoun', $camper->pronoun->name)
                 ->select('name-' . $camper->id, '4')
-                ->select('namesize-' . $camper->id, '4')
+                ->type('namesize-' . $camper->id, '5')
                 ->uncheck('pronoun-' . $camper->id)
                 ->assertDontSeeIn('.label', $camper->lastname)
-                ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-size: 2.3em')
+                ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-size: 3.3em')
                 ->assertDontSeeIn('.label .pronoun', $camper->pronoun->name)->pause(self::WAIT);
             $this->submitSuccess($browser, self::WAIT);
             $browser->assertDontSeeIn('.label', $camper->lastname)
-                ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-size: 2.3em')
+                ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-size: 3.3em')
                 ->assertDontSeeIn('.label', $camper->pronoun->name);
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'nametag' => '144215521']);
+            'nametag' => '145215521']);
     }
 
     public function testReturningSingleMomAllandNoneCopy()

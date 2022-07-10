@@ -43,7 +43,7 @@
                 <li id="additem" class="list-group-item px-2">
                     <button class="btn btn-info p-1 float-end" data-mdb-toggle="tooltip" data-mdb-html="true"
                             title="Need to remove an existing camper from your family? Please use the Contact Us form to reach the Registrar.">
-                        <i class="far fa-circle-question fa-xl"></i>
+                        <i class="fas fa-circle-question fa-xl"></i>
                     </button>
                     <button id="addcamper" class="btn btn-lg btn-secondary" onclick="addCamper();" type="button">
                         <i class="fas fa-user-plus"></i> Add New Camper

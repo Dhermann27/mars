@@ -8,6 +8,6 @@ class ChartdataNewcampers extends Model
 {
     public function yearattending()
     {
-        return $this->hasOne('App\Models\Yearattending', 'id', 'yearattending_id');
+        return $this->hasOne(Yearattending::class, 'id', 'yearattending_id');
     }
 }

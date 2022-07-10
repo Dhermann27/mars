@@ -33,7 +33,7 @@
             @if(isset($tooltip))
                 <button class="btn btn-info select-helpbtn p-1" data-mdb-toggle="tooltip" data-mdb-html="true"
                         title="{{ $tooltip }}">
-                    <i class="far fa-circle-question fa-xl"></i>
+                    <i class="fas fa-circle-question fa-xl"></i>
                 </button>
             @endif
         </div>
@@ -66,7 +66,7 @@
                 @if(isset($tooltip))
                     <button class="btn btn-info register-helpbtn p-1" data-mdb-toggle="tooltip" data-mdb-html="true"
                             title="{{ $tooltip }}">
-                        <i class="far fa-circle-question fa-xl"></i>
+                        <i class="fas fa-circle-question fa-xl"></i>
                     </button>
                 @endif
             </div>

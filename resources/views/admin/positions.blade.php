@@ -25,7 +25,7 @@
                                 <th>Maximum Compensation</th>
                                 <th><a href="#" class="float-end" data-toggle="tooltip" data-html="true"
                                        title="Although you will no longer be able to assign users to this position, previous years' assignments and their applied compensation will not be affected."><i
-                                            class="far fa-info"></i></a> End Staff Position?
+                                            class="fas fa-info"></i></a> End Staff Position?
                                 </th>
                             </tr>
                             </thead>

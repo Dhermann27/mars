@@ -75,7 +75,7 @@
             {{--                                <input id="timestamp" type="text" class="form-control" name="timestamp"--}}
             {{--                                       value="{{ old('timestamp', date('Y-m-d')) }}">--}}
             {{--                                <div class="input-group-append">--}}
-            {{--                                    <span class="input-group-text"><i class="far fa-calendar"></i></span>--}}
+            {{--                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>--}}
             {{--                                </div>--}}
             {{--                                <div class="input-group-addon">--}}
             {{--                                </div>--}}

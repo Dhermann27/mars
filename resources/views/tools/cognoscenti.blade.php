@@ -15,7 +15,7 @@
                 <th>
                     <a class="btn btn-secondary float-end"
                        href="mailto:{{ $positions->flatten(1)->implode('email', ';') }}">
-                        Email All <i class="far fa-envelope"></i></a>
+                        Email All <i class="fas fa-envelope"></i></a>
                 </th>
             </tr>
             </thead>
@@ -25,14 +25,14 @@
                     <td colspan="3">{{ $pctype['name'] }}</td>
                     <td><a class="btn btn-secondary btn-sm"
                            href="mailto:{{ $positions[$pctype['id']]->implode('email', ';') }}">
-                            Email Group <i class="far fa-envelope"></i></a></td>
+                            Email Group <i class="fas fa-envelope"></i></a></td>
                 </tr>
                 @forelse($positions[$pctype['id']] as $position)
                     <tr>
                         <td>{!! $position->staffpositionname !!}</td>
                         <td>{{ $position->lastname }}, {{ $position->firstname }}</td>
                         <td>{{ $position->email }} <a href="mailto:{{ $position->email }}">
-                                <i class="far fa-envelope"></i></a>
+                                <i class="fas fa-envelope"></i></a>
                         </td>
                         <td>
                             @include('includes.admin.controls', ['id' => $position->camper_id])

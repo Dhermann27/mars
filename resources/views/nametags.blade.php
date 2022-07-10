@@ -7,7 +7,6 @@
     <style>
         div.label {
             border: 2px dashed black;
-            margin: auto;
         }
     </style>
 @endsection
@@ -32,11 +31,11 @@
                     <div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $camper->id }}"
                          role="tabpanel">
                         <p>&nbsp;</p>
-{{--                        <button id="copyAnswers-{{ $camper->id }}" class="btn btn-primary btn-shadow float-end"--}}
-{{--                                type="button" onclick="return copyAnswers(event);">--}}
-{{--                            <i class="far fa-copy fa-2x fa-pull-left"></i> Copy these preferences to<br/> all family--}}
-{{--                            members--}}
-{{--                        </button>--}}
+                        {{--                        <button id="copyAnswers-{{ $camper->id }}" class="btn btn-primary btn-shadow float-end"--}}
+                        {{--                                type="button" onclick="return copyAnswers(event);">--}}
+                        {{--                            <i class="fas fa-copy fa-2x fa-pull-left"></i> Copy these preferences to<br/> all family--}}
+                        {{--                            members--}}
+                        {{--                        </button>--}}
                         <div class="row mb-3 col-md-6 offset-md-3">
                             @include('includes.nametag', ['camper' => $camper])
                         </div>
@@ -60,29 +59,22 @@
                             </option>
                         </x-form-group>
 
-                        <x-form-group type="select" name="namesize-{{ $camper->id }}" label="Name Size"
-                                      :formobject="$camper->yearattending">
-                            <option
-                                value="2" @selected(old('namesize-' . $camper->id, $camper->yearattending->namesize) == 2)>
-                                Normal
-                            </option>
-                            <option
-                                value="3" @selected(old('namesize-' . $camper->id, $camper->yearattending->namesize) == 3)>
-                                Big
-                            </option>
-                            <option
-                                value="4" @selected(old('namesize-' . $camper->id, $camper->yearattending->namesize) == 4)>
-                                Bigger
-                            </option>
-                            <option
-                                value="5" @selected(old('namesize-' . $camper->id, $camper->yearattending->namesize) == 5)>
-                                Bigly
-                            </option>
-                            <option
-                                value="1" @selected(old('namesize-' . $camper->id, $camper->yearattending->namesize) == 1)>
-                                Small
-                            </option>
-                        </x-form-group>
+                        <div class="row align-self-center my-3">
+                            <div class="container-md col-lg-6">
+                                <label class="form-label" for="namesize-{{ $camper->id }}">Name Size</label>
+                                @if(config('app.name') == 'MUUSADusk')
+                                    <input
+                                        value="{{ old('namesize-' . $camper->id, $camper->yearattending->namesize) }}"
+                                        id="namesize-{{ $camper->id }}" name="namesize-{{ $camper->id }}"/>
+                                @else
+                                    <div class="range">
+                                        <input type="range" class="form-range" min="1" max="5" step="1"
+                                               value="{{ old('namesize-' . $camper->id, $camper->yearattending->namesize) }}"
+                                               id="namesize-{{ $camper->id }}" name="namesize-{{ $camper->id }}"/>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="row align-self-center mb-3">
                             <div class="container-md col-lg-6">
@@ -179,7 +171,8 @@
                                     <input type="hidden" value="2" name="fontapply-{{ $camper->id }}">
                                     <input
                                         class="form-check-input {{ $errors->has('fontapply-' . $camper->id) ? 'is-invalid' : '' }}"
-                                        type="checkbox" id="fontapply-{{ $camper->id }}" name="fontapply-{{ $camper->id }}"
+                                        type="checkbox" id="fontapply-{{ $camper->id }}"
+                                        name="fontapply-{{ $camper->id }}"
                                         value="1" @checked(old('fontapply-' . $camper->id, $camper->yearattending->fontapply) == "1") />
                                     <label class="form-check-label" for="fontapply-{{ $camper->id }}">
                                         Check this box only apply the font to the name
@@ -219,7 +212,7 @@
             const names = nametagName[nametagName.selectedIndex].getAttribute("data-content").split("||");
             const firstname = pane.querySelector(".name");
             firstname.innerText = names[0];
-            firstname.style.fontSize = (parseInt(document.getElementById("namesize-" + id).value, 10) * .5 + .3) + "em";
+            firstname.style.fontSize = (parseInt(document.getElementById("namesize-" + id).value, 10) * .5 + .8) + "em";
             firstname.style.fontFamily = fontFam;
             pane.querySelector(".surname").innerText = names[1];
             for (let i = 1; i < 5; i++) {
@@ -240,7 +233,7 @@
             const references = document.getElementById('tab-' + id).querySelectorAll('select, input[type=checkbox]');
             const allpanes = document.querySelectorAll('div.tab-pane:not(#tab-' + id + ')');
             for (let i = 0; i < allpanes.length; i++) {
-                const elements = allpanes[i].querySelectorAll('select, input[type=checkbox]');
+                const elements = allpanes[i].querySelectorAll('select, input');
                 for (let j = 0; j < elements.length; j++) {
                     if (elements[j].nodeName === "SELECT") {
                         window.setSelect('#' + elements[j].id, references[j].value);
@@ -253,7 +246,7 @@
             return false;
         }
 
-        const inputs = document.querySelectorAll('#nametagform input[type=checkbox], #nametagform select');
+        const inputs = document.querySelectorAll('#nametagform input, #nametagform select');
         for (let i = 0; i < inputs.length; i++) {
             window.addEvent(inputs[i], 'change', redraw);
         }

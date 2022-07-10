@@ -24,11 +24,11 @@ class CamperStaff extends Model
 
     public function camper()
     {
-        return $this->hasOne('App\Models\Camper');
+        return $this->hasOne(Camper::class);
     }
 
     public function staffposition()
     {
-        return $this->hasOne('App\Models\Staffposition');
+        return $this->hasOne(Staffposition::class);
     }
 }

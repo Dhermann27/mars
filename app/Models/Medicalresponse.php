@@ -11,6 +11,6 @@ class Medicalresponse extends Model
 
     public function yearattending()
     {
-        return $this->hasOne('App\Models\Yearattending');
+        return $this->hasOne(Yearattending::class);
     }
 }

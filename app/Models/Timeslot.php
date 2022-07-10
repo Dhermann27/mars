@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Timeslot extends Model
 {
@@ -17,7 +18,12 @@ class Timeslot extends Model
 
     public function workshops()
     {
-        return $this->hasMany('App\Models\Workshop');
+        return $this->hasMany(Workshop::class);
+    }
+
+    public function thisyearWorkshops()
+    {
+        return $this->hasMany(Workshop::class)->where('year_id', DB::raw('getcurrentyear()'));
     }
 
 }

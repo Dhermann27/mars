@@ -11,16 +11,16 @@ class Room extends Model
 
     public function building()
     {
-        return $this->hasOne('App\Models\Building', 'id', 'building_id');
+        return $this->hasOne(Building::class, 'id', 'building_id');
     }
 
     public function occupants()
     {
-        return $this->hasMany('App\Models\ThisyearCamper', 'room_id', 'id');
+        return $this->hasMany(ThisyearCamper::class, 'room_id', 'id');
     }
 
     public function yearsattending()
     {
-        return $this->hasMany('App\Models\Yearsattending');
+        return $this->hasMany(Yearsattending::class);
     }
 }

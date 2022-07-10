@@ -30,16 +30,16 @@
                     <input type="radio" checked="checked" class="btn-check" name="adults-housing" id="adults-housing1"
                            autocomplete="off" value="1"/>
                     <label for="adults-housing1" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
-                           title="Guestroom, Cabin, or Loft Housing"><i class="fa-solid fa-hotel"></i></label>
+                           title="Guestroom, Cabin, or Loft Housing"><i class="fas fa-hotel"></i></label>
                     <input type="radio" class="btn-check" name="adults-housing" id="adults-housing2" value="2"
                            autocomplete="off"/>
                     <label for="adults-housing2" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
                            title="Camp Lakewood Cabin (dorm style) Housing"><i
-                            class="fa-solid fa-people-roof"></i></label>
+                            class="fas fa-people-roof"></i></label>
                     <input type="radio" class="btn-check" name="adults-housing" id="adults-housing3" value="3"
                            autocomplete="off"/>
                     <label for="adults-housing3" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
-                           title="Tent Camping"><i class="fa-solid fa-campground"></i></label>
+                           title="Tent Camping"><i class="fas fa-campground"></i></label>
                 </div>
             </div>
             <div class="col-md-2 text-end" id="adults-fee">$0.00</div>
@@ -61,11 +61,11 @@
                            value="2" autocomplete="off"/>
                     <label for="yas-housing2" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
                            title="Camp Lakewood Cabin (dorm style) Housing"><i
-                            class="fa-solid fa-people-roof"></i></label>
+                            class="fas fa-people-roof"></i></label>
                     <input type="radio" class="btn-check" name="yas-housing" id="yas-housing3"
                            value="3" autocomplete="off"/>
                     <label for="yas-housing3" class="btn btn-outline-primary" data-mdb-toggle="tooltip"
-                           title="Tent Camping"><i class="fa-solid fa-campground"></i></label>
+                           title="Tent Camping"><i class="fas fa-campground"></i></label>
                 </div>
             </div>
             <div class="col-md-2 text-end" id="yas-fee">$0.00</div>

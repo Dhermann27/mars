@@ -11,22 +11,22 @@ class Camper extends Model
 
     public function family()
     {
-        return $this->hasOne('App\Models\Family', 'id', 'family_id');
+        return $this->hasOne(Family::class, 'id', 'family_id');
     }
 
     public function pronoun()
     {
-        return $this->hasOne('App\Models\Pronoun', 'id', 'pronoun_id');
+        return $this->hasOne(Pronoun::class, 'id', 'pronoun_id');
     }
 
     public function foodoption()
     {
-        return $this->hasOne('App\Models\Foodoption');
+        return $this->hasOne(Foodoption::class);
     }
 
     public function church()
     {
-        return $this->hasOne('App\Models\Church', 'id', 'church_id');
+        return $this->hasOne(Church::class, 'id', 'church_id');
     }
 
     public function getChurchName() {
@@ -35,16 +35,16 @@ class Camper extends Model
 
     public function yearsattending()
     {
-        return $this->hasMany('App\Models\Yearattending');
+        return $this->hasMany(Yearattending::class);
     }
 
     public function charges()
     {
-        return $this->hasMany('App\Models\Charge');
+        return $this->hasMany(Charge::class);
     }
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'email', 'email');
+        return $this->hasOne(User::class, 'email', 'email');
     }
 }

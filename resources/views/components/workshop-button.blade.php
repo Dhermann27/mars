@@ -4,9 +4,9 @@
     {{ $attributes->class(['list-group-item', 'list-group-item-action',
         'text-muted' => $workshop->enrolled >= $workshop->capacity]) }}>
     @if($workshop->enrolled >= $workshop->capacity)
-        <i class="far fa-times fa-pull-right fa-fw mt-2"></i>
+        <i class="fas fa-times fa-pull-right fa-fw mt-2"></i>
     @elseif($workshop->enrolled >= ($workshop->capacity * .75))
-        <i class="far fa-exclamation-triangle fa-pull-right fa-fw mt-2"></i>
+        <i class="fas fa-exclamation-triangle fa-pull-right fa-fw mt-2"></i>
     @endif
     {!! $workshop->name !!}
     ({{ $workshop->display_days }})

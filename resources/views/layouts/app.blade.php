@@ -68,42 +68,42 @@
                         <ul class="dropdown-menu" aria-labelledby="menuCampInfo">
                             @if($year->is_live)
                                 <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">
-                                            <i class="far fa-desktop fa-fw"></i> Web Brochure</a></h5>
+                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider"/>
                                 </li>
                             @endif
-                            <li><a href="{{ route('housing') }}" class="dropdown-item"><i class="far fa-bath fa-fw"></i>
+                            <li><a href="{{ route('housing') }}" class="dropdown-item"><i class="fas fa-bath fa-fw"></i>
                                     Housing Options</a>
                             </li>
                             <li><a href="{{ route('programs') }}" class="dropdown-item">
-                                    <i class="far fa-sitemap fa-fw"></i> Programs
+                                    <i class="fas fa-sitemap fa-fw"></i> Programs
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('workshops.display') }}" class="dropdown-item">
-                                    <i class="far fa-map fa-fw"></i> Workshop List
+                                    <i class="fas fa-map fa-fw"></i> Workshop List
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('themespeaker') }}" class="dropdown-item">
-                                    <i class="far fa-microphone fa-fw"></i> Theme Speakers
+                                    <i class="fas fa-microphone fa-fw"></i> Theme Speakers
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('cost') }}" class="dropdown-item">
-                                    <i class="far fa-calculator fa-fw"></i> Cost Calculator
+                                    <i class="fas fa-calculator fa-fw"></i> Cost Calculator
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('scholarship') }}" class="dropdown-item">
-                                    <i class="far fa-universal-access fa-fw"></i> Scholarships
+                                    <i class="fas fa-universal-access fa-fw"></i> Scholarships
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('workshops.excursions') }}" class="dropdown-item">
-                                    <i class="far fa-binoculars fa-fw"></i> Excursions
+                                    <i class="fas fa-binoculars fa-fw"></i> Excursions
                                 </a>
                             </li>
                             <li>
@@ -113,17 +113,17 @@
                             @if($year->is_calendar)
                                 <li>
                                     <a href="#" class="dropdown-item">
-                                        <i class="far fa-calendar-alt fa-fw"></i> Daily Schedule</a>
+                                        <i class="fas fa-calendar-alt fa-fw"></i> Daily Schedule</a>
                                 </li>
                             @endif
                             <li>
                                 <a href="{{ route('directory') }}" class="dropdown-item">
-                                    <i class="far fa-address-book fa-fw"></i> Online Directory</a>
+                                    <i class="fas fa-address-book fa-fw"></i> Online Directory</a>
                             </li>
                             @if($year->is_artfair)
                                 <li>
                                     <a href="#" class="dropdown-item">
-                                        <i class="far fa-shopping-bag fa-fw"></i> Art Fair Submission</a>
+                                        <i class="fas fa-shopping-bag fa-fw"></i> Art Fair Submission</a>
                                 </li>
                             @endif
                             @if($year->is_workshop_proposal)
@@ -156,12 +156,7 @@
                                         <div class="col-megamenu">
                                             <h6 class="title"><a href="#">Dashboard</a></h6>
                                             <ul class="list-unstyled">
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                {{-- +X campers in last week, most recent campers or payments?                                               --}}
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end col-3 -->
@@ -169,7 +164,13 @@
                                         <div class="col-megamenu">
                                             <h6 class="title">Reports</h6>
                                             <ul class="list-unstyled">
-                                                {{-- +X campers in last week, most recent campers or payments?                                               --}}
+                                                <li>
+                                                    <a href="{{ route('reports.workshops') }}"
+                                                       data-mdb-toggle="tooltip" title="Slow call">
+                                                        Workshop Attendees
+                                                        <i class="fas fa-turtle fa-xl"></i>
+                                                    </a>
+                                                </li>
                                                 {{--                                                <li><a href="#">Custom Menu</a></li>--}}
                                                 {{--                                                <li><a href="#">Custom Menu</a></li>--}}
                                                 {{--                                                <li><a href="#">Custom Menu</a></li>--}}
@@ -185,9 +186,10 @@
                                             <ul class="list-unstyled">
                                                 <li>
                                                     <a href="{{ route('tools.nametags.all') }}"
-                                                       data-mdb-toggle="tooltip" title="Firefox only">
-                                                        Print All Nametags
-                                                        <i class="fa-brands fa-firefox-browser fa-xl"></i>
+                                                       data-mdb-toggle="tooltip" title="Firefox only, Slow call">
+                                                        Nametags Print
+                                                        <i class="fab fa-firefox-browser fa-xl"></i>
+                                                        <i class="fas fa-turtle fa-xl"></i>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -211,7 +213,7 @@
                                 </div><!-- end row -->
 
                                 {{--                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">--}}
-                                {{--                                            <i class="far fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
+                                {{--                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
                                 {{--                                </li>--}}
                                 {{--                                <li>--}}
                                 {{--                                    <hr class="dropdown-divider"/>--}}
@@ -243,25 +245,25 @@
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-users fa-fw"></i> Camper Selection
+                                        <i class="fas fa-users fa-fw"></i> Camper Selection
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-home fa-fw"></i> Billing Address
+                                        <i class="fas fa-home fa-fw"></i> Billing Address
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-user-gear fa-fw"></i> Camper Information
+                                        <i class="fas fa-user-gear fa-fw"></i> Camper Information
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="far fa-usd-square fa-fw"></i> Account Statement
+                                        <i class="fas fa-usd-square fa-fw"></i> Account Statement
                                     </a>
                                 </li>
                                 @if(!$year->is_live)
@@ -273,43 +275,43 @@
                                     </h6>
                                     <li>
                                         <a href="#" class="dropdown-item disabled">
-                                            <i class="far fa-rocket fa-fw"></i> Workshop List
+                                            <i class="fas fa-rocket fa-fw"></i> Workshop List
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" class="dropdown-item disabled">
-                                            <i class="far fa-bed fa-fw"></i> Room Selection
+                                            <i class="fas fa-bed fa-fw"></i> Room Selection
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" class="dropdown-item disabled">
-                                            <i class="far fa-id-card fa-fw"></i> Nametags
+                                            <i class="fas fa-id-card fa-fw"></i> Nametags
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" class="dropdown-item disabled">
-                                            <i class="far fa-envelope fa-fw"></i> Confirmation
+                                            <i class="fas fa-envelope fa-fw"></i> Confirmation
                                         </a>
                                     </li>
                                 @else
                                     <li>
                                         <a href="{{ route('roomselection.index') }}" class="dropdown-item">
-                                            <i class="far fa-bed fa-fw"></i> Room Selection
+                                            <i class="fas fa-bed fa-fw"></i> Room Selection
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
-                                            <i class="far fa-rocket fa-fw"></i> Workshops
+                                            <i class="fas fa-rocket fa-fw"></i> Workshops
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('nametag.index') }}" class="dropdown-item">
-                                            <i class="far fa-id-card fa-fw"></i> Nametags
+                                            <i class="fas fa-id-card fa-fw"></i> Nametags
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">
-                                            <i class="far fa-envelope fa-fw"></i> Confirmation
+                                            <i class="fas fa-envelope fa-fw"></i> Confirmation
                                         </a>
                                     </li>
                                 @endif
@@ -320,7 +322,7 @@
                                     <a class="dropdown-item"
                                        href="{{ route('logout') }}"
                                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        <i class="fad fa-sign-out-alt"></i> Logout
+                                        <i class="fas fa-sign-out-alt"></i> Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                           style="display: none;">
@@ -387,7 +389,7 @@
 
 {{--            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"--}}
 {{--                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">--}}
-{{--                <i class="far fa-bars"></i>--}}
+{{--                <i class="fas fa-bars"></i>--}}
 {{--            </button>--}}
 {{--            <div class="collapse navbar-collapse" id="navbarCollapse">--}}
 {{--                <ul class="navbar-nav ml-auto navbar-center" id="mySidenav">--}}
@@ -447,11 +449,11 @@
 {{--                                </a>--}}
 {{--                                <div class="dropdown-menu dropdown-menu-right mt-0">--}}
 {{--                                    <a href="{{ route('household.index') }}" class="dropdown-item">--}}
-{{--                                        <i class="far fa-home fa-fw"></i> Household</a>--}}
+{{--                                        <i class="fas fa-home fa-fw"></i> Household</a>--}}
 {{--                                    <a href="{{ route('camperinfo.index') }}" class="dropdown-item">--}}
-{{--                                        <i class="far fa-users fa-fw"></i> Campers</a>--}}
+{{--                                        <i class="fas fa-users fa-fw"></i> Campers</a>--}}
 {{--                                    <a href="{{ route('payment.index') }}" class="dropdown-item">--}}
-{{--                                        <i class="far fa-usd-square fa-fw"></i> Statement</a>--}}
+{{--                                        <i class="fas fa-usd-square fa-fw"></i> Statement</a>--}}
 {{--                                    @if(!$year->is_live)--}}
 {{--                                        <div class="dropdown-divider"></div>--}}
 {{--                                        <h6 class="dropdown-header">--}}
@@ -463,13 +465,13 @@
 {{--                                        <a href="#" class="dropdown-item disabled">Confirmation</a>--}}
 {{--                                    @else--}}
 {{--                                        <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">--}}
-{{--                                            <i class="far fa-rocket fa-fw"></i> Workshops</a>--}}
+{{--                                            <i class="fas fa-rocket fa-fw"></i> Workshops</a>--}}
 {{--                                        <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
-{{--                                            <i class="far fa-bed fa-fw"></i> Room Selection</a>--}}
+{{--                                            <i class="fas fa-bed fa-fw"></i> Room Selection</a>--}}
 {{--                                        <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
-{{--                                            <i class="far fa-id-card fa-fw"></i> Nametags</a>--}}
+{{--                                            <i class="fas fa-id-card fa-fw"></i> Nametags</a>--}}
 {{--                                        --}}{{--                                        <a href="{{ route('confirm') }}" class="dropdown-item">--}}
-{{--                                        --}}{{--                                            <i class="far fa-envelope fa-fw"></i> Confirmation</a>--}}
+{{--                                        --}}{{--                                            <i class="fas fa-envelope fa-fw"></i> Confirmation</a>--}}
 {{--                                    @endif--}}
 
 
@@ -775,7 +777,7 @@
 {{--                                        <div id="login-searching" class="alert alert-info w-100 collapse">--}}
 {{--                                            <h6>Welcome back!</h6>--}}
 {{--                                            <p>Retrieving your records... <i--}}
-{{--                                                    class="fad fa-spinner-third fa-spin"></i>--}}
+{{--                                                    class="fas fa-spinner-third fa-spin"></i>--}}
 {{--                                            </p>--}}
 {{--                                        </div>--}}
 
@@ -824,13 +826,13 @@
 {{--                                                <div class="input-group float-sm-right">--}}
 {{--                                                    <div class="input-group-prepend">--}}
 {{--                                                        <button type="button" class="btn btn-default spinner"--}}
-{{--                                                                data-dir="up"><i class="far fa-plus"></i></button>--}}
+{{--                                                                data-dir="up"><i class="fas fa-plus"></i></button>--}}
 {{--                                                    </div>--}}
 {{--                                                    <input id="newcampers" class="form-control" name="newcampers"--}}
 {{--                                                           value="1"/>--}}
 {{--                                                    <div class="input-group-append">--}}
 {{--                                                        <button type="button" class="btn btn-default spinner"--}}
-{{--                                                                data-dir="dwn"><i class="far fa-minus"></i>--}}
+{{--                                                                data-dir="dwn"><i class="fas fa-minus"></i>--}}
 {{--                                                        </button>--}}
 {{--                                                    </div>--}}
 {{--                                                </div>--}}

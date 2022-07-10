@@ -85,7 +85,7 @@
                             @endif
                         </p>
                         <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">
-                            Take a look <i class="far fa-file-pdf mx-2"></i>
+                            Take a look <i class="fas fa-file-pdf mx-2"></i>
                         </a>
                     </div>
                 </div>

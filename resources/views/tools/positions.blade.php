@@ -34,7 +34,7 @@
                                         @if($assignment->yearattending_id == 0)
                                             <a href="#" class="pl-2" data-toggle="tooltip" data-html="true"
                                                title="Not yet registered for {{ $year->year }}">
-                                                <i class="far fa-thumbs-down"></i></a>
+                                                <i class="fas fa-thumbs-down"></i></a>
                                         @endif
                                     </td>
                                     <td>${{ number_format($assignment->max_compensation, 2) }}</td>

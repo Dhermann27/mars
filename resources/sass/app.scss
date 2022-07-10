@@ -337,15 +337,35 @@ textarea {
 div.label {
     width: 4.125in;
     height: 3.125in;
-    padding: .125in .15in 0 .25in;
+    padding: .125in .25in .125in .25in;
     float: left;
     overflow: hidden;
+    position: relative;
+}
+
+div.label-container {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    padding: .125in .25in .125in .25in;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div.label .container {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 95%;
 }
 
 div.label div.surname {
     text-align: right;
     margin-bottom: .25in;
     font-size: 1.3em;
+
 }
 
 div.label div.pronoun {
@@ -355,32 +375,4 @@ div.label div.pronoun {
 
 div.label div.line1, div.label div.line2, div.label div.line3, div.label div.line4, div.label div.parent {
     font-size: 1.3em;
-}
-
-.opensans {
-    font-family: 'Jost', Helvetica, sans-serif;
-}
-
-.indie {
-    font-family: 'Indie Flower', Gadget, sans-serif;
-}
-
-.ftg {
-    font-family: 'Fredericka the Great', Charcoal, sans-serif;
-}
-
-.quest {
-    font-family: 'Mystery Quest', 'Lucida Grande', sans-serif;
-}
-
-.vibes {
-    font-family: 'Great Vibes', Geneva, sans-serif;
-}
-
-.bangers {
-    font-family: 'Bangers', Monaco, sans-serif;
-}
-
-.comic {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
 }

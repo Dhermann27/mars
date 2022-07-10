@@ -39,7 +39,7 @@
                     {{--                                        <td width="25%">{{ $camper->lastname }}, {{ $camper->firstname }}--}}
                     {{--                                            @if(isset($camper->email))--}}
                     {{--                                                <a href="mailto:{{ $camper->email }}" class="px-2 float-end"><i--}}
-                    {{--                                                        class="far fa-envelope"></i></a>--}}
+                    {{--                                                        class="fas fa-envelope"></i></a>--}}
                     {{--                                            @endif--}}
                     {{--                                        </td>--}}
                     {{--                                        <td width="15%">{{ $camper->birthdate }}</td>--}}

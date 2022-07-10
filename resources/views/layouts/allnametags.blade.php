@@ -10,26 +10,6 @@
     <title>All Nametags</title>
     <link rel="stylesheet" href="/css/print.css">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <style>
-        body {
-            width: 8.5in;
-            margin: 0in .25in 0 .25in;
-        }
-
-        @page {
-            margin: 1in 0px 0px 0px;
-        }
-
-        .label {
-            float: left;
-        }
-
-        .page-break {
-            clear: left;
-            display: block;
-            page-break-after: always;
-        }
-    </style>
 </head>
 <body>
 @php
@@ -63,8 +43,10 @@
     @if((!$loop->first && ($loop->index+1) % 6 == 0) || $loop->last)
         <div class="page-break"></div>
         @foreach($backs as $back)
-            <div class="label pt-3" dusk="back-{{ $loop->index }}">
-                <p>{!! $back !!}</p>
+            <div class="label py-3" dusk="back-{{ $loop->index }}">
+                <div class="container">
+                    {!! $back !!}
+                </div>
             </div>
         @endforeach
         @php

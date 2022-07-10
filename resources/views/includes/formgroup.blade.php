@@ -51,7 +51,7 @@
             <div class="form-group row">
                 <div class="col-md-10 text-md-right">
                     <button type="button" class="btn btn-default nextcamper">{{ $attribs["name"] }}
-                        <i class="far fa-chevron-right"></i>
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
@@ -74,7 +74,7 @@
     <label for="{{ $attribs["name"] }}" class="form-label">
         @if(isset($title))
             <a href="#" class="p-2 float-end" data-toggle="tooltip" data-html="true"
-               title="@lang('registration.' . $title)"><i class="far fa-info"></i></a>
+               title="@lang('registration.' . $title)"><i class="fas fa-info"></i></a>
         @endif
         {{ $label }}
     </label>

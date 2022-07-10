@@ -14,7 +14,7 @@
                 <div class="form-group row @error('roomid-' . $camper->id) has-danger @enderror">
                     <label for="roomid-{{ $camper->id }}" class="col-md-4 control-label">
                         <button type="button" id="quickcopy" href="#" class="p-2 float-end" data-toggle="tooltip"
-                                title="Assign entire family to this room"><i class="far fa-copy"></i></button>
+                                title="Assign entire family to this room"><i class="fas fa-copy"></i></button>
                         {{ $camper->firstname }} {{ $camper->lastname }}
                     </label>
 

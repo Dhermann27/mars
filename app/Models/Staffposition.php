@@ -11,16 +11,16 @@ class Staffposition extends Model
 
     public function compensationlevel()
     {
-        return $this->hasOne('App\Models\Compensationlevel', 'id', 'compensationlevel_id');
+        return $this->hasOne(Compensationlevel::class, 'id', 'compensationlevel_id');
     }
 
     public function program()
     {
-        return $this->hasOne('App\Models\Program', 'id', 'progrram_id');
+        return $this->hasOne(Program::class, 'id', 'progrram_id');
     }
 
     public function assigned()
     {
-        return $this->hasMany('App\Models\YearattendingStaff');
+        return $this->hasMany(YearattendingStaff::class);
     }
 }
