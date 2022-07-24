@@ -23,24 +23,32 @@
             @foreach($pctypes as $pctype)
                 <tr class="bg-info">
                     <td colspan="3">{{ $pctype['name'] }}</td>
-                    <td><a class="btn btn-secondary btn-sm"
-                           href="mailto:{{ $positions[$pctype['id']]->implode('email', ';') }}">
-                            Email Group <i class="fas fa-envelope"></i></a></td>
+                    <td>@if($positions->has($pctype['id']))
+                            <a class="btn btn-secondary btn-sm"
+                               href="mailto:{{ $positions[$pctype['id']]->implode('email', ';') }}">
+                                Email Group <i class="fas fa-envelope"></i></a>
+                        @endif
+                    </td>
                 </tr>
-                @forelse($positions[$pctype['id']] as $position)
-                    <tr>
-                        <td>{!! $position->staffpositionname !!}</td>
-                        <td>{{ $position->lastname }}, {{ $position->firstname }}</td>
-                        <td>{{ $position->email }} <a href="mailto:{{ $position->email }}">
-                                <i class="fas fa-envelope"></i></a>
-                        </td>
-                        <td>
-                            @include('includes.admin.controls', ['id' => $position->camper_id])
-                        </td>
-                    </tr>
-                @empty
+                @if($positions->has($pctype['id']))
+                    @foreach($positions[$pctype['id']] as $position)
+                        <tr>
+                            <td>{!! $position->staffpositionname !!}</td>
+                            <td>{{ $position->lastname }}, {{ $position->firstname }}</td>
+                            <td>
+                                @if($position->email)
+                                    <a href="mailto:{{ $position->email }}">{{ $position->email }}
+                                        <i class="fas fa-envelope"></i></a>
+                                @endif
+                            </td>
+                            <td>
+                                {{--                            @include('includes.admin.controls', ['id' => $position->camper_id])--}}
+                            </td>
+                        </tr>
+                    @endforeach`
+                @else
                     <td colspan="4">No positions assigned for this year</td>
-                @endforelse
+                @endif
             @endforeach
             </tbody>
         </table>

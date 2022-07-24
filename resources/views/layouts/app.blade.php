@@ -185,6 +185,9 @@
                                             <h6 class="title">Tools</h6>
                                             <ul class="list-unstyled">
                                                 <li>
+                                                    <a href="{{ route('tools.cognoscenti') }}">Cognoscenti</a>
+                                                </li>
+                                                <li>
                                                     <a href="{{ route('tools.nametags.all') }}"
                                                        data-mdb-toggle="tooltip" title="Firefox only, Slow call">
                                                         Nametags Print

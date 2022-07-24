@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\CamperStaff;
 use App\Enums\Pctype;
 use App\Jobs\GenerateCharges;
-use App\Http\Program;
-use App\Http\Staffposition;
-use App\Http\ThisyearCamper;
-use App\Http\ThisyearStaff;
-use App\Http\YearattendingStaff;
+use App\Models\CamperStaff;
+use App\Models\Program;
+use App\Models\Staffposition;
+use App\Models\ThisyearCamper;
+use App\Models\ThisyearStaff;
+use App\Models\YearattendingStaff;
 use Illuminate\Http\Request;
 use function collect;
 use function view;

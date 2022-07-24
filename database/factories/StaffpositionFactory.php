@@ -20,7 +20,7 @@ class StaffpositionFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->colorName(),
+            'name' => $this->faker->unique()->colorName,
             'compensationlevel_id' => function () {
                 return Compensationlevel::factory()->create()->id;
             },
