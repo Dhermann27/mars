@@ -39,7 +39,7 @@
         }
         array_splice($backs, $pointer, 0, $camper->nametag_back);
     @endphp
-    @include('includes.nametag', ['camper' => $camper])
+    <x-nametag :camper="$camper" :index="$loop->index"/>
     @if((!$loop->first && ($loop->index+1) % 6 == 0) || $loop->last)
         <div class="page-break"></div>
         @foreach($backs as $back)

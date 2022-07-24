@@ -31,13 +31,13 @@
                     <div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $camper->id }}"
                          role="tabpanel">
                         <p>&nbsp;</p>
-                        {{--                        <button id="copyAnswers-{{ $camper->id }}" class="btn btn-primary btn-shadow float-end"--}}
-                        {{--                                type="button" onclick="return copyAnswers(event);">--}}
-                        {{--                            <i class="fas fa-copy fa-2x fa-pull-left"></i> Copy these preferences to<br/> all family--}}
-                        {{--                            members--}}
-                        {{--                        </button>--}}
+{{--                        <button id="copyAnswers-{{ $camper->id }}" type="button"--}}
+{{--                                class="btn btn-primary btn-shadow float-end copyAnswers">--}}
+{{--                            <i class="fas fa-copy fa-2x fa-pull-left"></i>--}}
+{{--                            Copy these preferences<br/>to all family members--}}
+{{--                        </button>--}}
                         <div class="row mb-3 col-md-6 offset-md-3">
-                            @include('includes.nametag', ['camper' => $camper])
+                            <x-nametag :camper="$camper" :index="$loop->index"/>
                         </div>
 
                         <x-form-group type="select" name="name-{{ $camper->id }}" label="Name Format"
@@ -105,7 +105,7 @@
                                 </option>
                                 <option value="2"
                                         @selected(old('line' . $i . '-' . $camper->id, $camper->yearattending["line" . $i]) == '2')
-                                        data-content="{{ $camper->family->city . ", " . $camper->family->province->code }}">
+                                        data-content="{{ $camper->family->city . ", " . $camper->family->province->name }}">
                                     Home (City, State)
                                 </option>
                                 @if($camper->church)
@@ -227,24 +227,31 @@
             return true;
         }
 
-        const copyAnswers = function (e) {
-            e.preventDefault();
-            const id = e.target.id.split('-')[1];
-            const references = document.getElementById('tab-' + id).querySelectorAll('select, input[type=checkbox]');
-            const allpanes = document.querySelectorAll('div.tab-pane:not(#tab-' + id + ')');
-            for (let i = 0; i < allpanes.length; i++) {
-                const elements = allpanes[i].querySelectorAll('select, input');
-                for (let j = 0; j < elements.length; j++) {
-                    if (elements[j].nodeName === "SELECT") {
-                        window.setSelect('#' + elements[j].id, references[j].value);
-                    } else {
-                        elements[j].checked = references[j].checked;
-                    }
-                }
-                redraw(e, allpanes[i]);
-            }
-            return false;
-        }
+        // const copyAnswers = function (e) {
+        //     e.preventDefault();
+        //     const id = e.target.id.split('-')[1];
+        //     const references = document.getElementById('tab-' + id).querySelectorAll('select, input');
+        //     const allpanes = document.querySelectorAll('div.tab-pane:not(#tab-' + id + ')');
+        //     for (let i = 0; i < allpanes.length; i++) {
+        //         const elements = allpanes[i].querySelectorAll('select, input');
+        //         for (let j = 0; j < elements.length; j++) {
+        //             if (elements[j].nodeName === "SELECT") {
+        //                 console.log('id: ' + elements[j].id + ' = ' + elements[j].value);
+        //                 window.setSelect('#' + elements[j].id, references[j].value);
+        //                 console.log('id: ' + elements[j].id + ' = ' + elements[j].value);
+        //             } else {
+        //                 elements[j].checked = references[j].checked;
+        //             }
+        //         }
+        //         redraw(e, allpanes[i]);
+        //     }
+        //     return false;
+        // }
+        //
+        // const copyButtons = document.querySelectorAll('#nametagform button.copyAnswers');
+        // for (let i = 0; i < copyButtons.length; i++) {
+        //     window.addEvent(copyButtons[i], 'click', copyAnswers);
+        // }
 
         const inputs = document.querySelectorAll('#nametagform input, #nametagform select');
         for (let i = 0; i < inputs.length; i++) {

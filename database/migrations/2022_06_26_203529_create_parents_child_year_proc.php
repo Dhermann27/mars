@@ -11,7 +11,7 @@ return new class extends Migration {
      */
     public function up()
     {
-        DB::unprepared("CREATE DEFINER =`root`@`localhost` PROCEDURE `expose_parentschild`(myyear_id INT)
+        DB::unprepared("CREATE DEFINER =`root`@`localhost` PROCEDURE `expose_parentschild_year`(myyear_id INT)
             BEGIN
                 SET sql_mode='';
                 TRUNCATE parents__child_expo;
@@ -48,6 +48,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        DB::unprepared('DROP PROCEDURE IF EXISTS expose_parentschild');
+        DB::unprepared('DROP PROCEDURE IF EXISTS expose_parentschild_year');
     }
 };

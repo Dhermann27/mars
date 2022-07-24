@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ExposeParentsChild;
+use App\Jobs\ExposeNametagsByFamily;
+use App\Jobs\ExposeNametagsByYear;
+use App\Jobs\ExposeParentsChildByFamily;
+use App\Jobs\ExposeParentsChildByYear;
 use App\Models\Camper;
-use App\Models\ParentsChildExpo;
 use App\Models\ThisyearCamper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +35,8 @@ class NametagController extends Controller
             $this->updateCamper($request, $camper);
         }
 
-        $request->session()->flash('success', 'You have successfully customized your nametag(s).');
-
+        ExposeNametagsByYear::dispatch($this->year->id);
+        $request->session()->flash('success', 'You have successfully customized your nametag' . (count($campers) > 1 ? 's' : '') . '.');
         return redirect()->route('nametag.index', ['campers' => $campers]);
 
     }
@@ -42,7 +44,7 @@ class NametagController extends Controller
     private function getCampers($id = null)
     {
         return ThisyearCamper::where('family_id', $id ? $id : Auth::user()->camper->family_id)
-            ->with('pronoun', 'church', 'yearattending.staffpositions')->orderBy('birthdate')->get();
+            ->with('pronoun', 'church', 'yearattending.staffpositions', 'nametag')->orderBy('birthdate')->get();
     }
 
     private function updateCamper($request, $camper)
@@ -66,11 +68,14 @@ class NametagController extends Controller
         if ($id && Gate::allows('is-council')) {
             $camper = Camper::findOrFail($id);
             $request->session()->flash('camper', $camper);
+            $family_id = $camper->family_id;
         } else {
             $family_id = $this->getFamilyId();
         }
         $steps = $this->getStepData();
-        $campers = $this->getCampers($id && Gate::allows('is-council') ? $camper->family_id : $family_id);
+        ExposeParentsChildByFamily::dispatchSync($family_id);
+        ExposeNametagsByFamily::dispatchSync($family_id);
+        $campers = $this->getCampers($family_id);
         if ($steps["amountDueNow"] > 0) {
             $request->session()->flash('error', 'You cannot customize your nametags until your deposit has been paid.');
         } else {
@@ -83,9 +88,10 @@ class NametagController extends Controller
 
     public function all()
     {
-        ExposeParentsChild::dispatchSync($this->year->id);
-        $cqb = ThisyearCamper::with(['pronoun', 'church.province', 'staffpositions']);
-        if(config('app.name') != 'MUUSADusk'){
+        ExposeParentsChildByYear::dispatchSync($this->year->id);
+        ExposeNametagsByYear::dispatchSync($this->year->id);
+        $cqb = ThisyearCamper::with('nametag');
+        if (config('app.name') != 'MUUSADusk') {
             $cqb->orderBy('familyname')->orderBy('family_id')->orderBy('birthdate');
         }
         $campers = $cqb->get();

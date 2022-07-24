@@ -29,7 +29,7 @@ class DashboardTest extends DuskTestCase
     private const FA_ACTION = 'fa-diamond-exclamation';
     private const FA_BLOCKED = 'fa-do-not-enter';
     private const FA_SUCCESS = 'fa-square-check';
-    private const FA_BASE = 'svg-inline--fa stepper-state-icon fa-5x';
+    private const FA_BASE = 'stepper-state-icon fa-5x';
 
     public function testNewVisitor()
     {
@@ -149,8 +149,8 @@ class DashboardTest extends DuskTestCase
             $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
             $this->assertBefore($browser, 4, self::FA_SUCCESS);
             $browser->assertAttributeContains(self::STEPS[4], 'class', self::FA_ACTION)
-                ->assertAttribute(self::STEPS[5], 'class', self::FA_BASE)
-                ->assertAttribute(self::STEPS[6], 'class', self::FA_BASE);
+                ->assertAttributeContains(self::STEPS[5], 'class', self::FA_BASE)
+                ->assertAttributeContains(self::STEPS[6], 'class', self::FA_BASE);
             $this->assertAfter($browser, 6, self::FA_BLOCKED);
         });
     }
@@ -168,7 +168,7 @@ class DashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
             $this->assertBefore($browser, 5, self::FA_SUCCESS);
-            $browser->assertAttribute(self::STEPS[6], 'class', self::FA_BASE);
+            $browser->assertAttributeContains(self::STEPS[6], 'class', self::FA_BASE);
             $this->assertAfter($browser, 6, self::FA_BLOCKED);
         });
     }
@@ -196,7 +196,7 @@ class DashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
             $this->assertBefore($browser, 5, self::FA_SUCCESS);
-            $browser->assertAttribute(self::STEPS[6], 'class', self::FA_BASE)
+            $browser->assertAttributeContains(self::STEPS[6], 'class', self::FA_BASE)
                 ->assertAttributeContains(self::STEPS[7], 'class', self::FA_ACTION);
         });
     }

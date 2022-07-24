@@ -115,9 +115,8 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function getChildBirthdate()
     {
-        $year = date('Y') - self::$year->year;
         $faker = Factory::create();
-        return $faker->dateTimeBetween('-' . (17 + $year) . ' years', '-' . (1 + $year) . ' years')->format('Y-m-d');
+        return $faker->dateTimeBetween(self::$year->checkin . ' -18 years', self::$year->checkin . ' -1 day')->format('Y-m-d');
     }
 
     /**
@@ -127,9 +126,8 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function getYABirthdate()
     {
-        $year = date('Y') - self::$year->year;
         $faker = Factory::create();
-        return $faker->dateTimeBetween('-' . (20 + $year) . ' years', '-' . (18 + $year) . ' years')->format('Y-m-d');
+        return $faker->dateTimeBetween(self::$year->checkin . ' -21 years', self::$year->checkin . ' -18 years')->format('Y-m-d');
     }
 
     /**
@@ -140,7 +138,7 @@ abstract class DuskTestCase extends BaseTestCase
      * @param string $buttontext
      * @return Browser
      */
-    protected function submitError(Browser $browser, $wait, string $buttontext='Save Changes')
+    protected function submitError(Browser $browser, $wait, string $buttontext = 'Save Changes')
     {
         $browser->pause($wait)->scrollIntoView('button[type=submit]')->pause($wait)
             ->press($buttontext)->waitFor('div.alert')->assertVisible('div.alert-danger')
@@ -157,7 +155,7 @@ abstract class DuskTestCase extends BaseTestCase
      * @param string $buttontext
      * @return Browser
      */
-    protected function submitSuccess(Browser $browser, $wait, $buttontext='Save Changes')
+    protected function submitSuccess(Browser $browser, $wait, $buttontext = 'Save Changes')
     {
         $browser->pause($wait)->scrollIntoView('button[type=submit]')->pause($wait)
             ->press($buttontext)->waitUntilMissing('div.alert-danger')

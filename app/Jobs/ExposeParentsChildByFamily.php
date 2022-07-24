@@ -10,20 +10,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class ExposeParentsChild implements ShouldQueue
+class ExposeParentsChildByFamily implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $year_id;
+    protected $family_id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($year_id)
+    public function __construct($family_id)
     {
-        $this->year_id = $year_id;
+        $this->family_id = $family_id;
     }
 
     /**
@@ -33,6 +33,6 @@ class ExposeParentsChild implements ShouldQueue
      */
     public function handle()
     {
-        DB::statement('CALL expose_parentschild(' . $this->year_id . ');');
+        DB::statement('CALL expose_parentschild_family(' . $this->family_id . ');');
     }
 }

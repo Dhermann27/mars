@@ -31,6 +31,11 @@ class ThisyearCamper extends Model
         return $this->hasOne(Medicalresponse::class, 'yearattending_id', 'yearattending_id');
     }
 
+    public function nametag()
+    {
+        return $this->hasOne(NametagExpo::class, 'yearattending_id', 'yearattending_id');
+    }
+
     public function program()
     {
         return $this->hasOne(Program::class, 'id', 'program_id');

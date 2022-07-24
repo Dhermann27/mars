@@ -1,4 +1,7 @@
 @import '@fortawesome/fontawesome-pro/scss/fontawesome';
+@import '@fortawesome/fontawesome-pro/scss/solid';
+@import '@fortawesome/fontawesome-pro/scss/regular';
+@import '@fortawesome/fontawesome-pro/scss/brands';
 @import 'mdb.pro.scss';
 
 $my-theme-primary: #17301c; // theme primary color, change this value to customize theme
@@ -85,19 +88,19 @@ div.highlight span {
     margin-top: -.75rem;
 }
 
-.amount::before {
-    content: '$';
+td.amount::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font: var(--fa-font-solid);
+    content: "\f155";
     float: left;
+    position: relative;
+    top: 4px;
+    left: -10px;
+    text-align: end;
+    white-space: nowrap;
 }
-
-//td.amount::before {
-//    display: inline-block;
-//    text-rendering: auto;
-//    -webkit-font-smoothing: antialiased;
-//    font: var(--fa-font-solid);
-//    content: "\f155";
-//    float: left;
-//}
 
 #navbarMars .dropdown-menu {
     border-top-left-radius: 0px;
@@ -334,6 +337,48 @@ textarea {
 }
 
 // ******** Nametags
+.fa-person-child {
+    @extend %fa-icon;
+    @extend .fa-solid;
+
+    &:before {
+        position: relative;
+        content: fa-content($fa-var-person);
+        font-size: 1.4em;
+        right: -1px;
+        top: 2px;
+        color: darkgray;
+    }
+
+    &:after {
+        position: relative;
+        content: fa-content($fa-var-child);
+        left: -2px;
+        bottom: -2px;
+    }
+}
+
+.fa-person-dress-child {
+    @extend %fa-icon;
+    @extend .fa-solid;
+
+    &:before {
+        position: relative;
+        content: fa-content($fa-var-person-dress);
+        font-size: 1.4em;
+        right: -1px;
+        top: 2px;
+        color: darkgray;
+    }
+
+    &:after {
+        position: relative;
+        content: fa-content($fa-var-child);
+        left: -1px;
+        bottom: -2px;
+    }
+}
+
 div.label {
     width: 4.125in;
     height: 3.125in;

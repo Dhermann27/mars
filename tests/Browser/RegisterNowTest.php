@@ -2,9 +2,9 @@
 
 namespace Tests\Browser;
 
-use app\Models\Camper;
-use app\Models\Family;
-use app\Models\User;
+use AppModels\Camper;
+use AppModels\Family;
+use AppModels\User;
 use Facebook\WebDriver\WebDriverBy;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -32,7 +32,7 @@ class RegisterNowTest extends DuskTestCase
                 ->type('input#email_create', $user->email)
                 ->type('input#password_create', 'password')
                 ->type('input#confirm_create', 'password')
-                ->pause(50)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
+                ->pause(self::WAIT)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
         });
         $this->assertDatabaseHas('users', ['email' => $user->email]);
     }
@@ -54,7 +54,7 @@ class RegisterNowTest extends DuskTestCase
             for ($i = 0; $i < $count; $i++) {
                 $browser->click('button[data-dir="up"]');
             }
-            $browser->pause(50)->click('button#begin_reg')->waitForLocation('/campers')
+            $browser->pause(self::WAIT)->click('button#begin_reg')->waitForLocation('/campers')
                 ->assertSee($user->email);
             $this->assertCount($count+1, $browser->elements('form#camperinfo a.nav-link:not(.btn-secondary)'));
         });
@@ -68,7 +68,7 @@ class RegisterNowTest extends DuskTestCase
     public function testBeto()
     {
         $user = User::factory()->create();
-        $camper = Camper::factory()->create(['firstname' => 'Beto', 'email' => $user->email]);
+        $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
 
         $this->browse(function (Browser $browser) use ($user, $camper) {
             $browser->logout()->visit('/')->click('@register_now')->waitFor('div#modal-register')
@@ -77,7 +77,7 @@ class RegisterNowTest extends DuskTestCase
                 ->type('input#password_login', 'password')
                 ->waitFor('div#login-found')
                 ->assertSee($camper->firstname . ' ' . $camper->lastname)
-                ->pause(50)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
+                ->pause(self::WAIT)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
         });
     }
 
@@ -99,7 +99,7 @@ class RegisterNowTest extends DuskTestCase
                 ->waitFor('div#login-found')
                 ->assertSee($campers[0]->firstname . ' ' . $campers[0]->lastname)
                 ->assertSee($campers[1]->firstname . ' ' . $campers[1]->lastname)
-                ->pause(50)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
+                ->pause(self::WAIT)->click('button#begin_reg')->waitForLocation('/campers')->assertSee($user->email);
         });
     }
 
@@ -110,8 +110,8 @@ class RegisterNowTest extends DuskTestCase
     public function testTrentSome()
     {
         $user = User::factory()->create();
-        $head = Camper::factory()->create(['firstname' => 'Trent', 'email' => $user->email]);
-        $campers = factory(Camper::class, 3)->create(['family_id' => $head->family_id]);
+        $head = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+        $campers = Camper::factory()->count(3)->create(['family_id' => $head->family_id]);
 
         $this->browse(function (Browser $browser) use ($user, $head, $campers) {
             $browser->logout()->visit('/')->click('@register_now')->waitFor('div#modal-register')
@@ -127,11 +127,11 @@ class RegisterNowTest extends DuskTestCase
                 array_push($yas, $camper->coming);
                 $browser->script('$(\'option[value="' . $camper->id . '"]\').prop(\'selected\', ' . $camper->coming . ');');
             }
-            $browser->pause(50)->click('button#begin_reg')->waitForLocation('/campers');
+            $browser->pause(self::WAIT)->click('button#begin_reg')->waitForLocation('/campers');
 //                ->assertSee($user->email);
 
             foreach ($campers as $camper) {
-                $browser->clickLink($camper->firstname)->pause(250)
+                $browser->clickLink($camper->firstname)->pause(self::WAIT)
                     ->assertInputValue('form#camperinfo div.tab-content div.active input[name="email[]"]', $camper->email)
                     ->assertSelected('form#camperinfo div.tab-content div.active select[name="days[]"]', $camper->coming);
             }

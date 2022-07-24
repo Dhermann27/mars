@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call([BuildingSeeder::class,
             ChargetypeSeeder::class,
             ChartdaySeeder::class,
-            CompensationLevelSeeder::class,
             ProgramSeeder::class,
             PronounSeeder::class,
             ProvinceSeeder::class,

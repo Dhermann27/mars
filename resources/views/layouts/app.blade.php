@@ -486,23 +486,23 @@
         <!-- Section: Social media -->
         <section class="mb-4">
             <!-- Facebook -->
-            <a class="btn btn-outline-light btn-floating m-1 pt-2 btn-amber-hover"
+            <a class="btn btn-outline-light btn-floating m-1 btn-amber-hover"
                href="@auth https://www.facebook.com/groups/Muusans/@else https://www.facebook.com/Muusa2013/@endif"
                role="button">
-                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-facebook-f fa-xl"></i>
             </a>
 
             <!-- Twitter -->
-            <a class="btn btn-outline-light btn-floating m-1 pt-2 btn-amber-hover"
+            <a class="btn btn-outline-light btn-floating m-1 btn-amber-hover"
                href="https://twitter.com/muusa1"
                role="button">
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-twitter fa-xl"></i>
             </a>
 
             <!-- YouTube -->
-            <a class="btn btn-outline-light btn-floating m-1 pt-2 btn-amber-hover"
+            <a class="btn btn-outline-light btn-floating m-1 btn-amber-hover"
                href="https://www.youtube.com/channel/UC-lNXF9IYAC-PSpvWWJkkMw" role="button">
-                <i class="fab fa-youtube"></i>
+                <i class="fab fa-youtube fa-xl"></i>
             </a>
         </section>
         <!-- Section: Social media -->
@@ -592,7 +592,7 @@
 
                 <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                     <h5>Questions?</h5>
-                    Email us at <a href="mailto:muusa@muusa.org"><i class="fas fa-mailbox"></i> muusa@muusa.org</a>
+                    <i class="far fa-mailbox"></i> Email us at <a href="mailto:muusa@muusa.org">muusa@muusa.org</a>
 
                     <hr class="dropdown-divider"/>
 

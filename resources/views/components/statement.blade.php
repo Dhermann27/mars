@@ -1,4 +1,3 @@
-
 <table class="table">
     <thead>
     <tr>
@@ -12,19 +11,17 @@
         @endif
     </tr>
     </thead>
+    <tbody class="table-striped">
     @foreach($charges as $charge)
-        <tbody class="table-striped">
         <tr>
             <th scope="row" class="text-md-center" nowrap="nowrap">{{ $charge->timestamp }}</th>
             <td>{{ $charge->chargetypename }}</td>
             @if($charge->amount >= 0)
-                <td class="amount text-end"
-                    nowrap="nowrap">{{ number_format($charge->amount, 2) }}</td>
+                <td class="amount">{{ number_format($charge->amount, 2) }}</td>
                 <td>&nbsp;</td>
             @else
                 <td>&nbsp;</td>
-                <td class="amount text-end"
-                    nowrap="nowrap">{{ number_format(abs($charge->amount), 2) }}</td>
+                <td class="amount">{{ number_format(abs($charge->amount), 2) }}</td>
             @endif
             <td>{{ $charge->memo }}</td>
             @if(session()->has('camper') && Gate::allows('is-super'))
@@ -37,31 +34,25 @@
                 </td>
             @endif
         </tr>
-        </tbody>
     @endforeach
+    </tbody>
     <tfoot>
     @if($year->is_accept_paypal && !session()->has('camper'))
         <tr class="text-md-right">
             <td colspan="2">&nbsp;</td>
-            <td class="text-end" nowrap="nowrap">
-                <h6><span class="float-start">$</span>
-                    <span id="amountNow">{{ number_format(max($deposit, 0), 2) }}</span>
-                </h6>
+            <td class="amount">
+                <span id="amountNow">{{ number_format(max($deposit, 0), 2) }}</span>
             </td>
-            <td colspan="2"><h6>Amount Due Now</h6></td>
+            <td colspan="2"><strong>Amount Due Now</strong></td>
         </tr>
     @endif
     @if($stepdata["isRoomsSelected"] || session()->has('camper'))
         <tr class="text-md-right">
             <td colspan="2">&nbsp;</td>
-            <td class="text-end" nowrap="nowrap">
-                <h6>
-                    <span class="float-start">$</span><span id="amountArrival">
-                        {{ number_format(max(0, $charges->sum('amount')), 2) }}
-                    </span>
-                </h6>
+            <td class="amount">
+                    <span id="amountArrival">{{ number_format(max(0, $charges->sum('amount')), 2) }}
             </td>
-            <td colspan="2"><h6>Amount Due Upon Arrival</h6></td>
+            <td colspan="2"><strong>Amount Due Upon Arrival</strong></td>
         </tr>
     @endif
     </tfoot>

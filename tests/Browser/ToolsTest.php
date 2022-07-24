@@ -2,13 +2,13 @@
 
 namespace Tests\Browser;
 
-use app\Models\Camper;
+use AppModels\Camper;
 use App\Enums\Programname;
 use App\Enums\Usertype;
-use app\Models\Staffposition;
-use app\Models\User;
-use app\Models\Yearattending;
-use app\Models\YearattendingStaff;
+use AppModels\Staffposition;
+use AppModels\User;
+use AppModels\Yearattending;
+use AppModels\YearattendingStaff;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use function array_push;
@@ -64,21 +64,21 @@ class ToolsTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $staffposition, $camper, $ya, $newposition, $newcamper, $missingcamper) {
             $browser->loginAs($user)->visitRoute('tools.staff.index')
                 ->waitFor('form#positions div.tab-content div.active')->clickLink('Adult')
-                ->pause(250)->assertSee($staffposition->name)
+                ->pause(self::WAIT)->assertSee($staffposition->name)
                 ->assertSee($camper->firstname)->assertSee($camper->lastname)
                 ->assertSee(number_format($staffposition->compensationlevel->max_compensation, 2))
                 ->check('delete-' . $ya->id . '-' . $staffposition->id)->clickLink('Burt')
-                ->pause(250)->assertSee('No staff assigned')->click('button[type="submit"]')
+                ->pause(self::WAIT)->assertSee('No staff assigned')->click('button[type="submit"]')
                 ->waitFor('div.alert')->assertVisible('div.alert-success')->clickLink('Adult')
-                ->pause(250)->assertSee('No staff assigned')->clickLink('Burt')
-                ->pause(250)->click('select#camper_id + span.select2')
+                ->pause(self::WAIT)->assertSee('No staff assigned')->clickLink('Burt')
+                ->pause(self::WAIT)->click('select#camper_id + span.select2')
                 ->waitFor('.select2-container--open')
                 ->type('span.select2-container input.select2-search__field', $newcamper->email)
                 ->waitFor('li.select2-results__option--highlighted')
                 ->click('li.select2-results__option--highlighted')
                 ->select('staffposition_id', $newposition->id)->click('button[type="submit"]')
                 ->waitFor('div.alert')->assertVisible('div.alert-success')->clickLink('Burt')
-                ->pause(250)->assertSee($newposition->name)->assertSee($newcamper->firstname)
+                ->pause(self::WAIT)->assertSee($newposition->name)->assertSee($newcamper->firstname)
                 ->assertSee($newcamper->lastname)
                 ->assertSee(number_format($newposition->compensationlevel->max_compensation, 2))
                 ->click('select#camper_id + span.select2')->waitFor('.select2-container--open')
@@ -87,7 +87,7 @@ class ToolsTest extends DuskTestCase
                 ->click('li.select2-results__option--highlighted')
                 ->select('staffposition_id', $newposition->id)->click('button[type="submit"]')
                 ->waitFor('div.alert')->assertVisible('div.alert-success')->clickLink('Burt')
-                ->pause(250)->assertSee($newposition->name)->assertSee($missingcamper->firstname)
+                ->pause(self::WAIT)->assertSee($newposition->name)->assertSee($missingcamper->firstname)
                 ->assertSee($missingcamper->lastname)
                 ->assertSee(number_format($newposition->compensationlevel->max_compensation, 2));;
         });

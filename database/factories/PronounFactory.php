@@ -19,7 +19,7 @@ class PronounFactory extends Factory
     {
         return [
             'code' => $this->faker->randomLetter(),
-            'name' => $this->faker->word()
+            'name' => $this->faker->word() . '/' . $this->faker->word(),
         ];
     }
 }

@@ -4,7 +4,8 @@ namespace Tests\Browser;
 
 use App\Enums\Pronounname;
 use App\Enums\Usertype;
-use App\Jobs\ExposeParentsChild;
+use App\Jobs\ExposeNametagsByFamily;
+use App\Jobs\ExposeParentsChildByFamily;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\Charge;
@@ -25,7 +26,6 @@ class NametagTest extends DuskTestCase
     private const WAIT = 500;
     private const ROUTE = 'nametag.index';
     private const ACTIVETAB = 'form#nametagform div.tab-content div.active';
-    private const RANDOELEMENT = 'a.btn-primary';
 
     public function testNewVisitor()
     {
@@ -56,7 +56,7 @@ class NametagTest extends DuskTestCase
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB)
                 ->assertSee('until your deposit has been paid')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .name', $camper->firstname . ' ' . $camper->lastname)
-                ->assertSeeIn(self::ACTIVETAB . ' .label .line1', $camper->family->city . ', ' . $camper->family->province->code)
+                ->assertSeeIn(self::ACTIVETAB . ' .label .line1', $camper->family->city . ', ' . $camper->family->province->name)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line2', $camper->church->name)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .pronoun', $camper->pronoun->name)
                 ->assertMissing('button[type=submit]');
@@ -102,7 +102,8 @@ class NametagTest extends DuskTestCase
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $staff = YearattendingStaff::factory()->create(['yearattending_id' => $yas[0]]);
         GenerateCharges::dispatchSync(self::$year->id);
-        ExposeParentsChild::dispatchSync(self::$year->id);
+        ExposeParentsChildByFamily::dispatchSync($campers[0]->family_id);
+        ExposeNametagsByFamily::dispatchSync($campers[0]->family_id);
         Charge::factory()->create(['camper_id' => $campers[0]->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
 
 
@@ -114,38 +115,38 @@ class NametagTest extends DuskTestCase
                 ->select('line3-' . $campers[0]->id, '3')
                 ->select('line4-' . $campers[0]->id, '4')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line1', $campers[0]->church->name)
-                ->assertSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->code)
+                ->assertSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->name)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line3', 'Your PC Position')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line4', 'First-time Camper');
 //                ->click('#copyAnswers-' . $campers[0]->id)->pause(self::WAIT);
             $this->pressTab($browser, $campers[1]->id, self::WAIT);
             $browser->assertSeeIn(self::ACTIVETAB . ' .label .line2', $campers[1]->church->name) // Reverse when copy fixed
-            ->assertSeeIn(self::ACTIVETAB . ' .label .line1', $campers[1]->family->city . ', ' . $campers[0]->family->province->code)
+            ->assertSeeIn(self::ACTIVETAB . ' .label .line1', $campers[1]->family->city . ', ' . $campers[0]->family->province->name)
 //                ->assertDontSeeIn(self::ACTIVETAB . ' .label .line3', 'Your PC Position')
 //                ->assertSeeIn(self::ACTIVETAB . ' .label .line4', 'First-time Camper')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .parent', $campers[0]->firstname . ' ' . $campers[0]->lastname)
-                ->assertAttributeContains(self::ACTIVETAB . ' .label .parent svg', 'class', 'fa-person-dress')
+                ->assertAttributeContains('@icon-1', 'class', 'fa-person-dress')
                 ->select('line1-' . $campers[1]->id, '5')
                 ->select('line2-' . $campers[1]->id, '5')
                 ->select('line3-' . $campers[1]->id, '5')
                 ->select('line4-' . $campers[1]->id, '5')
                 ->assertDontSeeIn(self::ACTIVETAB . ' .label .line1', $campers[0]->church->name)
-                ->assertDontSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->code)
+                ->assertDontSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->name)
                 ->assertDontSeeIn(self::ACTIVETAB . ' .label .line3', 'Your PC Position')
                 ->assertDontSeeIn(self::ACTIVETAB . ' .label .line4', 'First-time Camper');
             $this->submitSuccess($browser, self::WAIT);
             $this->pressTab($browser, $campers[0]->id, self::WAIT);
             $browser->assertSeeIn(self::ACTIVETAB . ' .label .line1', $campers[0]->church->name)
-                ->assertSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->code)
+                ->assertSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->name)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line3', $staff->staffposition->name)
                 ->assertSeeIn(self::ACTIVETAB . ' .label .line4', 'First-time Camper');
             $this->pressTab($browser, $campers[1]->id, self::WAIT);
             $browser->assertDontSeeIn(self::ACTIVETAB . ' .label .line1', $campers[0]->church->name)
-                ->assertDontSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->code)
+                ->assertDontSeeIn(self::ACTIVETAB . ' .label .line2', $campers[0]->family->city . ', ' . $campers[0]->family->province->name)
                 ->assertDontSeeIn(self::ACTIVETAB . ' .label .line3', 'Your PC Position')
                 ->assertDontSeeIn(self::ACTIVETAB . ' .label .line4', 'First-time Camper')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .parent', $campers[0]->firstname . ' ' . $campers[0]->lastname)
-                ->assertAttributeContains(self::ACTIVETAB . ' .label .parent svg', 'class', 'fa-person-dress');
+                ->assertAttributeContains('@icon-1', 'class', 'fa-person-dress');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
@@ -170,7 +171,8 @@ class NametagTest extends DuskTestCase
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[2]->id, 'year_id' => self::$year->id]);
         GenerateCharges::dispatchSync(self::$year->id);
-        ExposeParentsChild::dispatchSync(self::$year->id);
+        ExposeParentsChildByFamily::dispatchSync($campers[0]->family_id);
+        ExposeNametagsByFamily::dispatchSync($campers[0]->family_id);
         Charge::factory()->create(['camper_id' => $campers[0]->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
 
 
@@ -188,7 +190,7 @@ class NametagTest extends DuskTestCase
             $browser
                 ->assertAttributeContains(self::ACTIVETAB . ' .label', 'style', 'font-family: Jost')
                 ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-family: Jost')
-                ->assertAttributeContains(self::ACTIVETAB . ' .label .parent svg', 'class', 'fa-family')
+                ->assertAttributeContains('@icon-2', 'class', 'fa-family')
                 ->assertSeeIn(self::ACTIVETAB . ' .label .parent', $campers[0]->lastname);
             $this->submitSuccess($browser, self::WAIT);
             $this->pressTab($browser, $campers[0]->id, self::WAIT);

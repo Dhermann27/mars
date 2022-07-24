@@ -2,16 +2,16 @@
 
 namespace Tests\Browser;
 
-use app\Models\Camper;
-use app\Models\Charge;
+use AppModels\Camper;
+use AppModels\Charge;
 use App\Enums\Chargetypename;
 use App\Enums\Timeslotname;
 use App\Enums\Usertype;
 use App\Jobs\Chartdata;
-use app\Models\User;
-use app\Models\Workshop;
-use app\Models\Yearattending;
-use app\Models\YearattendingWorkshop;
+use AppModels\User;
+use AppModels\Workshop;
+use AppModels\Yearattending;
+use AppModels\YearattendingWorkshop;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
@@ -32,14 +32,14 @@ class ReportTest extends DuskTestCase
         $faker = Factory::create();
 
         $user = User::factory()->create(['usertype' => Usertype::Pc]);
-        $campers = factory(Camper::class, 4)->create(['lastname' => 'Aaron']);
+        $campers = Camper::factory()->count(4)->create(['lastname' => 'Aaron']);
         foreach ($campers as $camper) {
             Yearattending::factory()->create(['year_id' => self::$year->id, 'camper_id' => $camper->id,
                 'created_at' => $faker->dateTimeInInterval(self::$year->year-1 . '-07-22 00:01:00', '+ 1 year')]);
         }
         $this->browse(function (Browser $browser) use ($user, $campers) {
             $browser->loginAs($user)->visitRoute('reports.campers')->waitForText('Show')
-                ->clickLink(self::$year->year)->pause(250);
+                ->clickLink(self::$year->year)->pause(self::WAIT);
             foreach ($campers as $camper) {
                 $browser->assertSee($camper->firstname)->assertSee($camper->lastname)->assertSee($camper->email)
                     ->assertSee(Carbon::parse($camper->birthdate)->diff(self::$year->checkin)->format('%y'));
@@ -53,7 +53,7 @@ class ReportTest extends DuskTestCase
         Chartdata::dispatchNow();
 
         $user = User::factory()->create(['usertype' => Usertype::Pc]);
-        $campers = factory(Camper::class, 3)->create();
+        $campers = Camper::factory()->count(3)->create();
         Yearattending::factory()->create(['year_id' => self::$lastyear->id, 'camper_id' => $campers[0]->id,
             'created_at' => $faker->dateTimeInInterval(self::$lastyear->year-1 . '-07-22 00:01:00', '+ 1 year')]); // Lost
         Yearattending::factory()->create(['year_id' => self::$year->id, 'camper_id' => $campers[1]->id,
