@@ -9,8 +9,7 @@
         <form id="positions" class="form-horizontal" role="form" method="POST"
               action="{{ route('admin.positions.store') }}">
             @include('includes.flash')
-            {{--<div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $timeslot->id }}" role="tabpanel">--}}
-            @component('components.navtabs', ['tabs' => $programs, 'id'=> 'id', 'option' => 'name'])
+            <x-navtabs :tabs="$programs" option="name">
                 @foreach($programs as $program)
                     <div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $program->id }}"
                          role="tabpanel">
@@ -23,9 +22,11 @@
                                 <th id="compensationlevel_id" class="select">Compensation Level</th>
                                 <th id="pctype" class="select">Position Type</th>
                                 <th>Maximum Compensation</th>
-                                <th><a href="#" class="float-end" data-toggle="tooltip" data-html="true"
-                                       title="Although you will no longer be able to assign users to this position, previous years' assignments and their applied compensation will not be affected."><i
-                                            class="fas fa-info"></i></a> End Staff Position?
+                                <th>
+                                    End Staff Position?
+                                    <button class="btn btn-info ms-3 p-1" data-mdb-toggle="tooltip"
+                                            title="Although you will no longer be able to assign users to this position, previous years' assignments and their applied compensation will not be affected.">
+                                        <i class="fas fa-circle-question fa-xl"></i></button>
                                 </th>
                             </tr>
                             </thead>
@@ -62,27 +63,42 @@
                         </table>
                     </div>
                 @endforeach
-            @endcomponent
+            </x-navtabs>
 
-            <div class="well">
-                <h4>Add New Position</h4>
-                @include('includes.formgroup', ['type' => 'select', 'class' => ' program_id',
-                    'label' => 'Associated Program', 'attribs' => ['name' => 'program_id'],
-                    'default' => 'Choose a program', 'list' => $programs, 'option' => 'name'])
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Add New Position</div>
 
-                @include('includes.formgroup', ['label' => 'Position Name',
-                    'attribs' => ['name' => 'name', 'placeholder' => 'Position Name']])
+                        <div class="card-body">
+                            <x-form-group label="Associated Program" name="program_id" type="select">
+                                <option value="0">Choose an program</option>
+                                @foreach($programs as $program)
+                                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                @endforeach
+                            </x-form-group>
 
-                @include('includes.formgroup', ['type' => 'select', 'class' => ' compensationlevel_id',
-                    'label' => 'Compensation Level', 'attribs' => ['name' => 'compensationlevel_id'],
-                    'default' => 'Choose a compensation level', 'list' => $levels, 'option' => 'name'])
+                            <x-form-group label="Position Name" name="name"/>
 
-                @include('includes.formgroup', ['type' => 'select', 'label' => 'PC Type', 'attribs' => ['name' => 'pctype'],
-                    'list' => [['id' => '0', 'name' => 'None'], ['id' => '1', 'name' => 'APC'],
-                    ['id' => '2', 'name' => 'XC'], ['id' => '3', 'name' => 'Program Staff'],
-                    ['id' => '4', 'name' => 'Consultants']], 'option' => 'name'])
+                            <x-form-group label="Compensation Level" name="compensationlevel_id" type="select">
+                                <option value="0">Choose a compensation level</option>
+                                @foreach($levels as $level)
+                                    <option value="{{ $level->id }}">{{ $level->name }}</option>
+                                @endforeach
+                            </x-form-group>
 
-                @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => 'Save Changes']])
+                            <x-form-group label="PC Type" name="pctype" type="select">
+                                <option value="0">Standard Member</option>
+                                <option value="1">Adult Programming Committee</option>
+                                <option value="2">Executive Council</option>
+                                <option value="3">Program Staff</option>
+                                <option value="4">Consultants</option>
+                            </x-form-group>
+
+                            <x-form-group type="submit" label="Save Changes"/>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

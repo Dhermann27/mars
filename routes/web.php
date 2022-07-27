@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CamperInformationController;
 use App\Http\Controllers\CamperSelectionController;
 use App\Http\Controllers\ConfirmController;
@@ -147,18 +148,18 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'tools'], 
 //    Route::post('workshops', [ToolsController::class, 'workshopStore');
 });
 //
-//Route::group(['middleware' => ['can:is-super'], 'prefix' => 'admin'], function () {
+Route::group(['middleware' => ['can:is-super'], 'prefix' => 'admin'], function () {
 //    Route::get('distlist', [AdminController::class, 'distlistIndex'])->name('admin.distlist.index');
 //    Route::post('distlist', [AdminController::class, 'distlistExport'])->name('admin.distlist.export');
 //    Route::get('master', [AdminController::class, 'masterIndex');
 //    Route::post('master', [AdminController::class, 'masterStore');
 //    Route::get('massassign', [AdminController::class, 'massAssignIndex');
 //    Route::post('massassign/f/{id}', [AdminController::class, 'massAssignStore');
-//    Route::get('roles', [AdminController::class, 'roleIndex'])->name('admin.roles.index');
-//    Route::post('roles', [AdminController::class, 'roleStore'])->name('admin.roles.store');
-//    Route::get('positions', [AdminController::class, 'positionIndex'])->name('admin.positions.index');
-//    Route::post('positions', [AdminController::class, 'positionStore'])->name('admin.positions.store');
-//});
+    Route::get('roles', [AdminController::class, 'roleIndex'])->name('admin.roles.index');
+    Route::post('roles', [AdminController::class, 'roleStore'])->name('admin.roles.store');
+    Route::get('positions', [AdminController::class, 'positionIndex'])->name('admin.positions.index');
+    Route::post('positions', [AdminController::class, 'positionStore'])->name('admin.positions.store');
+});
 Route::get('/muse', function () {
     $muses = File::allFiles(public_path('muses'));
     $muse = array_pop($muses);

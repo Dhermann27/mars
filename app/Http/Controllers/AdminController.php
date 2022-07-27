@@ -3,30 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Usertype;
-use App\Exports\ByyearCampersExport;
-use App\Http\Camper;
-use App\Http\Compensationlevel;
-use App\Http\Program;
-use App\Http\Staffposition;
-use App\Http\User;
-use Carbon\Carbon;
+use App\Models\Camper;
+use App\Models\Compensationlevel;
+use App\Models\Program;
+use App\Models\Staffposition;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
-    public function distlistExport(Request $request)
-    {
-        return (new ByyearCampersExport($request))
-            ->download('MUUSA_Distlist_' . Carbon::now()->toDateString() . '.xlsx');
-    }
-
-    public function distlistIndex($request = null)
-    {
-        return view('admin.distlist', ['programs' => Program::orderBy('order')->get(),
-            'request' => $request ? $request : new Request()]);
-    }
+//    public function distlistExport(Request $request)
+//    {
+//        return (new ByyearCampersExport($request))
+//            ->download('MUUSA_Distlist_' . Carbon::now()->toDateString() . '.xlsx');
+//    }
+//
+//    public function distlistIndex($request = null)
+//    {
+//        return view('admin.distlist', ['programs' => Program::orderBy('order')->get(),
+//            'request' => $request ? $request : new Request()]);
+//    }
 
     public function roleStore(Request $request)
     {
@@ -105,7 +102,8 @@ class AdminController extends Controller
     public function positionIndex()
     {
         return view('admin.positions', ['programs' => Program::with('staffpositions.compensationlevel')->orderBy('order')->get(),
-            'levels' => Compensationlevel::all()]);
+            'levels' => Compensationlevel::where('start_year', '<=', $this->year->year)
+                ->where('end_year', '>=', $this->year->year)->orderBy('name')->get()]);
     }
 
 }

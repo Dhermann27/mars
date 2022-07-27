@@ -203,12 +203,7 @@
                                             <div class="col-megamenu">
                                                 <h6 class="title">Superuser</h6>
                                                 <ul class="list-unstyled">
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
-                                                    {{--                                                <li><a href="#">Custom Menu</a></li>--}}
+                                                    <li><a href="{{ route('admin.positions.index') }}">Staff Positions</a></li>
                                                 </ul>
                                             </div>  <!-- col-megamenu.// -->
                                         </div>
@@ -337,7 +332,7 @@
                         @else
                             <i class="fas fa-circle-user px-2"></i> {{ Auth::user()->email }}
 
-                            <a title="Logout"
+                            <a title="LogoutS"
                                href="{{ route('logout') }}"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 <i class="fas fa-sign-out-alt ms-5"></i>
