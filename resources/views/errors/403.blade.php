@@ -5,5 +5,5 @@
 @endsection
 
 @section('heading')
-    You need to have paid your deposit to access other registration functions. We apologize for the inconvenience.
+    An error has occurred and it is not possible to access this page. Please return to the home screen. We apologize for the inconvenience.
 @endsection

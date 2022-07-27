@@ -81,7 +81,7 @@
                 <h3 class="pb-2">Details</h3>
                 <h4 class="pb-2">Review and Award of Scholarships</h4>
                 <p>The scholarship process will be administered by the MUUSA Scholarship Committee, which
-                    includes: Susan Stafford, John Sandman, Jesse Hardin, Adrienne Cruise and Dorothy Ramsey for
+                    includes: Susan Stafford, John Sandman, Duncan Metcalfe, Adrienne Cruise and Dorothy Ramsey for
                     MUUSA {{ $year->year }}. Susan Stafford will serve as the Scholarship Committee Coordinator and
                     the primary contact for the Scholarship Committee.</p>
                 <p>Upon receipt of the YMCA's determinations, the Scholarship Committee will review all

@@ -51,7 +51,7 @@ class DataController extends Controller
 //        $room = 0;
 //        $nametag = 0;
 //        $medical = 0;
-//        $live = $this->year->is_live ? false : $this->year->brochure_date;
+//        $live = $this->year->is_brochure ? false : $this->year->brochure_date;
 //        $ya = Yearattending::where('camper_id', $camper->id)->where('year_id', $this->year->id)->first();
 //        if ($ya) {
 //            $workshops = YearattendingWorkshop::where('yearattending_id', $ya->id)->get()->count() > 0;

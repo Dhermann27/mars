@@ -66,7 +66,7 @@
                             Camp Information
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuCampInfo">
-                            @if($year->is_live)
+                            @if($year->is_brochure)
                                 <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">
                                             <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>
                                 </li>
@@ -228,112 +228,125 @@
 
                 <div class="d-flex align-items-center">
                     @auth
-
-                        <div class="btn-group ms-4">
-                            <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a>
-                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                                    data-mdb-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <h6 class="dropdown-header">
-                                        <i class="fas fa-circle-user"></i>
-                                        {{ Auth::user()->email }}
-                                    </h6>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider"/>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="fas fa-users fa-fw"></i> Camper Selection
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="fas fa-home fa-fw"></i> Billing Address
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="fas fa-user-gear fa-fw"></i> Camper Information
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
-                                        <i class="fas fa-usd-square fa-fw"></i> Account Statement
-                                    </a>
-                                </li>
-                                @if(!$year->is_live)
+                        @can('register', $year)
+                            <div class="btn-group ms-4">
+                                <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a>
+                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-mdb-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <h6 class="dropdown-header">
+                                            <i class="fas fa-circle-user"></i>
+                                            {{ Auth::user()->email }}
+                                        </h6>
+                                    </li>
                                     <li>
                                         <hr class="dropdown-divider"/>
                                     </li>
-                                    <h6 class="dropdown-header">
-                                        Opens {{ $year->brochure_date }}
-                                    </h6>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">
-                                            <i class="fas fa-rocket fa-fw"></i> Workshop List
+                                        <a class="dropdown-item"
+                                           href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                            <i class="fas fa-users fa-fw"></i> Camper Selection
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">
-                                            <i class="fas fa-bed fa-fw"></i> Room Selection
+                                        <a class="dropdown-item"
+                                           href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                            <i class="fas fa-home fa-fw"></i> Billing Address
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">
-                                            <i class="fas fa-id-card fa-fw"></i> Nametags
+                                        <a class="dropdown-item"
+                                           href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                            <i class="fas fa-user-gear fa-fw"></i> Camper Information
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="dropdown-item disabled">
-                                            <i class="fas fa-envelope fa-fw"></i> Confirmation
+                                        <a class="dropdown-item"
+                                           href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                            <i class="fas fa-usd-square fa-fw"></i> Account Statement
                                         </a>
                                     </li>
-                                @else
+                                    @if(!$year->is_brochure)
+                                        <li>
+                                            <hr class="dropdown-divider"/>
+                                        </li>
+                                        <h6 class="dropdown-header">
+                                            Opens {{ $year->brochure_date }}
+                                        </h6>
+                                        <li>
+                                            <a href="#" class="dropdown-item disabled">
+                                                <i class="fas fa-rocket fa-fw"></i> Workshop List
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item disabled">
+                                                <i class="fas fa-bed fa-fw"></i> Room Selection
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item disabled">
+                                                <i class="fas fa-id-card fa-fw"></i> Nametags
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item disabled">
+                                                <i class="fas fa-envelope fa-fw"></i> Confirmation
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <a href="{{ route('roomselection.index') }}" class="dropdown-item">
+                                                <i class="fas fa-bed fa-fw"></i> Room Selection
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
+                                                <i class="fas fa-rocket fa-fw"></i> Workshops
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('nametag.index') }}" class="dropdown-item">
+                                                <i class="fas fa-id-card fa-fw"></i> Nametags
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">
+                                                <i class="fas fa-envelope fa-fw"></i> Confirmation
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li>
-                                        <a href="{{ route('roomselection.index') }}" class="dropdown-item">
-                                            <i class="fas fa-bed fa-fw"></i> Room Selection
-                                        </a>
+                                        <hr class="dropdown-divider"/>
                                     </li>
                                     <li>
-                                        <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
-                                            <i class="fas fa-rocket fa-fw"></i> Workshops
+                                        <a class="dropdown-item"
+                                           href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
                                         </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                              style="display: none;">
+                                            @csrf
+                                        </form>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('nametag.index') }}" class="dropdown-item">
-                                            <i class="fas fa-id-card fa-fw"></i> Nametags
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">
-                                            <i class="fas fa-envelope fa-fw"></i> Confirmation
-                                        </a>
-                                    </li>
-                                @endif
-                                <li>
-                                    <hr class="dropdown-divider"/>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                          style="display: none;">
-                                        @csrf
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+                                </ul>
+                            </div>
+                        @else
+                            <i class="fas fa-circle-user px-2"></i> {{ Auth::user()->email }}
+
+                            <a title="Logout"
+                               href="{{ route('logout') }}"
+                               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt ms-5"></i>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">
+                                @csrf
+                            </form>
+                        @endcan
                     @else
                         <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
                            role="button">Login</a>
@@ -457,7 +470,7 @@
 {{--                                        <i class="fas fa-users fa-fw"></i> Campers</a>--}}
 {{--                                    <a href="{{ route('payment.index') }}" class="dropdown-item">--}}
 {{--                                        <i class="fas fa-usd-square fa-fw"></i> Statement</a>--}}
-{{--                                    @if(!$year->is_live)--}}
+{{--                                    @if(!$year->is_brochure)--}}
 {{--                                        <div class="dropdown-divider"></div>--}}
 {{--                                        <h6 class="dropdown-header">--}}
 {{--                                            Opens {{ $year->brochure_date }}--}}
@@ -511,7 +524,7 @@
         <!-- Section: Social media -->
 
         <!-- Section: Form -->
-        {{--        <section>--}}
+        {{--        <section>--TODO: brochure signup}}
         {{--            <form action="">--}}
         {{--                <!--Grid row-->--}}
         {{--                <div class="row d-flex justify-content-center">--}}
@@ -556,7 +569,7 @@
                     <h5>Camp Information</h5>
 
                     <ul class="list-unstyled mb-0">
-                        @if($year->is_live)
+                        @if($year->is_brochure)
                             <li><a class="text-white underlined-link" href="{{ route('brochure') }}">Web
                                     Brochure</a>
                             </li>
@@ -621,41 +634,44 @@
 
                 <!--Grid column-->
                 <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                    <ul class="list-unstyled mb-0">
-                        <li>
-                            <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a></li>
-                        <hr class="dropdown-divider"/>
-                        <li><a class="text-white underlined-link"
-                               href="{{ route('camperselect.index') }}">Camper Selection</a></li>
-                        <li><a class="text-white underlined-link"
-                               href="{{ route('household.index') }}">Billing Address</a></li>
-                        <li>
-                            <a class="text-white underlined-link" href="{{ route('camperinfo.index') }}">Camper
-                                Information</a>
-                        </li>
-                        <li>
-                            <a class="text-white underlined-link" href="{{ route('payment.index') }}">Account
-                                Statement</a>
-                        </li>
-                        @if(!$year->is_live)
-                            <hr/>
-                            <h6>Opens {{ $year->brochure_date }}</h6>
-                            <li>Workshop Preferences</li>
-                            <li>Room Selection</li>
-                            <li>Nametag Customization</li>
-                            <li>Medical Response(s)</li>
-                        @else
-                            <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
-                                    Preferences</a></li>
-                            <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room
-                                    Selection</a></li>
-                            <li><a class="text-white underlined-link" href="{{ route('nametag.index') }}">Nametags</a>
+                    @can('register', $year)
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Registration</a></li>
+                            <hr class="dropdown-divider"/>
+                            <li><a class="text-white underlined-link"
+                                   href="{{ route('camperselect.index') }}">Camper Selection</a></li>
+                            <li><a class="text-white underlined-link"
+                                   href="{{ route('household.index') }}">Billing Address</a></li>
+                            <li>
+                                <a class="text-white underlined-link" href="{{ route('camperinfo.index') }}">Camper
+                                    Information</a>
                             </li>
-                            <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical
-                                    Response(s)</a>
+                            <li>
+                                <a class="text-white underlined-link" href="{{ route('payment.index') }}">Account
+                                    Statement</a>
                             </li>
-                        @endif
-                    </ul>
+                            @if(!$year->is_brochure)
+                                <hr/>
+                                <h6>Opens {{ $year->brochure_date }}</h6>
+                                <li>Workshop Preferences</li>
+                                <li>Room Selection</li>
+                                <li>Nametag Customization</li>
+                                <li>Medical Response(s)</li>
+                            @else
+                                <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
+                                        Preferences</a></li>
+                                <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room
+                                        Selection</a></li>
+                                <li><a class="text-white underlined-link"
+                                       href="{{ route('nametag.index') }}">Nametags</a>
+                                </li>
+                                <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical
+                                        Response(s)</a>
+                                </li>
+                            @endif
+                        </ul>
+                    @endcan
                 </div>
             </div>
             <!--Grid row-->
@@ -673,186 +689,6 @@
     <!-- Copyright -->
 </footer>
 <!-- Footer -->
-{{--        <!-- footer start -->--}}
-{{--        <footer class="bg-dark footer text-white d-print-none">--}}
-{{--            <div class="container-fluid">--}}
-{{--                <div class="row pt-5">--}}
-{{--                    <div class="col-lg-6">--}}
-{{--                        <div class="mb-3">--}}
-{{--                            <h6>Located at YMCA of the Ozarks, outside Potosi, Missouri</h6>--}}
-{{--                        </div>--}}
-{{--                        <iframe--}}
-{{--                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2930.017719932353!2d-90.93029498484057!3d37.946753879728526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d99fbc4175e629%3A0xe1c9be8ab89a4075!2sTrout+Lodge%2C+Potosi%2C+MO+63664!5e1!3m2!1sen!2sus!4v1546112609663"--}}
-{{--                            width="420" height="320" frameborder="0" style="border:0" allowfullscreen></iframe>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-lg-2">--}}
-{{--                    </div>--}}
-{{--                    <div class="col-lg-2">--}}
-{{--                        </ul>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-lg-2">--}}
-{{--                        @else--}}
-{{--                            <button type="button" class="btn btn-info font-weight-bold" data-toggle="modal"--}}
-{{--                                    data-target="#modal-register">--}}
-{{--                                Register Now <i class="fas fa-sign-in"></i>--}}
-{{--                            </button>--}}
-{{--                        @endif--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <!-- end row -->--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-lg-12">--}}
-{{--                        <div class="py-4">--}}
-{{--                            <div class="text-center">--}}
-{{--                                <p class="text-white-50">--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <!-- end row -->--}}
-{{--            </div>--}}
-{{--            <!-- container-fluid end -->--}}
-{{--        </footer>--}}
-{{--        <!-- footer end -->--}}
-
-{{--        <!-- Modal -->--}}
-{{--        <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-hidden="true">--}}
-{{--            <div class="modal-dialog modal-lg" role="document">--}}
-{{--                <div class="modal-content">--}}
-{{--                    <div class="modal-header">--}}
-{{--                        <h5 class="modal-title">Get Registered for {{ $year->year }}!</h5>--}}
-{{--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                            <span aria-hidden="true">&times;</span>--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-body">--}}
-{{--                        <div class="container-fluid mx-0">--}}
-{{--                            <div class="row">--}}
-{{--                                <div class="col-md-6 pr-md-5">--}}
-{{--                                    <h5>Returning Campers</h5>--}}
-
-{{--                                    <form id="login" method="post" action="{{ url('/login') }}">--}}
-{{--                                        @csrf--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="email_login" class="form-label">Email</label>--}}
-{{--                                            <input id="email_login" type="text" class="form-control"--}}
-{{--                                                   name="email" @auth value="{{ Auth::user()->email }}" @endif--}}
-{{--                                                   required>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="password_login" class="form-label">Password</label>--}}
-{{--                                            <input id="password_login" type="password" class="form-control"--}}
-{{--                                                   name="password" required>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <div class="form-check">--}}
-{{--                                                <input class="form-check-input" type="checkbox" name="remember"--}}
-{{--                                                       id="remember">--}}
-{{--                                                <label class="form-check-label" for="remember">--}}
-{{--                                                    Remember me on this computer?--}}
-{{--                                                </label>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-
-{{--                                        @if (Route::has('password.request'))--}}
-{{--                                            <div class="form-group row float-sm-right">--}}
-
-{{--                                                <a class="btn btn-link" href="{{ route('password.request') }}">--}}
-{{--                                                    {{ __('Forgot Your Password?') }}--}}
-{{--                                                </a>--}}
-{{--                                            </div>--}}
-{{--                                        @endif--}}
-
-{{--                                        <a class="btn d-none" data-toggle="collapse" href="#login-searching"--}}
-{{--                                           role="button" aria-expanded="false">--}}
-{{--                                            #--}}
-{{--                                        </a>--}}
-{{--                                        <a class="btn d-none" data-toggle="collapse" href="#login-found"--}}
-{{--                                           role="button"--}}
-{{--                                           aria-expanded="false">--}}
-{{--                                            #--}}
-{{--                                        </a>--}}
-
-{{--                                        <div id="login-searching" class="alert alert-info w-100 collapse">--}}
-{{--                                            <h6>Welcome back!</h6>--}}
-{{--                                            <p>Retrieving your records... <i--}}
-{{--                                                    class="fas fa-spinner-third fa-spin"></i>--}}
-{{--                                            </p>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div id="login-found" class="form-group row w-100 collapse">--}}
-{{--                                            <label for="password_login" class="form-label">Which campers will be--}}
-{{--                                                attending?</label>--}}
-{{--                                            <select id="login-campers" name="login-campers[]" class="custom-select"--}}
-{{--                                                    multiple data-toggle="tooltip" data-placement="top"--}}
-{{--                                                    title="Hold down CTRL or Command to select multiple campers.">--}}
-{{--                                            </select>--}}
-{{--                                            <button type="button" id="selectallcampers"--}}
-{{--                                                    class="btn btn-secondary btn-sm mt-1">--}}
-{{--                                                <i class="fas fa-users"></i> Select All--}}
-{{--                                            </button>--}}
-{{--                                        </div>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-6 pl-md-5">--}}
-{{--                                    <h5>New Campers</h5>--}}
-
-{{--                                    <form id="create" method="post" action="{{ url('/register') }}">--}}
-{{--                                        @csrf--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="email_create" class="form-label">Email</label>--}}
-{{--                                            <input id="email_create" type="text" class="form-control"--}}
-{{--                                                   name="email" required>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="password_create" class="form-label">Password</label>--}}
-{{--                                            <input id="password_create" type="password" class="form-control"--}}
-{{--                                                   name="password" required>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <label for="confirm_create" class="form-label">Confirm Password</label>--}}
-{{--                                            <input id="confirm_create" type="password" class="form-control"--}}
-{{--                                                   name="password_confirmation" required>--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-group row">--}}
-{{--                                            <div class="number-spinner">--}}
-{{--                                                <label for="newcampers" class="form-label">How many campers will be--}}
-{{--                                                    attending?</label>--}}
-{{--                                                <div class="input-group float-sm-right">--}}
-{{--                                                    <div class="input-group-prepend">--}}
-{{--                                                        <button type="button" class="btn btn-default spinner"--}}
-{{--                                                                data-dir="up"><i class="fas fa-plus"></i></button>--}}
-{{--                                                    </div>--}}
-{{--                                                    <input id="newcampers" class="form-control" name="newcampers"--}}
-{{--                                                           value="1"/>--}}
-{{--                                                    <div class="input-group-append">--}}
-{{--                                                        <button type="button" class="btn btn-default spinner"--}}
-{{--                                                                data-dir="dwn"><i class="fas fa-minus"></i>--}}
-{{--                                                        </button>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-footer">--}}
-{{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-{{--                        <button id="begin_reg" type="button" class="btn btn-primary">Begin Registration</button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
 <script src="{{ mix('js/app.js') }}"></script>
 
 @yield('script')

@@ -6,7 +6,7 @@
 
 @section('heading')
     This page contains a list of the workshops
-    @if($year->is_live)
+    @if($year->is_brochure)
         we have on offer in {{ $year->year }}, grouped by timeslot.
     @else
         we had on offer in {{ $year->year }}, as an example of what might be available.

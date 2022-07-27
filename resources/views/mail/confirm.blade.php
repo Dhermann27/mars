@@ -18,7 +18,7 @@
 
     <p>Your deposit of ${{ count($campers) > 1 ? '400' : '200'}} has been paid. Your remaining balance is due on the
         first day of camp, {{ $year->first_day }}.
-        @if($year->is_live)
+        @if($year->is_brochure)
             Room selection, workshop preferences, nametag customization, and confirmation letters are available at
             <a href="https://muusa.org">muusa.org</a>.
         @else

@@ -102,7 +102,7 @@ class PaymentController extends Controller
                 $success .= " You should receive a receipt via email for your records" .
                     $campers = ByyearCamper::where('family_id', Auth::user()->camper->family_id)
                         ->where('year', ((int)$this->year->year) - 1)->where('is_program_housing', '0')->get();
-                if (!$this->year->is_live && count($campers) > 0) {
+                if (!$this->year->is_brochure && count($campers) > 0) {
                     foreach ($campers as $camper) {
                         Yearattending::whereIn('camper_id', $camper->id)->where('year_id', $this->year->id)
                             ->whereNull('room_id')->update(['room_id' => $camper->room_id]);

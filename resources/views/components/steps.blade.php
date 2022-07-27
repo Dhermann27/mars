@@ -56,7 +56,7 @@
             @endif
         </div>
     </li>
-    @if(!$year->is_live)
+    @if(!$year->is_brochure)
         <li>
             <hr class="dropdown-divider"/>
         </li>

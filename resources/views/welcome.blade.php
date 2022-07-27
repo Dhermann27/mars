@@ -73,15 +73,19 @@
                             Web Brochure
                         </h2>
                         <p class="line-height-30 py-md-2 op-7">
-                            @if($year->is_live)
+                            @if($year->is_brochure)
                                 The easiest way to learn all about MUUSA is to read the brochure, put out by our
                                 Planning Council. It has it all: workshop descriptions, housing options, frequently
                                 asked questions, and more.
                             @else
-                                While you can register right now to reserve your spot, our Planning Council is working
-                                diligently to prepare this year's brochure, which should be ready on
-                                {{ $year->brochure_date }}. You can currently see last year's to get an idea of what
-                                it might contain.
+                                @can('register', $year)
+                                    While you can register right now to reserve your spot,
+                                @else
+                                    You'll be able to register soon, but
+                                @endcan
+                                our Planning Council is working diligently to prepare this year's brochure, which should
+                                be ready on {{ $year->brochure_date }}. You can currently see last year's to get an idea
+                                of what it might contain.
                             @endif
                         </p>
                         <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">
@@ -103,15 +107,15 @@
                 <p class="line-height-30 py-md-2 op-7">
                     Our goal is to provide a memorable camp experience that is as close to previous years with a new
                     emphasis on safety. All campers who are eligible for vaccination must be fully vaccinated in
-                    accordance with CDC guidelines prior to the start of camp in 2022. Vaccines allow us to care for
-                    each other and our community. One camper getting sick is one too many, and we are grateful for
-                    this opportunity to protect each other.
+                    accordance with CDC guidelines prior to the start of camp in {{ $year->year }}. Vaccines allow us to
+                    care for each other and our community. One camper getting sick is one too many, and we are grateful
+                    for this opportunity to protect each other.
                 </p>
                 <p>
                     We do not yet know what best practices will be in July and our guidelines on masking, physical
                     distancing, testing, etc. will be made in accordance with evidence-based public health
                     recommendations closer to camp. We will provide these to you by June 1st. Questions should be
-                    directed to Jesse Hardin, the Omsbuddy and lead for the PC Covid Task Force using the <a
+                    directed to Duncan Metcalfe, the Omsbuddy and lead for the PC Covid Task Force using the <a
                         href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
                 </p>
             </div>
@@ -123,38 +127,40 @@
             <h3 class="my-lg-1 mr-lg-3 font-weight-normal">
                 @switch($year->yearmessage)
                     @case(\App\Enums\Yearmessage::CheckinCountdown)
-                    Just {{ $year->did_checkin }} days until check-in!
-                    @break
+                        Just {{ $year->did_checkin }} days until check-in!
+                        @break
 
                     @case(\App\Enums\Yearmessage::BrochureCountdown)
-                    Only {{ $year->did_brochure }} days until the brochure is released!
-                    @break
+                        Only {{ $year->did_brochure }} days until the brochure is released!
+                        @break
 
                     @case(\App\Enums\Yearmessage::Preregistration)
-                    Lock in your room from last year by paying your deposit!
-                    @break
+                        Lock in your room from last year by paying your deposit!
+                        @break
 
                     @case(\App\Enums\Yearmessage::Filling)
-                    Rooms are filling up quickly. <u><a href="{{ route('contact.index') }}" class="text-white">Contact
-                            us</a></u>
-                    to see what is still open.
-                    @break;
+                        Rooms are filling up quickly. <u><a href="{{ route('contact.index') }}" class="text-white">Contact
+                                us</a></u>
+                        to see what is still open.
+                        @break;
 
                     @case(\App\Enums\Yearmessage::Custom)
-                    {{ $year->custommessage }}
-                    @break
+                        {{ $year->custommessage }}
+                        @break
                 @endswitch
             </h3>
             <div>
-                @auth
-                    <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
-                        Your Registration
-                    </a>
-                @else
-                    <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
-                        Get Started
-                    </a>
-                @endauth
+                @can('register', $year)
+                    @auth
+                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                            Your Registration
+                        </a>
+                    @else
+                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                            Get Started
+                        </a>
+                    @endauth
+                @endcan
             </div>
 
         </div>
@@ -209,7 +215,7 @@
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ route('workshops.display') }}" class="btn btn-lg btn-primary">
-                        @if($year->is_live)
+                        @if($year->is_brochure)
                             Workshop List
                         @else
                             Last Year's Workshops (Sample)

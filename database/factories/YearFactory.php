@@ -24,14 +24,15 @@ class YearFactory extends Factory
             'checkin' => Carbon::parse('first Sunday of July ' . $thisyear)->toDateString(),
             'brochure' => Carbon::parse('first day of February ' . $thisyear)->toDateString(),
             'is_current' => '1',
-            'is_live' => '1',
-            'is_crunch' => '0',
-            'is_accept_paypal' => '1',
+            'is_brochure' => '1',
+            'can_register' => '1',
+            'can_accept_paypal' => '1',
+            'can_workshop_select' => '1',
+            'can_room_select' => '1',
             'is_calendar' => '1',
-            'is_room_select' => '1',
             'is_workshop_proposal' => '1',
             'is_artfair' => '1',
-            'is_coffeehouse' => '0'
+            'is_coffeehouse' => '1'
         ];
     }
 }

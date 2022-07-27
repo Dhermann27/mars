@@ -1,4 +1,4 @@
-@if($year->is_live)
+@if($year->is_brochure)
     @if($workshop->capacity == 999)
         <span class="alert alert-success badge float-end">Unlimited Enrollment</span>
     @elseif($workshop->enrolled >= $workshop->capacity)

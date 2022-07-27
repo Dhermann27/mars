@@ -31,7 +31,7 @@
                 <i class="fas fa-usd-square"></i>
             </a>
         </li>
-        @if($year->is_live)
+        @if($year->is_brochure)
             <li class="nav-item mx-5">
                 <i id="workshop-success" class="fas fa-check btn-success float-end d-none"></i>
                 <a href="{{ route('workshopchoice.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"

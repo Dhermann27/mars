@@ -21,11 +21,12 @@ return new class extends Migration
             $table->date('checkin');
             $table->date('brochure');
             $table->tinyInteger('is_current')->default(0);
-            $table->tinyInteger('is_live')->default(0);
+            $table->tinyInteger('is_brochure')->default(0);
+            $table->tinyInteger('can_register')->default(0); // Gated
+            $table->tinyInteger('can_accept_paypal')->default(0); // Gated
+            $table->tinyInteger('can_workshop_select')->default(0); // Gated
+            $table->tinyInteger('can_room_select')->default(0); // Gated
             $table->tinyInteger('is_calendar')->default(0);
-            $table->tinyInteger('is_crunch')->default(0);
-            $table->tinyInteger('is_accept_paypal')->default(0);
-            $table->tinyInteger('is_room_select')->default(0);
             $table->tinyInteger('is_workshop_proposal')->default(0);
             $table->tinyInteger('is_artfair')->default(0);
             $table->tinyInteger('is_coffeehouse')->default(0);
