@@ -13,10 +13,12 @@ class DataController extends Controller
     public function campers(Request $request)
     {
         $this->validate($request, ['term' => 'required|between:3,50']);
-        $campers = Camper::select('id', 'firstname', 'lastname', 'email')
-            ->where('firstname', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('lastname', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('email', 'LIKE', '%' . $request->term . '%')->get();
+        $campers = Camper::select('campers.id', 'campers.firstname', 'campers.lastname', 'campers.email', 'families.city', 'provinces.code')
+            ->join('families', 'campers.family_id', 'families.id')
+            ->join('provinces', 'families.province_id', 'provinces.id')
+            ->where('campers.firstname', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('campers.lastname', 'LIKE', '%' . $request->term . '%')
+            ->orWhere('campers.email', 'LIKE', '%' . $request->term . '%')->get();
         foreach ($campers as $camper) {
             $camper->term = $request->term;
         }

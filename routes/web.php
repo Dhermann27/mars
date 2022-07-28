@@ -102,7 +102,7 @@ Route::group(['prefix' => 'medicalresponse', 'middleware' => 'auth'], function (
 //
 Route::group(['prefix' => 'data'], function () {
 //    Route::get('loginsearch', [DataController::class, 'loginsearch');
-//    Route::get('camperlist', [DataController::class, 'campers')->middleware('can:is-council');
+    Route::get('camperlist', [DataController::class, 'campers'])->middleware('can:is-council');
     Route::get('churchlist', [DataController::class, 'churches'])->middleware(['auth', 'registration_on']);
 //    Route::get('steps', [DataController::class, 'steps')->middleware('can:has-paid');
 //    Route::get('steps/{id?}', [DataController::class, 'steps')->middleware('can:is-council');
@@ -142,8 +142,8 @@ Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'tools'], 
 //    Route::get('nametags/{i}/{id}', [ToolsController::class, 'nametagsFamily');
 //    Route::get('programs', [ToolsController::class, 'programIndex');
 //    Route::post('programs', [ToolsController::class, 'programStore');
-//    Route::get('staffpositions', [ToolsController::class, 'positionIndex'])->name('tools.staff.index');
-//    Route::post('staffpositions', [ToolsController::class, 'positionStore'])->name('tools.staff.store');
+    Route::get('staffpositions', [ToolsController::class, 'positionIndex'])->name('tools.staff.index');
+    Route::post('staffpositions', [ToolsController::class, 'positionStore'])->name('tools.staff.store');
 //    Route::get('workshops', [ToolsController::class, 'workshopIndex');
 //    Route::post('workshops', [ToolsController::class, 'workshopStore');
 });

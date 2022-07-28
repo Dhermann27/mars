@@ -27,7 +27,7 @@
             @if(session()->has('camper') && Gate::allows('is-super'))
                 <td>
                     @if($charge->id != 0)
-                        @include('includes.admin.delete', ['id' => $charge->id])
+                        @include('components.admin.delete', ['id' => $charge->id])
                     @else
                         &nbsp;
                     @endif
@@ -50,7 +50,7 @@
         <tr class="text-md-right">
             <td colspan="2">&nbsp;</td>
             <td class="amount">
-                    <span id="amountArrival">{{ number_format(max(0, $charges->sum('amount')), 2) }}
+                <span id="amountArrival">{{ number_format(max(0, $charges->sum('amount')), 2) }}
             </td>
             <td colspan="2"><strong>Amount Due Upon Arrival</strong></td>
         </tr>

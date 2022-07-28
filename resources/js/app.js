@@ -47,6 +47,12 @@ window.setSelect = function (el, value) {
     }
 }
 
+const camperFilter = async (query) => {
+    const url = `/data/camperlist?term=${encodeURI(query)}`;
+    const response = await fetch(url);
+    return await response.json();
+};
+
 const churchFilter = async (query) => {
     const url = `/data/churchlist?term=${encodeURI(query)}`;
     const response = await fetch(url);
@@ -94,6 +100,24 @@ function runOnLoad() {
                 min: 0,
                 max: 99999.99
             });
+        }
+        if (window.hasClass(inputs[i], 'camper-search')) {
+            new mdb.Autocomplete(inputs[i].parentNode, {
+                filter: camperFilter,
+                autoSelect: true,
+                threshold: 5,
+                displayValue: (value) => value.firstname + " " + value.lastname,
+                itemContent: (result) => {
+                    return `
+                        <div class="autocomplete-custom-item-content">
+                            <div class="autocomplete-custom-item-title">${result.firstname} ${result.lastname} &lt;${result.email}&gt;</div>
+                            <div class="autocomplete-custom-item-subtitle">${result.city}, ${result.code}</div>
+                        </div>`;
+                },
+            });
+            window.addEvent(inputs[i].parentNode, 'itemSelect.mdb.autocomplete', (event) => {
+                event.target.querySelector('.autocomplete-custom-content').value = event.value.id;
+            })
         }
         if (window.hasClass(inputs[i], 'church-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {

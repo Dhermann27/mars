@@ -40,7 +40,7 @@ class ToolsController extends Controller
                 } else {
                     $assignment = CamperStaff::where('camper_id', $matches[1])->where('staffposition_id', $matches[2]);
                 }
-                if ($value == 'on') {
+                if ($value == '1') {
                     $assignment->delete();
                 }
             }

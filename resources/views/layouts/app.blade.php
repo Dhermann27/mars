@@ -195,6 +195,8 @@
                                                         <i class="fas fa-turtle fa-xl"></i>
                                                     </a>
                                                 </li>
+                                                <li><a href="{{ route('tools.staff.index') }}">Position Assignments</a>
+                                                </li>
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end col-3 -->
@@ -203,7 +205,8 @@
                                             <div class="col-megamenu">
                                                 <h6 class="title">Superuser</h6>
                                                 <ul class="list-unstyled">
-                                                    <li><a href="{{ route('admin.positions.index') }}">Staff Positions</a></li>
+                                                    <li><a href="{{ route('admin.positions.index') }}">Staff
+                                                            Positions</a></li>
                                                 </ul>
                                             </div>  <!-- col-megamenu.// -->
                                         </div>

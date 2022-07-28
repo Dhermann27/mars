@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Positions
+    Staff Positions
 @endsection
 
 @section('content')
@@ -17,10 +17,10 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th id="program_id" class="select">Program</th>
-                                <th id="name">Name</th>
-                                <th id="compensationlevel_id" class="select">Compensation Level</th>
-                                <th id="pctype" class="select">Position Type</th>
+                                <th>Program</th>
+                                <th>Name</th>
+                                <th>Compensation Level</th>
+                                <th>Position Type</th>
                                 <th>Maximum Compensation</th>
                                 <th>
                                     End Staff Position?
@@ -33,10 +33,10 @@
                             <tbody class="editable">
                             @forelse($program->staffpositions()->where('start_year', '<=', $year->year)->where('end_year', '>', $year->year)->orderBy('name')->get() as $position)
                                 <tr id="{{ $position->id }}">
-                                    <td class="teditable">{{ $program->name }}</td>
-                                    <td class="teditable">{!! $position->name !!}</td>
-                                    <td class="teditable">{{ $position->compensationlevel->name }}</td>
-                                    <td class="teditable">
+                                    <td>{{ $program->name }}</td>
+                                    <td>{!! $position->name !!}</td>
+                                    <td>{{ $position->compensationlevel->name }}</td>
+                                    <td>
                                         @if($position->pctype == 1)
                                             APC
                                         @elseif($position->pctype == 2)
@@ -47,11 +47,11 @@
                                             Consultants
                                         @endif
                                     </td>
-                                    <td>
-                                        ${{ number_format($position->compensationlevel->max_compensation, 2) }}
+                                    <td class="amount">
+                                        {{ number_format($position->compensationlevel->max_compensation, 2) }}
                                     </td>
                                     <td>
-                                        @include('includes.admin.delete', ['id' => $position->id])
+                                        <x-admin.delete :id="$position->id" />
                                     </td>
                                 </tr>
                             @empty

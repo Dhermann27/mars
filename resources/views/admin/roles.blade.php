@@ -44,7 +44,7 @@
                                             @include('includes.admin.controls', ['id' => $user->id])
                                         </td>
                                         <td>
-                                            @include('includes.admin.delete', ['id' => $user->id])
+                                            @include('components.admin.delete', ['id' => $user->id])
                                         </td>
                                     </tr>
                                 @endif

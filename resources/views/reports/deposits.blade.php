@@ -46,7 +46,7 @@
                                             </td>
                                             @can('is-super')
                                                 <td>
-                                                    @include('includes.admin.delete', ['id' => $charge->id])
+                                                    @include('components.admin.delete', ['id' => $charge->id])
                                                 </td>
                                             @endif
                                         </tr>
