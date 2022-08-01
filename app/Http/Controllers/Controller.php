@@ -74,7 +74,7 @@ class Controller extends BaseController
                             return $camper->birthdate == null || $camper->foodoption_id == null;
                         })->count() == 0 && $yearsattending->whereNull('program_id')->count() == 0;
                     if ($this->steps["isCamperDetail"]) {
-                        $this->steps["amountDueArrival"] = $charges->sum('amount');
+                        $this->steps["amountDueArrival"] = max($charges->sum('amount'), 0);
                         $this->steps["amountDueNow"] = $charges->filter(function ($charge) {
                             return $charge->chargetype_id == Chargetypename::Deposit || $charge->amount < 0;
                         })->sum('amount');

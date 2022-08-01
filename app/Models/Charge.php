@@ -9,7 +9,8 @@ class Charge extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['camper_id', 'chargetype_id', 'memo', 'amount', 'year_id', 'timestamp', 'deposited_date'];
+    protected $fillable = ['camper_id', 'chargetype_id', 'memo', 'amount', 'year_id', 'timestamp', 'deposited_date',
+        'parent_id'];
 
     public function camper()
     {

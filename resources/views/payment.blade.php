@@ -95,7 +95,7 @@
             {{--            @else if($year->is_accept_paypal)--}}
 
             @if(!session()->has('camper'))
-                @if($year->is_accept_paypal)
+                @can('accept-paypal', $year)
                     <div class="d-flex d-flex-row align-items-center note note-info text-black mb-5">
                         <label for="donation" class="visually-hidden">Donation</label>
                         <div class="input-group w-25">
@@ -107,7 +107,8 @@
 
                         <div class="ms-3">
                             Please consider at least a $10.00 donation to the MUUSA Scholarship fund.
-                            <input type="submit" value="Donate" class="btn btn-primary ms-2"/>
+                            <input type="submit" value="Donate" class="btn btn-primary ms-2" data-mdb-toggle="tooltip"
+                                title="Using any of the PayPal buttons will also process your donation."/>
                         </div>
                     </div>
                     @error('donation')
@@ -163,12 +164,14 @@
                         </div>
                     </div>
                 @else
-                    <div class="row text-md-center">
-                        <h4>To Pay Your Bill:</h4>
-                        Please bring payment to checkin on the first day of camp, {{ $year->checkin }}.
-                        While we do accept VISA, Mastercard, Discover, we prefer a check (to minimize fees).
+                    <div class="row p-7 justify-content-center my-4">
+                        <div class="col-md-6">
+                            <h4>To Pay Your Bill:</h4>
+                            Please bring payment to checkin on the first day of camp, {{ $year->checkin }}.
+                            While we do accept VISA, Mastercard, Discover, we prefer a check (to minimize fees).
+                        </div>
                     </div>
-                @endif
+                @endcan
             @endif
         </form>
     </x-layouts.register>
@@ -190,12 +193,19 @@
 @endsection
 
 @section('script')
-    @if($year->is_accept_paypal)
+    @can('accept-paypal', $year)
         <script
             src="https://www.paypal.com/sdk/js?client-id={{ config('app.paypal_client_id') }}&enable-funding=venmo,paylater"></script>
         <script>
             window.addEvent(document.getElementById('donation'), 'change', function (e) {
-                document.getElementById('payment').value = Math.max(0, parseFloat(document.getElementById('amountArrival').innerText) + parseFloat(e.target.value)).toFixed(2);
+                let total = parseFloat(e.target.value);
+                if(typeof document.getElementById('amountNow') != "undefined") {
+                    total += parseFloat(document.getElementById('amountNow').innerText);
+                }
+                if(total <= 0.0 && typeof document.getElementById('amountArrival') != "undefined") {
+                    total += parseFloat(document.getElementById('amountArrival').innerText);
+                }
+                document.getElementById('payment').value = Math.max(0, total).toFixed(2);
                 window.lastAmountMask.updateValue();
             });
 
@@ -207,6 +217,10 @@
                 // Sets up the transaction when a payment button is clicked
 
                 createOrder: (data, actions) => {
+                    const alerts = document.querySelectorAll('div.alert');
+                    for(let i=0; i<alerts.length; i++) {
+                        alerts[0].style.display = 'none';
+                    }
                     var amt = parseFloat(document.getElementById('payment').value);
                     if (document.getElementById('addthree').checked) amt *= 1.03;
                     if (amt < 0) amt *= -1;
@@ -239,6 +253,6 @@
             }).render('#paypal-button');
 
         </script>
-    @endif
+    @endcan
 
 @endsection

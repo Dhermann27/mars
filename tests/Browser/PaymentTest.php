@@ -12,7 +12,9 @@ use App\Models\User;
 use App\Models\Year;
 use App\Models\Yearattending;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\Paypal;
 use Tests\DuskTestCase;
+use Tests\MailTrap;
 use Throwable;
 use function rand;
 
@@ -23,9 +25,10 @@ use function rand;
  */
 class PaymentTest extends DuskTestCase
 {
+    use MailTrap;
 
     private const ROUTE = 'payment.index';
-    private const WAIT = 250;
+    private const WAIT = 400;
 
     public function testNewVisitor()
     {
@@ -43,7 +46,10 @@ class PaymentTest extends DuskTestCase
         });
     }
 
-    public function testNewCamper()
+    /**
+     * @group Paypal
+     */
+    public function testOldCamperPayWithDonation()
     {
         $user = User::factory()->create();
 
@@ -55,21 +61,35 @@ class PaymentTest extends DuskTestCase
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
                 ->assertSee('Deposit for ' . self::$year->year)
                 ->assertSeeIn('span#amountNow', 200.0)
-                ->assertValue('input#payment', 200.0);
-//                ->waitFor('div.paypal-button-env-sandbox')
-//                ->waitFor('iframe.component-frame');
-//            $browser->driver->switchTo()->frame($browser->driver->findElement(WebDriverBy::className('component-frame'))->getAttribute('name'));
-//            $browser->waitFor('[role="button"]')->click('[role="button"]');
-//            $window = collect($browser->driver->getWindowHandles())->last();
-//            $browser->driver->switchTo()->window($window);
-//            $browser->waitFor('input#email')
-//                ->type('input#email', env('PAYPAL_LOGIN'))
-//                ->type('input#password', env('PAYPAL_PASSWORD'))
-//                ->click('button.actionContinue')->waitFor('button#payment-submit-btn:not([disabled])')
-//                ->waitFor('div.alert')->assertVisible('div.alert-success');
+                ->assertMissing('span#amountArrival')
+                ->assertValue('input#payment', 200.0)
+                ->keys('input#donation', '20', '{tab}')->pause(self::WAIT)
+                ->assertValue('input#payment', 220.0)
+                ->check('addthree')
+                ->within(new Paypal(), function ($browser) {
+                    $browser->pay(220 * 1.03);
+                });
+
+            $browser->waitFor('div.alert')->assertVisible('div.alert-success');
+
         });
-//        $this->assertDatabaseHas('charges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
-//            'chargetype_id' => Chargetypename::PayPalPayment, 'amount' => 200.0, 'timestamp' => date("Y-m-d")]);
+        $this->assertDatabaseHas('charges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::PayPalPayment, 'amount' => 220.0 * -1.03,
+            'timestamp' => date("Y-m-d")]);
+
+        $this->assertDatabaseHas('charges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::PayPalServiceCharge, 'amount' => 220.0 * .03,
+            'timestamp' => date("Y-m-d")]);
+
+        $this->assertDatabaseHas('charges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Donation, 'amount' => 20, 'timestamp' => date("Y-m-d")]);
+
+        $lastEmail = $this->fetchInbox()[0];
+        $this->assertEquals($camper->email, $lastEmail['to_email']);
+//        $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']); TODO: Doesn't seem to work with HTML messages?
+//        $this->assertStringContainsString($camper->firstname . ' ' . $camper->lastname, $body);
+//        $this->assertStringContainsString('Your deposit of $200 has been paid', $body);
+
     }
 
     /**
@@ -145,17 +165,25 @@ class PaymentTest extends DuskTestCase
 
 
     /**
-     * @group Evra
+     * @group Paypal
      * @throws Throwable
      */
-    public function testReturningCoupleDonation()
+    public function testReturningCoupleDonationSquatters()
     {
+        $year = Year::where('is_current', '1')->first();
+        $year->is_brochure = 0;
+        $year->save();
         $user = User::factory()->create();
 
         $campers[0] = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
         $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
+        $room = Room::factory()->create();
+        $oyas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$lastyear->id,
+            'room_id' => $room->id]);
+        $oyas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$lastyear->id,
+            'room_id' => $room->id]);
         GenerateCharges::dispatchSync(self::$year->id);
 
         $bigdonation = rand(1000, 9999);
@@ -166,20 +194,38 @@ class PaymentTest extends DuskTestCase
                 ->assertSeeIn('span#amountNow', 400.0)
                 ->assertValue('input#payment', 400.0)
                 ->type('input#donation', $bigdonation)->click('input#payment')->pause(self::WAIT)
-//                ->assertValue('input#payment', 400.0 + $donation) TODO: Why???
-                ->script('window.scrollTo(9999,9999)');
-            $browser->press('Donate')->waitFor('div.alert')
-                ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback');
-            $browser->clear('donation')->type('input#donation', $lildonation)
+                ->assertValue('input#payment', 400.0 + $bigdonation)
+                ->scrollIntoView('input[value=Donate]')->press('Donate')->waitFor('div.alert')
+                ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback')
+                ->clear('donation')->type('input#donation', $lildonation)
                 ->click('input#payment')->pause(self::WAIT)
-//                ->assertValue('input#payment', 400.0 + $donation) TODO: Why???
-                ->script('window.scrollTo(9999,9999)');
-            $browser->press('Donate')->waitFor('div.alert')
+                ->assertValue('input#payment', 400.0 + $lildonation)
+                ->press('Donate')->waitFor('div.alert')
                 ->assertVisible('div.alert-success');
+            $browser->within(new Paypal(), function ($browser) use ($lildonation) {
+                $browser->pay(400 + $lildonation);
+            });
+
+            $browser->waitFor('div.alert')
+                ->assertSeeIn('div.alert-success', 'By paying your deposit, your room from');
         });
         $this->assertDatabaseHas('charges', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
             'chargetype_id' => Chargetypename::Donation, 'amount' => $lildonation, 'timestamp' => date("Y-m-d")]);
+        $this->assertDatabaseHas('charges', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::PayPalPayment, 'amount' => -400.0 - $lildonation,
+            'timestamp' => date("Y-m-d")]);
+        $this->assertDatabaseHas('yearsattending', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'room_id' => $room->id]);
 
+        $lastEmail = $this->fetchInbox()[0];
+        $this->assertEquals($campers[0]->email, $lastEmail['to_email']);
+//        $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']);
+//        $this->assertStringContainsString($campers[0]->firstname . ' ' . $campers[1]->lastname, $body);
+//        $this->assertStringContainsString($campers[1]->firstname . ' ' . $campers[1]->lastname, $body);
+//        $this->assertStringContainsString('Your deposit of $400 has been paid', $body);
+
+        $year->is_brochure = 1;
+        $year->save();
     }
 
     /**
@@ -289,7 +335,7 @@ class PaymentTest extends DuskTestCase
     public function testReturningYANoPaypal()
     {
         $year = Year::where('is_current', '1')->first();
-        $year->is_accept_paypal = 0;
+        $year->can_accept_paypal = 0;
         $year->save();
 
         $user = User::factory()->create();
@@ -303,7 +349,7 @@ class PaymentTest extends DuskTestCase
                 ->assertSee('Please bring payment to checkin');
         });
 
-        $year->is_accept_paypal = 1;
+        $year->can_accept_paypal = 1;
         $year->save();
     }
 
@@ -421,7 +467,7 @@ class PaymentTest extends DuskTestCase
                 ->assertValue('input#payment', number_format($rate->rate * 6, 2, '.', ''));
 
             $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-                'chargetype_id' => Chargetypename::CheckPayment, 'amount' => -300]);
+                'chargetype_id' => Chargetypename::CheckPayment, 'amount' => -203]);
             GenerateCharges::dispatchSync(self::$year->id);
 
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)

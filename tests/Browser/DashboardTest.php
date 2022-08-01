@@ -2,12 +2,14 @@
 
 namespace Tests\Browser;
 
+use App\Enums\Buildingtype;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\Charge;
 use App\Models\Family;
 use App\Models\Medicalresponse;
 use App\Models\Program;
+use App\Models\Rate;
 use App\Models\Room;
 use App\Models\User;
 use App\Models\Workshop;
@@ -152,6 +154,9 @@ class DashboardTest extends DuskTestCase
                 ->assertAttributeContains(self::STEPS[5], 'class', self::FA_BASE)
                 ->assertAttributeContains(self::STEPS[6], 'class', self::FA_BASE);
             $this->assertAfter($browser, 6, self::FA_BLOCKED);
+
+            $browser->loginAs($user->id)->visit(route('camperselect.index'))->pause(self::WAIT)
+                ->assertSee('Amount Due Now: $0.00')->assertMissing('Amount Due Upon Arrival');
         });
     }
 
@@ -159,17 +164,21 @@ class DashboardTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+        $room = Room::factory()->create(['building_id' => Buildingtype::Trout]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => function () {
-                return Room::factory()->create()->id;
-            }]);
+            'room_id' => $room->id]);
+        $rate = Rate::factory()->create(['building_id' => Buildingtype::Trout, 'program_id' => $ya->program_id,
+            'min_occupancy' => 1, 'max_occupancy' => 4]);
         GenerateCharges::dispatchSync(self::$year->id);
-        $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -200]);
+        $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -9999]);
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
             $this->assertBefore($browser, 5, self::FA_SUCCESS);
             $browser->assertAttributeContains(self::STEPS[6], 'class', self::FA_BASE);
             $this->assertAfter($browser, 6, self::FA_BLOCKED);
+
+            $browser->loginAs($user->id)->visit(route('camperselect.index'))->pause(self::WAIT)
+                ->assertSee('Amount Due Now: $0.00')->assertSee('Amount Due Upon Arrival: $0.00');
         });
     }
 

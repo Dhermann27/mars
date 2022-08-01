@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use Exception;
 use Illuminate\Support\Facades\Config;
 use GuzzleHttp\Client;
+use RuntimeException;
 
 trait MailTrap
 {

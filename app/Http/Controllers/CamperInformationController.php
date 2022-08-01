@@ -19,6 +19,8 @@ use function count;
 
 class CamperInformationController extends Controller
 {
+    private const LAST_PROGRAM_SELECT = '(SELECT program_id FROM yearsattending yap, years y WHERE yap.year_id=y.id AND yearsattending.camper_id=yap.camper_id AND y.year<? ORDER BY year DESC LIMIT 1) lastprogram_id';
+
     private $messages = ['pronoun_id.*.exists' => 'Please choose a preferred pronoun.',
         'firstname.*.required' => 'Please enter a first name.',
         'lastname.*.required' => 'Please enter a last name.',
@@ -84,7 +86,6 @@ class CamperInformationController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = 0;
         if ($id && Gate::allows('is-council')) {
             $family_id = Camper::find($id)->family_id;
         } else {
@@ -98,8 +99,24 @@ class CamperInformationController extends Controller
 
         $campers = Camper::where('family_id', $family_id)
             ->with(['yearsattending' => function ($query) {
-                $query->where('year_id', $this->year->id);
+                $query->selectRaw('*, ' . self::LAST_PROGRAM_SELECT, [$this->year->year])
+                    ->where('year_id', $this->year->id);
             }])->orderBy('birthdate')->get();
+
+        // Find most recent program_id and reset for 18-20 YA
+        foreach ($campers as $camper) {
+            $program_id = 0;
+            if (isset($camper->yearsattending[0])) {
+                $ya = $camper->yearsattending[0];
+                if(isset($ya->program_id)) {
+                    $program_id = $ya->program_id;
+                } elseif(isset($ya->lastprogram_id)) {
+                    $program_id = $ya->lastprogram_id;
+                }
+                if ($program_id == Programname::YoungAdultUnderAge) $program_id = Programname::YoungAdult;
+                $camper->yearsattending[0]->program_id = $program_id;
+            }
+        }
 
         return view('camperinfo', ['pronouns' => Pronoun::all(), 'foodoptions' => Foodoption::all(),
             'campers' => $campers, 'programs' => Program::whereNotNull('title')->orderBy('order')->get(),

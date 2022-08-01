@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Console\Kernel;
+use App\Models\Contactbox;
 use App\Models\Year;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -11,14 +12,13 @@ use Faker\Factory;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use NumberFormatter;
-use Tests\Browser\MuusaBrowser;
 
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
 
     protected static $hasSetupRun = false;
-    protected static $year, $lastyear, $years;
+    protected static $year, $lastyear, $years, $registrar;
 
     /**
      * Prepare for Dusk test execution.
@@ -48,6 +48,7 @@ abstract class DuskTestCase extends BaseTestCase
             self::$lastyear = Year::factory()->create(['is_current' => 0, 'year' => self::$year->year - 1]);
             self::$years = array(self::$year, self::$lastyear,
                 Year::factory()->create(['is_current' => 0, 'year' => self::$lastyear->year - rand(1, 50)]));
+            self::$registrar = Contactbox::factory()->create(['name' => 'Registrar']); // Confirm Email BCC's Registrar
         }
     }
 

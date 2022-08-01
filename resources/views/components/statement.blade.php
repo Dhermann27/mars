@@ -37,7 +37,7 @@
     @endforeach
     </tbody>
     <tfoot>
-    @if($year->is_accept_paypal && !session()->has('camper'))
+    @if(Gate::allows('accept-paypal', $year) && !session()->has('camper'))
         <tr class="text-md-right">
             <td colspan="2">&nbsp;</td>
             <td class="amount">

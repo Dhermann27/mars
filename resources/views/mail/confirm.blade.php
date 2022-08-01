@@ -23,7 +23,7 @@
             <a href="https://muusa.org">muusa.org</a>.
         @else
             Room selection, workshop preferences, nametag customization, and confirmation letters will become
-            available on {{ $year->brochure }} at <a href="https://muusa.org">muusa.org</a>.
+            available on {{ $year->brochure_date }} at <a href="https://muusa.org">muusa.org</a>.
         @endif
     </p>
 

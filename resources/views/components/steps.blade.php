@@ -47,11 +47,13 @@
             @if($isLarge)
                 <span>See a list of your charges and post a payment via PayPal.</span>
             @elseif($stepdata['amountDueNow'] > 0)
-                <span class="small">Amount Due Now: {{ number_format($stepdata['amountDueNow'], 2) }}</span>
+                <span class="small">Amount Due Now: ${{ number_format($stepdata['amountDueNow'], 2) }}</span>
             @elseif(array_key_exists('amountDueArrival', $stepdata))
                 <span class="small">
                     Amount Due Now: $0.00<br/>
-                    Amount Due Upon Arrival: {{ number_format($stepdata['amountDueArrival'], 2) }}
+                    @if($year->is_brochure && $stepdata['isRoomsSelected'])
+                        Amount Due Upon Arrival: ${{ number_format($stepdata['amountDueArrival'], 2) }}
+                    @endif
                 </span>
             @endif
         </div>
@@ -115,7 +117,7 @@
         </x-steps.header>
         <div class="stepper-content">
             @if($isLarge)
-          <span>
+                <span>
               All people under 18 years of age must have their parent or guardian fill out medical forms.
           </span>
             @elseif($stepdata['medicalResponsesNeeded'] != null)

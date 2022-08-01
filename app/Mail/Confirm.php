@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Contactbox;
+use App\Models\Year;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,14 +12,14 @@ class Confirm extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $year, $campers;
+    public $year, $campers;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($year, $campers)
+    public function __construct(Year $year, mixed $campers)
     {
         $this->year = $year;
         $this->campers = $campers;

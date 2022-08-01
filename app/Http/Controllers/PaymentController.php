@@ -81,7 +81,7 @@ class PaymentController extends Controller
         ], $messages);
 
         $charge = null;
-        $success = "";
+        $success = '';
         if (!empty($request->input('orderid'))) {
 
             $before = Gate::allows('has-paid');
@@ -90,7 +90,7 @@ class PaymentController extends Controller
             $charge = Charge::updateOrCreate(['camper_id' => Auth::user()->camper->id,
                 'chargetype_id' => Chargetypename::PayPalPayment, 'memo' => $txn],
                 ['amount' => $order["purchase_units"][0]["amount"]["value"] * -1, 'year_id' => $this->year->id,
-                    'timestamp' => date("Y-m-d")]);
+                    'timestamp' => date('Y-m-d')]);
 
             $success = 'Payment received!';
 
@@ -99,14 +99,13 @@ class PaymentController extends Controller
                     $query->where('chargetype_id', Chargetypename::Deposit)->orWhere('amount', '<', 0);
                 })->get()->sum('amount');
             if (!$before && $paid <= 0) {
-                $success .= " You should receive a receipt via email for your records" .
-                    $campers = ByyearCamper::where('family_id', Auth::user()->camper->family_id)
-                        ->where('year', ((int)$this->year->year) - 1)->where('is_program_housing', '0')->get();
-                if (!$this->year->is_brochure && count($campers) > 0) {
-                    foreach ($campers as $camper) {
-                        Yearattending::whereIn('camper_id', $camper->id)->where('year_id', $this->year->id)
-                            ->whereNull('room_id')->update(['room_id' => $camper->room_id]);
-                    }
+                $success .= ' You should receive a receipt via email for your records.';
+                $campers = ByyearCamper::where('family_id', Auth::user()->camper->family_id)
+                    ->where('year', ((int)$this->year->year) - 1)->where('is_program_housing', '0')->get();
+                if ($this->year->is_brochure == 0 && count($campers) > 0) {
+                    Yearattending::whereIn('camper_id', $campers->pluck('id'))->where('year_id', $this->year->id)
+                        ->whereNull('room_id')->where('is_setbyadmin', '0')
+                        ->update(['room_id' => $campers[0]->room_id]);
 
                     $success .= ' By paying your deposit, your room from ' . ((int)($this->year->year) - 1)
                         . ' has been assigned.';
@@ -114,6 +113,8 @@ class PaymentController extends Controller
 
                 Mail::to(Auth::user()->email)
                     ->send(new Confirm($this->year, ThisyearCamper::where('family_id', Auth::user()->camper->family_id)->get()));
+            } elseif (!$before) {
+                $success .= ' But you still show a balance on your deposit amount. You will not be able to choose a room or workshops while this balance remains.';
             }
             GenerateCharges::dispatch($this->year->id);
 
@@ -137,8 +138,7 @@ class PaymentController extends Controller
                     'memo' => 'Optional payment to offset PayPal Invoice #' . $txn],
                     ['year_id' => $this->year->id, 'chargetype_id' => Chargetypename::PayPalServiceCharge,
                         'amount' => $order["purchase_units"][0]["amount"]["value"] / 1.03 * .03,
-                        'timestamp' => date("Y-m-d"), 'parent_id' => $charge->id]);
-                $addthree->save();
+                        'timestamp' => date('Y-m-d'), 'parent_id' => $charge->id]);
             }
         } else {
             $request->session()->flash('warning', 'Payment was not processed by MUUSA. If you believe that PayPal has transmitted funds, please contact the Treasurer.');
@@ -147,14 +147,9 @@ class PaymentController extends Controller
         if ($request->input('donation') > 0) {
             $donation = Charge::updateOrCreate(['camper_id' => Auth::user()->camper->id,
                 'chargetype_id' => Chargetypename::Donation, 'year_id' => $this->year->id,
-                'timestamp' => date("Y-m-d"), 'amount' => $request->input('donation')]);
-            $donation->memo = 'MUUSA Scholarship Fund';
-            $donation->timestamp = date("Y-m-d");
-            if ($charge) {
-                $donation->parent_id = $charge->id;
-            }
-            $donation->save();
-            $success .= " Thank you for your donation. Your generosity will help others attend MUUSA.";
+                'timestamp' => date('Y-m-d')],
+                ['amount' => $request->input('donation'), 'memo' => 'MUUSA Scholarship Fund']);
+            $success .= ' Thank you for your donation. Your generosity will help others to attend MUUSA.';
         }
 
         $request->session()->flash('success', $success);
