@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Enums\Programname;
 use App\Models\Camper;
-use App\Models\Program;
 use App\Models\Year;
 use App\Models\Yearattending;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,8 +24,8 @@ class YearattendingFactory extends Factory
             'camper_id' => function () {
                 return Camper::factory()->create()->id;
             },
-            'year_id' => function() {
-            return Year::factory()->create()->id;
+            'year_id' => function () {
+                return Year::factory()->create()->id;
             },
             'program_id' => Programname::Adult,
             'days' => 6,
