@@ -50,6 +50,20 @@ return new class extends Migration
                       FROM workshops w, yearsattending__workshop yw, yearsattending ya
                       WHERE w.fee > 0 AND yw.is_enrolled = 1 AND w.id = yw.workshop_id AND yw.yearattending_id = ya.id
                         AND ya.year_id=myyear_id;
+
+                    UPDATE users u, thisyear_staff ts
+                        SET u.usertype =(
+                            CASE WHEN ts.pctype = 1 THEN 1
+                             WHEN ts.pctype = 3 THEN 1
+                             WHEN ts.pctype = 4 THEN 2
+                             WHEN ts.pctype = 2 THEN
+                                CASE WHEN ts.staffpositionname = 'Registrar' THEN 2
+                                    WHEN ts.staffpositionname = 'Treasurer' THEN 2
+                                    ELSE 1
+                                END
+                             ELSE 0
+                         END)
+                        WHERE ts.email = u.email;
                   END;");
     }
 

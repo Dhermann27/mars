@@ -17,7 +17,7 @@ return new class extends Migration
         DB::unprepared("CREATE DEFINER =`root`@`localhost` PROCEDURE `expose_nametags_family`(myfamily_id INT)
             BEGIN
                 SET sql_mode='';
-                DELETE FROM nametag_expo ne WHERE ne.yearattending_id IN (SELECT ya.id FROM yearsattending ya, campers c WHERE ya.camper_id=c.id AND c.family_id=myfamily_id);
+                DELETE FROM nametag_expo WHERE yearattending_id IN (SELECT ya.id FROM yearsattending ya, campers c WHERE ya.camper_id=c.id AND c.family_id=myfamily_id);
                 INSERT INTO nametag_expo (yearattending_id, pronoun, name, surname, line1, line2, line3, line4, font, parent, icon, created_at)
                     SELECT ya.id,
                         IF(SUBSTR(ya.nametag, 1, 1) = \"2\", p.name, \"\") pronoun,

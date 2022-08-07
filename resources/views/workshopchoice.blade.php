@@ -97,10 +97,8 @@
                     </div>
                 @endforeach
             </x-navtabs>
-            @if($stepdata["amountDueNow"] <= 0)
-                @cannot('readonly')
-                    <x-form-group type="submit" label="Save Changes"/>
-                @endif
+            @if($stepdata["amountDueNow"] <= 0 && !Gate::allows('readonly') && Gate::allows('select-workshops', $year))
+                <x-form-group type="submit" label="Save Changes"/>
             @endif
         </form>
     </x-layouts.register>

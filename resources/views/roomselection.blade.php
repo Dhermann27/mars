@@ -151,7 +151,7 @@
                         <div class="text-end mt-3">
                             <button type="submit" class="btn btn-lg btn-primary py-3 px-4 disabled">No changes allowed</button>
                         </div>
-                    @elseif($year->is_room_select)
+                    @elseif(Gate::allows('select-room', $year))
                         <input type="hidden" id="room_id" name="room_id"/>
                         <x-form-group type="submit" label="Lock Room"/>
                     @endif

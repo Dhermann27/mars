@@ -1,7 +1,7 @@
 <ul {{ $attributes->class(['stepper', 'stepper-vertical' => $isVertical, 'stepper-large' => $isLarge]) }}>
     <li class="stepper-step mt-3">
         <x-steps.header url="camperselect" :stepdata="$stepdata['campersSelected']" operation="gt"
-                        comparator="0" icon="users" :is-large="$isLarge">
+                        comparator="0" icon="users" :is-large="$isLarge" :tooltip="__('registration.completeabove')">
             Camper Selection
         </x-steps.header>
         <div class="stepper-content">
@@ -16,7 +16,8 @@
         </div>
     </li>
     <li class="stepper-step">
-        <x-steps.header url="household" :stepdata="$stepdata['isAddressCurrent']" icon="home" :is-large="$isLarge">
+        <x-steps.header url="household" :stepdata="$stepdata['isAddressCurrent']" icon="home" :is-large="$isLarge"
+                        :tooltip="__('registration.completeabove')">
             Billing Address
         </x-steps.header>
         <div class="stepper-content">
@@ -29,7 +30,8 @@
         </div>
     </li>
     <li class="stepper-step">
-        <x-steps.header url="camperinfo" :stepdata="$stepdata['isCamperDetail']" icon="user-gear" :is-large="$isLarge">
+        <x-steps.header url="camperinfo" :stepdata="$stepdata['isCamperDetail']" icon="user-gear" :is-large="$isLarge"
+                        :tooltip="__('registration.completeabove')">
             Camper Information
         </x-steps.header>
         <div class="stepper-content">
@@ -40,7 +42,8 @@
     </li>
     <li class="stepper-step">
         <x-steps.header url="payment" :stepdata="$stepdata['amountDueNow']" operation="lte"
-                        comparator="0" icon="usd-square" :is-large="$isLarge">
+                        comparator="0" icon="usd-square" :is-large="$isLarge"
+                        :tooltip="__('registration.completeabove')">
             Account Statement
         </x-steps.header>
         <div class="stepper-content">
@@ -62,10 +65,15 @@
         <li>
             <hr class="dropdown-divider"/>
         </li>
-        <h6 class="dropdown-header">Opens {{ $year->brochure_date }}</h6>
+        @if($isLarge)
+            <h3>Opens {{ $year->brochure_date }}</h3>
+        @else
+            <h6 class="dropdown-header"><strong>Opens {{ $year->brochure_date }}</strong></h6>
+        @endif
     @endif
     <li class="stepper-step">
-        <x-steps.header url="roomselection" :stepdata="$stepdata['isRoomsSelected']" icon="bed" :is-large="$isLarge">
+        <x-steps.header url="roomselection" :stepdata="$stepdata['isRoomsSelected']" icon="bed" :is-large="$isLarge"
+                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">
             Room Selection
         </x-steps.header>
         <div class="stepper-content">
@@ -76,7 +84,8 @@
     </li>
     <li class="stepper-step">
         <x-steps.header url="workshopchoice" :stepdata="$stepdata['workshopsSelected']" operation="gt"
-                        comparator="0" icon="rocket" :is-large="$isLarge" is-required="false">
+                        comparator="0" icon="rocket" :is-large="$isLarge" is-required="false"
+                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">
             Workshop Preferences
         </x-steps.header>
         <div class="stepper-content">
@@ -94,7 +103,8 @@
     </li>
     <li class="stepper-step">
         <x-steps.header url="nametag" :stepdata="$stepdata['nametagsCustomized']" operation="gt"
-                        comparator="0" icon="id-card" :is-large="$isLarge" is-required="false">
+                        comparator="0" icon="id-card" :is-large="$isLarge" is-required="false"
+                        :tooltip="$year->is_brochure == 1 ? __('registration.completeabove') : __('registration.notopenyet')">
             Nametag Customization
         </x-steps.header>
         <div class="stepper-content">
@@ -112,7 +122,8 @@
     </li>
     <li class="stepper-step">
         <x-steps.header url="medicalresponse" :stepdata="$stepdata['medicalResponsesNeeded']" operation="eq"
-                        comparator="0" icon="clipboard-medical" :is-large="$isLarge">
+                        comparator="0" icon="clipboard-medical" :is-large="$isLarge"
+                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">
             Medical Responses
         </x-steps.header>
         <div class="stepper-content">

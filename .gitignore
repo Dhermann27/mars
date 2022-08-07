@@ -12,7 +12,10 @@ public/storage
 public/hot
 storage/*.key
 .env
-.*
+.DS_STORE
+.editorconfig
+.env*
+.phpunit*
 .idea/*
 Homestead.yaml
 Homestead.json

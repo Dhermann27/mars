@@ -173,7 +173,8 @@ class PaymentController extends Controller
         $family_id = $this->getFamilyId();
         $years = ThisyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
         foreach ($years as $charge) {
-            if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit) {
+            if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit
+                || $charge->chargetype_id == Chargetypename::Donation) {
                 $deposit += $charge->amount;
             }
         }

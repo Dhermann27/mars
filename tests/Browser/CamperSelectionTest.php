@@ -277,7 +277,7 @@ class CamperSelectionTest extends DuskTestCase
         $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $campers[2] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
-            'room_id' => Room::factory()->create()->id]);
+            'room_id' => Room::factory()->create(['room_number' => __FUNCTION__])->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
             'room_id' => $yas[0]->room_id]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[2]->id, 'year_id' => self::$year->id,

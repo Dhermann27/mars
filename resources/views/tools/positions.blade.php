@@ -41,7 +41,9 @@
                                         {{--                                        @include('includes.admin.controls', ['id' => $assignment->camper_id])--}}
                                     </td>
                                     <td>
-                                        <x-admin.delete :id="$assignment->camper_id . '-' . $assignment->staffposition_id" />
+                                        <x-admin.delete
+                                            :id="$assignment->camper_id . '-' . $assignment->staffposition_id"
+                                            dusk="delete{{ $program->name . $assignment->staffpositionname }}"/>
                                     </td>
                                 </tr>
                             @endforeach

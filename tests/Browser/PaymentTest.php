@@ -179,7 +179,7 @@ class PaymentTest extends DuskTestCase
         $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
-        $room = Room::factory()->create();
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
         $oyas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$lastyear->id,
             'room_id' => $room->id]);
         $oyas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$lastyear->id,
@@ -452,10 +452,10 @@ class PaymentTest extends DuskTestCase
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__,
             'birthdate' => $this->getChildBirthdate()]);
-        $room = Room::factory()->create();
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $rate = Rate::factory()->create(['building_id' => $room->building_id]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => $room->id]);
-        $rate = Rate::factory()->create(['building_id' => $room->building_id, 'program_id' => $ya->program_id]);
+            'room_id' => $room->id, 'program_id' => $rate->program_id]);
         GenerateCharges::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $rate, $camper) {

@@ -18,7 +18,7 @@
             @if(count($years) == 1 && $years->first()->first()->year_id == $year->id)
                 <x-statement :stepdata="$stepdata" :charges="$years->first()" :deposit="$deposit"/>
             @elseif(count($years) == 0)
-                <h4>No charges present</h4>
+                <h4 class="m-4">No charges present</h4>
             @else
                 <x-navtabs :tabs="$years->sortKeys()->keys()" option="year">
                     @foreach($years->sortKeys() as $thisyear => $charges)
@@ -139,7 +139,7 @@
                                 <input id="payment" name="payment"
                                        class="form-control amount-mask @error('payment') is-invalid @enderror"
                                        placeholder="Or enter another amount..."
-                                       value="{{ count($years) > 0 ? number_format(max($years->first()->sum('amount'), 0), 2, '.', '') : 0.00}}"/>
+                                       value="{{ $deposit > 0 || count($years) == 0 ? number_format($deposit, 2, '.', '') : number_format(max($years->first()->sum('amount'), 0), 2, '.', '')}}"/>
                                 @error('payment')
                                 <span class="muusa-invalid-feedback"
                                       role="alert"><strong>{{ $message }}</strong></span>
@@ -222,6 +222,7 @@
                         alerts[0].style.display = 'none';
                     }
                     var amt = parseFloat(document.getElementById('payment').value);
+                    if (amt == 0.0) return false;
                     if (document.getElementById('addthree').checked) amt *= 1.03;
                     if (amt < 0) amt *= -1;
                     window.paypalModal.show();

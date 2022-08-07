@@ -10,6 +10,7 @@ use Tests\DuskTestCase;
 /**
  * @group Home
  * @group Year
+ * @group Years
  */
 class YearsTest extends DuskTestCase
 {
@@ -24,10 +25,33 @@ class YearsTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)->visit('/')
                 ->assertSee('Midwest Unitarian Universalist Summer Assembly')
-                ->assertDontSee('Registration')
+                ->assertDontSee('REGISTRATION')
                 ->assertSee('be able to register soon');
 
             $browser->visit('/dashboard')->assertPathIs('/home');
         });
+
+        self::$year->can_register = 1;
+        self::$year->save();
+
+    }
+
+
+    public function testBrochureOff()
+    {
+
+        $user = User::factory()->create();
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user->id)->visit('/')
+                ->assertSee('Midwest Unitarian Universalist Summer Assembly')
+                ->assertSee('REGISTRATION')
+                ->assertSee('you can register right now');
+
+            $browser->visit('/dashboard')->assertPathIs('/dashboard');
+        });
+
+        self::$year->can_register = 1;
+        self::$year->save();
+
     }
 }

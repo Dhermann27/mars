@@ -57,6 +57,13 @@ class Header extends Component
     public $icon;
 
     /**
+     * Tooltip to be used if step is not available
+     *
+     * @var string
+     */
+    public $tooltip;
+
+    /**
      * Create a new component instance.
      *
      * @param string $url
@@ -65,9 +72,10 @@ class Header extends Component
      * @param mixed $comparator
      * @param bool $isLarge
      * @param string $icon
+     * @param string $tooltip
      * @return void
      */
-    public function __construct($url, $stepdata, $icon, $isLarge = false, $isRequired = true, $operation = 'eq', $comparator = true)
+    public function __construct($url, $stepdata, $icon, $isLarge = false, $isRequired = true, $operation = 'eq', $comparator = true, $tooltip = '')
     {
         $this->url = $url;
         $this->stepdata = $stepdata;
@@ -76,6 +84,7 @@ class Header extends Component
         $this->isRequired = $isRequired;
         $this->operation = $operation;
         $this->comparator = $comparator;
+        $this->tooltip = $tooltip;
     }
 
     /**

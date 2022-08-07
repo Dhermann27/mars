@@ -24,8 +24,8 @@ class RoomFactory extends Factory
             },
             'room_number' => $this->faker->randomNumber(5),
             'capacity' => $this->faker->randomNumber(1),
-            'is_workshop' => $this->faker->boolean(),
-            'is_handicap' => $this->faker->boolean(),
+            'is_workshop' => 0,
+            'is_handicap' => 0,
             'xcoord' => $this->faker->unique()->randomNumber(2) * 6 + 1,
             'ycoord' => $this->faker->unique()->randomNumber(2) * 6 + 1,
             'pixelsize' => 5

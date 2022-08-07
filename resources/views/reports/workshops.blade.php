@@ -50,11 +50,16 @@
                                 </tr>
                             @endforeach
                             </tbody>
-                            <tfoot>
+                            <tfoot
                             @if(count($workshop->choices) > 0)
                                 <tr class="d-print-none">
                                     <td colspan="3">Distribution
-                                        list: {{ $workshop->choices->yearattending->camper->pluck('email') }}
+                                        list:
+                                        @foreach($workshop->choices as $choice)
+                                            @if(isset($choice->yearattending->camper->email))
+                                                {{ $choice->yearattending->camper->email }};
+                                            @endif
+                                        @endforeach
                                     </td>
                                 </tr>
                             @endif
@@ -65,8 +70,8 @@
                                 <tr class="d-none d-print-block" style="width:100%; border-bottom: 1px solid black;">
                                     <td colspan="3">&nbsp;</td>
                                 </tr>
-                            @endfor
-                            </tfoot>
+                                @endfor
+                                </tfoot>
                         </table>
                     </div>
                     <div class="page-break"></div>

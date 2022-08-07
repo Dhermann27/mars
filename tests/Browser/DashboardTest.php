@@ -164,11 +164,10 @@ class DashboardTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
-        $room = Room::factory()->create(['building_id' => Buildingtype::Trout]);
+        $room = Room::factory()->create(['building_id' => Buildingtype::Trout, 'room_number' => __FUNCTION__]);
+        $rate = Rate::factory()->create(['building_id' => Buildingtype::Trout, 'min_occupancy' => 1, 'max_occupancy' => 4]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => $room->id]);
-        $rate = Rate::factory()->create(['building_id' => Buildingtype::Trout, 'program_id' => $ya->program_id,
-            'min_occupancy' => 1, 'max_occupancy' => 4]);
+            'room_id' => $room->id, 'program_id' => $rate->program_id]);
         GenerateCharges::dispatchSync(self::$year->id);
         $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -9999]);
         $this->browse(function (Browser $browser) use ($user) {
@@ -190,12 +189,11 @@ class DashboardTest extends DuskTestCase
         $campers[1] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
             'birthdate' => $this->getChildBirthdate()]);
 
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => function () {
-                return Room::factory()->create()->id;
-            }]);
+            'room_id' => $room->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
-            'room_id' => $yas[0]->room_id]);
+            'room_id' => $room->id]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
             'program_id' => function () {
                 return Program::factory()->create(['is_program_housing' => 1])->id;
@@ -218,16 +216,15 @@ class DashboardTest extends DuskTestCase
         $campers[1] = Camper::factory()->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
             'birthdate' => $this->getChildBirthdate()]);
 
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => function () {
-                return Room::factory()->create()->id;
-            }, 'nametag' => 12345678]);
+            'room_id' => $room->id, 'nametag' => 12345678]);
         $yws = YearattendingWorkshop::factory()->count(3)->create(['yearattending_id' => $yas[0]->id,
             'workshop_id' => function () {
                 return Workshop::factory()->create(['year_id' => self::$year->id])->id;
             }]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
-            'room_id' => $yas[0]->room_id, 'nametag' => 12345678]);
+            'room_id' => $room->id, 'nametag' => 12345678]);
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
             'program_id' => function () {
                 return Program::factory()->create(['is_program_housing' => 1])->id;
@@ -248,17 +245,16 @@ class DashboardTest extends DuskTestCase
         $campers = Camper::factory()->count(3)->create(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__,
             'birthdate' => $this->getChildBirthdate()]);
 
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'room_id' => function () {
-                return Room::factory()->create()->id;
-            }, 'nametag' => 12345678]);
+            'room_id' => $room->id, 'nametag' => 12345678]);
         $yw = YearattendingWorkshop::factory()->create(['yearattending_id' => $ya->id,
             'workshop_id' => function () {
                 return Workshop::factory()->create(['year_id' => self::$year->id])->id;
             }]);
         foreach ($campers as $child) {
             $cya = Yearattending::factory()->create(['camper_id' => $child->id, 'year_id' => self::$year->id,
-                'room_id' => $ya->room_id]);
+                'room_id' => $room->id]);
             $medicalresponses[] = Medicalresponse::factory()->create(['yearattending_id' => $cya->id]);
             $yw = YearattendingWorkshop::factory()->create(['yearattending_id' => $cya->id,
                 'workshop_id' => $yw->workshop_id]);

@@ -1,13 +1,8 @@
 <?php
 
 return [
-    'waivecredit' => 'Credits to be set at Fall Planning Meeting. In the past, credit for 5-day, 1 hr 50 min workshop
-                            has been $300; for 3-4 day 1 hr 50 min workshops, $150.',
-    'quickcopy' => 'Mark everyone as attending 6 nights',
-    'attending' => '<p>Use this dropdown to tell us if a family member is not attending
-                    MUUSA this year.</p><p>If this family member will be registering separately,
-                    please use the Contact Us form and we will split them off to their own
-                    registration form.</p>',
+    'completeabove' => 'This link is not available until the marked step has been completed.',
+    'notopenyet' => 'This step will become available when the brochure is released.',
     'pronoun' => '<strong>Why do we ask?</strong>
                     <p>MUUSA is an intentionally inclusive community that
                                   welcomes everyone regardless of their biological sex or gender
@@ -24,6 +19,7 @@ return [
                                   social media or your church community.</p>',
     'roommate' => '<p>There is no need to add family members to this field; we assume that
                    you would like to room with them unless contacted with another request.</p>',
+    'specialneeds' => 'Examples: disabled accessibility, refrigeration for medicines, special diet other than vegan or gluten free, service/companion animals, accommodations for the children\'s program',
     'sponsor' => '<strong>When is a sponsor required?</strong> 
                    <p>A sponsor is required if the camper will be under the age  of 18 on the first
                    day of camp and a parent or legal guardian is not attending for the entire length
@@ -33,5 +29,6 @@ return [
                    <p>If you are having difficulty finding a sponsor, please let us know using the
                    Contact Us form above. Oftentimes, we have adults in your area who are willing to
                    volunteer, and may also be willing to offer transportation.</p>',
-    'specialneeds' => 'Examples: disabled accessibility, refrigeration for medicines, special diet other than vegan or gluten free, service/companion animals, accommodations for the children\'s program'
+    'waivecredit' => 'Credits to be set at Fall Planning Meeting. In the past, credit for 5-day, 1 hr 50 min workshop
+                            has been $300; for 3-4 day 1 hr 50 min workshops, $150.',
 ];

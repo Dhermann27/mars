@@ -23,7 +23,8 @@ class Timeslot extends Model
 
     public function thisyearWorkshops()
     {
-        return $this->hasMany(Workshop::class)->where('year_id', DB::raw('getcurrentyear()'));
+        $year = Year::where('is_current', '1')->firstOrFail();
+        return $this->hasMany(Workshop::class)->where('year_id', $year->id);
     }
 
 }

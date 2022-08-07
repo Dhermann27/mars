@@ -57,7 +57,7 @@ class RoomSelectionTest extends DuskTestCase
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
         GenerateCharges::dispatchSync(self::$year->id);
 
-        $room = Room::factory()->create(['is_workshop' => 0]);
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
 
         $this->browse(function (Browser $browser) use ($user, $room) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->assertSee('Camp Lakewood Cabins')
@@ -72,15 +72,18 @@ class RoomSelectionTest extends DuskTestCase
     public function testReturningYA()
     {
         $user = User::factory()->create();
+
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $rate = Rate::factory()->create(['building_id' => $room->building_id]);
+        $newroom = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $newrate = Rate::factory()->create(['program_id' => $rate->program_id, 'building_id' => $newroom->building_id]);
+
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
-        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'program_id' => $rate->program_id]);
         GenerateCharges::dispatchSync(self::$year->id);
         Charge::factory()->create(['camper_id' => $camper->id, 'amount' => -200.0, 'year_id' => self::$year->id]);
 
-        $room = Room::factory()->create(['is_workshop' => 0]);
-        $rate = Rate::factory()->create(['program_id' => $ya->program_id, 'building_id' => $room->building_id]);
-        $newroom = Room::factory()->create(['is_workshop' => 0]);
-        $newrate = Rate::factory()->create(['program_id' => $ya->program_id, 'building_id' => $newroom->building_id]);
         ExposeRoomselection::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $room) {
@@ -199,24 +202,28 @@ class RoomSelectionTest extends DuskTestCase
     public function testReturningCoupleLockedByOtherFamily()
     {
         $user = User::factory()->create();
-        $campers[0] = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
-        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
-        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
-        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
 
-        $room = Room::factory()->create(['is_workshop' => 0]);
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $newroom = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $newrates[0] = Rate::factory()->create(['building_id' => $newroom->building_id]);
+        $newrates[1] = Rate::factory()->create(['building_id' => $newroom->building_id]);
+
+        $campers[0] = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'program_id' => $newrates[0]->program_id]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
+        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
+            'program_id' => $newrates[1]->program_id]);
+
 
         $otherfamily = Camper::factory()->count(2)->create(['roommate' => __FUNCTION__]);
         $oyas[0] = Yearattending::factory()->create(['camper_id' => $otherfamily[0]->id,
-            'year_id' => self::$year->id, 'room_id' => $room->id]);
+            'year_id' => self::$year->id, 'room_id' => $room->id, 'program_id' => $newrates[0]->program_id]);
         $oyas[1] = Yearattending::factory()->create(['camper_id' => $otherfamily[1]->id,
-            'year_id' => self::$year->id, 'room_id' => $room->id]);
+            'year_id' => self::$year->id, 'room_id' => $room->id, 'program_id' => $newrates[1]->program_id]);
         GenerateCharges::dispatchSync(self::$year->id);
 
         Charge::factory()->create(['camper_id' => $campers[0]->id, 'amount' => -400.0, 'year_id' => self::$year->id]);
-        $newroom = Room::factory()->create(['is_workshop' => 0]);
-        $newrates[0] = Rate::factory()->create(['program_id' => $yas[0]->program_id, 'building_id' => $newroom->building_id]);
-        $newrates[1] = Rate::factory()->create(['program_id' => $yas[1]->program_id, 'building_id' => $newroom->building_id]);
         ExposeRoomselection::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $room) {
@@ -268,7 +275,7 @@ class RoomSelectionTest extends DuskTestCase
                 return Program::factory()->create(['is_program_housing' => 1])->id;
             }]);
 
-        $room = Room::factory()->create(['is_workshop' => 0]);
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
         ExposeRoomselection::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $room) {
@@ -293,7 +300,7 @@ class RoomSelectionTest extends DuskTestCase
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__,
             'birthdate' => $this->getChildBirthdate()]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-            'is_setbyadmin' => '1', 'room_id' => Room::factory()->create(['is_workshop' => 0])->id]);
+            'is_setbyadmin' => '1', 'room_id' => Room::factory()->create(['room_number' => __FUNCTION__])->id]);
         GenerateCharges::dispatchSync(self::$year->id);
         Charge::factory()->create(['camper_id' => $camper->id, 'amount' => -200.0, 'year_id' => self::$year->id]);
 
@@ -358,8 +365,8 @@ class RoomSelectionTest extends DuskTestCase
         $yas[2] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $yas[3] = Yearattending::factory()->create(['camper_id' => $campers[2]->id, 'year_id' => self::$year->id]);
 
-        $room = Room::factory()->create(['is_workshop' => 0]);
-        $newroom = Room::factory()->create(['is_workshop' => 0]);
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $newroom = Room::factory()->create(['room_number' => __FUNCTION__]);
         ExposeRoomselection::dispatchSync(self::$year->id);
 
         $this->browse(function (Browser $browser) use ($user, $head, $campers, $room, $newroom) {

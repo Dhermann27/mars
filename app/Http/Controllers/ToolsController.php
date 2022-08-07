@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Pctype;
+use App\Enums\Usertype;
 use App\Jobs\GenerateCharges;
 use App\Models\CamperStaff;
 use App\Models\Program;
 use App\Models\Staffposition;
 use App\Models\ThisyearCamper;
 use App\Models\ThisyearStaff;
+use App\Models\User;
 use App\Models\YearattendingStaff;
 use Illuminate\Http\Request;
 use function collect;
@@ -32,17 +34,20 @@ class ToolsController extends Controller
     {
         foreach ($request->all() as $key => $value) {
             $matches = array();
-            if (preg_match('/delete-(\d+)-(\d+)/', $key, $matches)) {
+            if ($value == '1' && preg_match('/delete-(\d+)-(\d+)/', $key, $matches)) {
                 $ya = ThisyearCamper::find($matches[1]);
                 if ($ya) {
                     $assignment = YearattendingStaff::where('yearattending_id', $ya->yearattending_id)
                         ->where('staffposition_id', $matches[2]);
+                    $user = User::where('email', $ya->email)->first();
+                    if($user) {
+                        $user->usertype = Usertype::Camper;
+                        $user->save();
+                    }
                 } else {
                     $assignment = CamperStaff::where('camper_id', $matches[1])->where('staffposition_id', $matches[2]);
                 }
-                if ($value == '1') {
-                    $assignment->delete();
-                }
+                $assignment->delete();
             }
         }
         if ($request->input('camper_id') != '' && $request->input('staffposition_id') != '') {

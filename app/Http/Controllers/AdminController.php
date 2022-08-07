@@ -69,7 +69,7 @@ class AdminController extends Controller
             if (preg_match('/(delete|program_id|name|compensationlevel_id)-(\d+)/', $key, $matches)) {
                 $position = Staffposition::findOrFail($matches[2]);
                 if ($matches[1] == 'delete') {
-                    if ($value == 'on') {
+                    if ($value == '1') {
                         DB::table('yearsattending__staff')
                             ->join('yearsattending', 'yearsattending.id', '=', 'yearsattending__staff.yearattending_id')
                             ->where('yearsattending.year_id', $this->year->id)
