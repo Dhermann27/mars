@@ -21,6 +21,3 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 *.iml
-public/fonts/*
-public/vendor/*
-artisan
