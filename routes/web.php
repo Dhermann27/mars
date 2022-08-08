@@ -36,7 +36,7 @@ Route::get('/housing', [HomeController::class, 'housing'])->name('housing');
 Route::get('/workshops', [WorkshopController::class, 'display'])->name('workshops.display');
 Route::get('/excursions', [WorkshopController::class, 'excursions'])->name('workshops.excursions');
 
-Route::get('/directory', [DirectoryController::class, 'index'])->name('directory')->middleware('auth');
+//Route::get('/directory', [DirectoryController::class, 'index'])->name('directory')->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth', 'registration_on']);
 

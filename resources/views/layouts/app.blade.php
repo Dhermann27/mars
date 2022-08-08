@@ -107,20 +107,20 @@
                                     <i class="fas fa-binoculars fa-fw"></i> Excursions
                                 </a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider"/>
-                            </li>
-                            <span class="text-muted ms-2">For Campers Only</span>
+{{--                            <li>--}}
+{{--                                <hr class="dropdown-divider"/>--}}
+{{--                            </li>--}}
+{{--                            <span class="text-muted ms-2">For Campers Only</span>--}}
                             @if($year->is_calendar)
                                 <li>
                                     <a href="#" class="dropdown-item">
                                         <i class="fas fa-calendar-alt fa-fw"></i> Daily Schedule</a>
                                 </li>
                             @endif
-                            <li>
-                                <a href="{{ route('directory') }}" class="dropdown-item">
-                                    <i class="fas fa-address-book fa-fw"></i> Online Directory</a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="{{ route('directory') }}" class="dropdown-item">--}}
+{{--                                    <i class="fas fa-address-book fa-fw"></i> Online Directory</a>--}}
+{{--                            </li>--}}
                             @if($year->is_artfair)
                                 <li>
                                     <a href="#" class="dropdown-item">
@@ -611,14 +611,14 @@
 
                     <hr class="dropdown-divider"/>
 
-                    <h5 class="mt-5">For Registered Campers Only</h5>
+{{--                    <h5 class="mt-5">For Registered Campers Only</h5>--}}
                     <ul class="list-unstyled mb-0">
                         @if($year->is_calendar)
                             <li><a class="text-white underlined-link" href="#">Daily Schedule</a></li>
                         @endif
-                        <li><a class="text-white underlined-link" href="{{ route('directory') }}">Online
-                                Directory</a>
-                        </li>
+{{--                        <li><a class="text-white underlined-link" href="{{ route('directory') }}">Online--}}
+{{--                                Directory</a>--}}
+{{--                        </li>--}}
                         @if($year->is_artfair)
                             <li><a class="text-white underlined-link" href="#">Art Fair Submission</a></li>
                         @endif
