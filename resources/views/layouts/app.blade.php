@@ -36,7 +36,8 @@
 
 </head>
 <body>
-{{--<a id="top" href="#content" class="sr-only">Skip to content</a>--}}
+{!! RecaptchaV3::initJs() !!}
+<a id="top" href="#content" class="visually-hidden">Skip to content</a>
 <!--Main Navigation-->
 <header>
     <!-- Animated navbar-->
@@ -691,6 +692,5 @@
 
 @yield('script')
 @stack('inlinescripts')
-
 </body>
 </html>

@@ -181,7 +181,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
 
-        Mews\Captcha\CaptchaServiceProvider::class,
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
     ],
@@ -198,7 +197,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
     ])->toArray(),
 

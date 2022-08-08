@@ -7,6 +7,7 @@ use App\Models\Contactbox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 
 class ContactController extends Controller
 {
@@ -14,8 +15,6 @@ class ContactController extends Controller
     {
         $messages = [
             'message.not_regex' => 'This contact form does not accept the Bible as the word of God.',
-            'captcha.required' => 'Please enter a CAPTCHA code.',
-            'captcha.captcha' => 'Please enter the code you see in the image above, or refresh if it is illegible.'
         ];
         if (Auth::check()) {
             $camper = Auth::user()->camper;
@@ -31,7 +30,7 @@ class ContactController extends Controller
             'email' => 'required|email|max:255',
             'mailbox' => 'required|exists:contactboxes,id',
             'message' => 'required|min:5|not_regex:/scripture/i|not_regex:/gospel/i|not_regex:/infallible/i|not_regex:/testament/i',
-            'captcha' => 'required' . (config('app.name') != 'MUUSADusk' ? '|captcha' : '')
+            'g-recaptcha-response' => (config('app.name') != 'MUUSADusk' ? 'required|recaptchav3:contact,0.5' : '')
         ], $messages);
         $emails = explode(',', Contactbox::findOrFail($request->mailbox)->emails);
         Mail::to($emails)->send(new ContactUs($request));

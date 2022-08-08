@@ -38,41 +38,8 @@
 
         <x-form-group type="textarea" name="message" label="Message" />
 
-        <div class="row align-self-center mb-3">
-            <div class="container-md col-lg-6">
-                <span id="captchaimg">{!! captcha_img() !!}</span>
-                <button type="button" id="refreshcaptcha" class="btn btn-primary"><i
-                        class="fas fa-sync-alt"></i>
-                </button>
-            </div>
-        </div>
-        <div class="row align-self-center mb-3">
-            <div class="container-md col-lg-6">
-                <div class="form-outline">
-                    <input id="captcha" name="captcha" type="text"
-                           class="form-control @error('captcha') is-invalid @enderror"
-                           placeholder="Type the code you see in the box above to verify that you are a human."/>
-                    <label for="captcha" class="form-label">CAPTCHA Test</label>
-                    @error('captcha')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
-                    @enderror
-                </div>
-            </div>
-        </div>
+        {!! RecaptchaV3::field('contact') !!}
 
         <x-form-group type="submit" label="Send Message"/>
     </form>
-@endsection
-
-@section('script')
-    <script type="text/javascript">
-        const refreshCap = function () {
-            getAjax('/refreshcaptcha', function (data) {
-                console.log(data);
-                document.getElementById('captchaimg').innerHTML = data.captcha;
-            })
-        }
-
-        addEvent(document.getElementById('refreshcaptcha'), 'click', refreshCap);
-    </script>
 @endsection

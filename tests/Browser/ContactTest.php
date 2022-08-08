@@ -7,6 +7,7 @@ use App\Models\Contactbox;
 use App\Models\User;
 use Faker\Factory;
 use Laravel\Dusk\Browser;
+use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 use Tests\DuskTestCase;
 use Tests\MailTrap;
 
@@ -20,6 +21,8 @@ class ContactTest extends DuskTestCase
     // Can only send 2 emails per 10 seconds
     public function testNewVisitor()
     {
+//        RecaptchaV3::shouldReceive('verify')->once()->andReturn(1.0);
+
         $faker = Factory::create();
         $fakedName = $faker->name;
         $fakedEmail = $faker->safeEmail;
@@ -32,8 +35,8 @@ class ContactTest extends DuskTestCase
                 ->type('yourname', $fakedName)
                 ->type('email', $fakedEmail)
                 ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
+                ->type('message', $fakedGraph);
+//                ->type('captcha', 'TEST');
             $this->submitSuccess($browser, 0, 'Send Message');
 
         });
@@ -83,8 +86,8 @@ class ContactTest extends DuskTestCase
                 ->type('yourname', $fakedName)
                 ->type('email', $fakedEmail)
                 ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
+                ->type('message', $fakedGraph);
+//                ->type('captcha', 'TEST');
             $this->submitError($browser, 0, 'Send Message');
 
         });
@@ -126,8 +129,8 @@ class ContactTest extends DuskTestCase
                 ->type('yourname', $fakedName)
                 ->type('email', $fakedEmail)
                 ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
+                ->type('message', $fakedGraph);
+//                ->type('captcha', 'TEST');
             $this->submitSuccess($browser, 0, 'Send Message');
 
         });
@@ -159,8 +162,8 @@ class ContactTest extends DuskTestCase
 //            $this->assertEquals($browser->attribute('#email', 'value'), $camper->email);
                 ->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
+                ->type('message', $fakedGraph);
+//                ->type('captcha', 'TEST');
             $this->submitSuccess($browser, 0, 'Send Message')->logout();
 
         });
@@ -187,8 +190,8 @@ class ContactTest extends DuskTestCase
             $this->assertEquals($browser->attribute('#email', 'value'), $user->email);
             $browser->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
+                ->type('message', $fakedGraph);
+//                ->type('captcha', 'TEST');
             $this->submitSuccess($browser, 0, 'Send Message')->logout();
 
         });
