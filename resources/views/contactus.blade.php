@@ -41,7 +41,7 @@
         <div class="row align-self-center mb-3">
             <div class="container-md col-lg-6">
                 <span id="captchaimg">{!! captcha_img() !!}</span>
-                <button type="button" id="refreshcaptcha" class="btn btn-primary" onclick="safeRefreshPage();"><i
+                <button type="button" id="refreshcaptcha" class="btn btn-primary"><i
                         class="fas fa-sync-alt"></i>
                 </button>
             </div>
@@ -66,19 +66,13 @@
 
 @section('script')
     <script type="text/javascript">
-        function safeRefreshPage() {
-            var form = document.getElementById('contactus');
-            window.removeEvent(window, 'beforeunload', checkDirty);
-            form.action = '{{ route('contact.contact-refresh-page') }}';
-            form.submit();
+        const refreshCap = function () {
+            getAjax('/refreshcaptcha', function (data) {
+                console.log(data);
+                document.getElementById('captchaimg').innerHTML = data.captcha;
+            })
         }
 
-        // var refreshCap = function () {
-        //     getAjax('/refreshcaptcha', function (data) {
-        //         document.getElementById('captchaimg').innerHTML = data.captcha;
-        //     })
-        // }
-        //
-        // addEvent(document.getElementById('refreshcaptcha'), 'click', refreshCap);
+        addEvent(document.getElementById('refreshcaptcha'), 'click', refreshCap);
     </script>
 @endsection

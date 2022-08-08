@@ -7,7 +7,6 @@ use App\Models\Contactbox;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {

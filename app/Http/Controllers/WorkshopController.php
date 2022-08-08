@@ -90,7 +90,16 @@ class WorkshopController extends Controller
 
     public function excursions()
     {
-        return view('excursions', ['timeslot' => Timeslot::findOrFail(Timeslotname::Excursions)]);
+        if($this->year->is_brochure) {
+            $workshops = Workshop::where('year_id', $this->year->id)->where('timeslot_id', Timeslotname::Excursions)
+                ->get();
+        } else {
+            $lastyear = Year::where('year', '<', $this->year->year)->orderBy('year', 'desc')->firstOrFail();
+            $workshops = Workshop::where('year_id', $lastyear->id)->where('timeslot_id', Timeslotname::Excursions)
+                ->get();
+        }
+        return view('excursions', ['timeslot' => Timeslot::findOrFail(Timeslotname::Excursions),
+            'workshops' => $workshops]);
 
     }
 

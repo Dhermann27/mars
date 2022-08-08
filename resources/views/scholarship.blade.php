@@ -81,8 +81,8 @@
                 <h3 class="pb-2">Details</h3>
                 <h4 class="pb-2">Review and Award of Scholarships</h4>
                 <p>The scholarship process will be administered by the MUUSA Scholarship Committee, which
-                    includes: Susan Stafford, John Sandman, Duncan Metcalfe, Adrienne Cruise and Dorothy Ramsey for
-                    MUUSA {{ $year->year }}. Susan Stafford will serve as the Scholarship Committee Coordinator and
+                    includes: Bill Pokorny, John Sandman, Duncan Metcalfe, Adrienne Cruise and Dorothy Ramsey for
+                    MUUSA {{ $year->year }}. Bill Pokorny will serve as the Scholarship Committee Coordinator and
                     the primary contact for the Scholarship Committee.</p>
                 <p>Upon receipt of the YMCA's determinations, the Scholarship Committee will review all
                     applications and independently determine how available scholarship funds will be
@@ -133,7 +133,7 @@
                 <p><strong>Thank you for your interest in applying for a scholarship for
                         MUUSA {{ $year->year }}. We hope this document has helped clarify the scholarship
                         process. If you have further questions or concerns please contact the Scholarship
-                        Committee Coordinator, Susan Stafford at <a href="mailto:hatchet.thrower@gmail.com">hatchet.thrower@gmail.com</a>.</strong>
+                        Committee Coordinator, Bill Pokorny using the Contact Us (select "Scholarship Coordinator") link above.</strong>
                 </p>
             </div>
 

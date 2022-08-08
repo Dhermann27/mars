@@ -45,35 +45,60 @@ class ContactTest extends DuskTestCase
         $this->assertStringContainsString($fakedGraph, $body);
     }
 
-    public function testRefreshButton()
-    {
-        $faker = Factory::create();
-        $fakedName = $faker->name;
-        $fakedEmail = $faker->safeEmail;
-        $fakedGraph = $faker->paragraph;
-        $box = Contactbox::factory()->create();
-        $this->browse(function (Browser $browser) use ($box, $fakedName, $fakedEmail, $fakedGraph) {
-            $browser->visitRoute('contact.index')
-                ->assertSee('Contact Us')
-                ->type('yourname', $fakedName)
-                ->type('email', $fakedEmail)
-                ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->clickAndWaitForReload('#refreshcaptcha')
-                ->assertSee('Contact Us')
-                ->assertMissing('div.alert');
+//    public function testRefreshButton()
+//    {
+//        $faker = Factory::create();
+//        $fakedName = $faker->name;
+//        $fakedEmail = $faker->safeEmail;
+//        $fakedGraph = $faker->paragraph;
+//        $box = Contactbox::factory()->create();
+//        $this->browse(function (Browser $browser) use ($box, $fakedName, $fakedEmail, $fakedGraph) {
+//            $browser->visitRoute('contact.index')
+//                ->assertSee('Contact Us')
+//                ->type('yourname', $fakedName)
+//                ->type('email', $fakedEmail)
+//                ->select('mailbox', $box->id)
+//                ->type('message', $fakedGraph)
+//                ->clickAndWaitForReload('#refreshcaptcha')
+//                ->assertSee('Contact Us')
+//                ->assertMissing('div.alert');
 //                ->assertValue('#yourname', $fakedName) // TODO: Stopped working?
 //                ->assertValue('#email', $fakedEmail)
 //                ->assertSelected('#mailbox', $box->id)
 //                ->assertSeeIn('#message', $fakedGraph);
+//
+//        });
+//    }
+    public function testBadWords()
+    {
+        $faker = Factory::create();
+        $fakedName = $faker->name;
+        $fakedEmail = $faker->safeEmail;
+        $fakedGraph = "Howdy ho there neighbor. Have you heard the Good News about the scriptures, in the words of Christ?";
+        $box = Contactbox::factory()->create();
+        $this->browse(function (Browser $browser) use ($box, $fakedName, $fakedEmail, $fakedGraph) {
+            $browser->visitRoute('contact.index')
+                ->assertSee('Contact Us')
+                ->assertSeeIn('select#mailbox', $box->name)
+                ->type('yourname', $fakedName)
+                ->type('email', $fakedEmail)
+                ->select('mailbox', $box->id)
+                ->type('message', $fakedGraph)
+                ->type('captcha', 'TEST');
+            $this->submitError($browser, 0, 'Send Message');
 
         });
+
+        $lastEmail = $this->fetchInbox()[0];
+        $this->assertNotEquals($box->emails, $lastEmail['to_email']);
+        $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']);
+        $this->assertStringNotContainsString($fakedName . " <" . $fakedEmail . ">", $body);
     }
 
     // Can only send 2 emails per 10 seconds via Mailtrap
     public function testRandomEmailTst()
     {
-        $code = rand(0, 3); // Number of tst functions
+        $code = rand(0, 2); // Number of tst functions
         switch ($code) {
             case 0:
                 $this->tstMultipleContactboxEmails();
@@ -82,9 +107,6 @@ class ContactTest extends DuskTestCase
                 $this->tstReturningCamper();
                 break;
             case 2:
-                $this->tstBadWords();
-                break;
-            case 3:
                 $this->tstAccountButNoCamper();
                 break;
         }
@@ -118,33 +140,6 @@ class ContactTest extends DuskTestCase
         $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']);
         $this->assertStringContainsString($fakedName . " <" . $fakedEmail . ">", $body);
         $this->assertStringContainsString($fakedGraph, $body);
-    }
-
-
-    public function tstBadWords()
-    {
-        $faker = Factory::create();
-        $fakedName = $faker->name;
-        $fakedEmail = $faker->safeEmail;
-        $fakedGraph = "Howdy ho there neighbor. Have you heard the Good News about the scriptures, in the words of Christ?";
-        $box = Contactbox::factory()->create();
-        $this->browse(function (Browser $browser) use ($box, $fakedName, $fakedEmail, $fakedGraph) {
-            $browser->visitRoute('contact.index')
-                ->assertSee('Contact Us')
-                ->assertSeeIn('select#mailbox', $box->name)
-                ->type('yourname', $fakedName)
-                ->type('email', $fakedEmail)
-                ->select('mailbox', $box->id)
-                ->type('message', $fakedGraph)
-                ->type('captcha', 'TEST');
-            $this->submitError($browser, 0, 'Send Message');
-
-        });
-
-        $lastEmail = $this->fetchInbox()[0];
-        $this->assertNotEquals($box->emails, $lastEmail['to_email']);
-        $body = $this->fetchBody($lastEmail['inbox_id'], $lastEmail['id']);
-        $this->assertStringNotContainsString($fakedName . " <" . $fakedEmail . ">", $body);
     }
 
     private function tstReturningCamper()
