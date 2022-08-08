@@ -9,7 +9,7 @@
     @if($year->is_brochure)
         we have on offer in {{ $year->year }}, grouped by timeslot.
     @else
-        we had on offer in {{ $year->year }}, as an example of what might be available.
+        we had on offer last year, as an example of what might be available.
     @endif
 @endsection
 
@@ -26,7 +26,7 @@
                     - {{ $timeslot->end_time->format('g:i A') }}</div>
 
                 <div class="container px-3 py-5 px-lg-4 py-lg-6 bg-grey mb-5">
-                    @foreach($timeslot->workshops->where('year_id', $year->id) as $workshop)
+                    @foreach($workshops->get($timeslot->id) as $workshop)
                         <x-layouts.blog :title="$workshop->name">
 
                             @include('includes.filling', ['workshop' => $workshop])

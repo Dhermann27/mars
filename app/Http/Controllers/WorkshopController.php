@@ -8,6 +8,8 @@ use App\Jobs\UpdateWorkshops;
 use App\Models\Camper;
 use App\Models\ThisyearCamper;
 use App\Models\Timeslot;
+use App\Models\Workshop;
+use App\Models\Year;
 use App\Models\YearattendingWorkshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +78,14 @@ class WorkshopController extends Controller
 
     public function display()
     {
-        return view('workshops', ['timeslots' => Timeslot::where('id', '!=', Timeslotname::Excursions)->with('workshops')->get()]);
+        if($this->year->is_brochure) {
+            $workshops = Workshop::where('year_id', $this->year->id)->get()->groupBy('timeslot_id');
+        } else {
+            $lastyear = Year::where('year', '<', $this->year->year)->orderBy('year', 'desc')->firstOrFail();
+            $workshops = Workshop::where('year_id', $lastyear->id)->get()->groupBy('timeslot_id');
+        }
+        return view('workshops', ['timeslots' => Timeslot::where('id', '!=', Timeslotname::Excursions)->get(),
+            'workshops' => $workshops]);
     }
 
     public function excursions()
