@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="container px-3 py-5 px-lg-10 py-lg-6 bg-grey mb-5">
-        @component('components.blog', ['title' => 'Theme Speaker'])
+        <x-layouts.blog title="Theme Speaker">
             <p>
                 <img class="float-right p-3" src="/images/mishasm.png"
                      alt="Rev. Misha Sanders" data-no-retina/>
@@ -23,6 +23,6 @@
                 preacher of the good news of Unitarian Universalism, and believes that the whole world is built and
                 rebuilt by the stories we tell ourselves and each other.
             </p>
-        @endcomponent
+        </x-layouts.blog>
     </div>
 @endsection

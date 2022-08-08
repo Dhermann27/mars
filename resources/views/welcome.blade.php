@@ -231,11 +231,9 @@
                      alt="Chalice tattoo"/>
                 <div class="card-body">
                     <h4 class="card-title">Morning Celebrations</h4>
-                    <p class="card-text">Each morning, Dr. Glen Thomas Rideout will lead a multi-generational
-                        service on
-                        the theme topic. Services include children's stories and choral music from the Awesome
-                        Choir,
-                        led by Pam Blevins Hinkle and accompanied by Bonnie Ettinger.</p>
+                    <p class="card-text">Each morning, Rev. Misha Sanders will lead a multi-generational service on the
+                        theme topic. Services include children's stories and choral music from the Awesome Choir, led by
+                        Pam Blevins Hinkle and accompanied by Bonnie Ettinger.</p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ route('themespeaker') }}" class="btn btn-lg btn-primary">Theme Speaker
