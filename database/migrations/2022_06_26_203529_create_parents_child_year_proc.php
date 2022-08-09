@@ -14,7 +14,7 @@ return new class extends Migration {
         DB::unprepared("CREATE DEFINER =`root`@`localhost` PROCEDURE `expose_parentschild_year`(myyear_id INT)
             BEGIN
                 SET sql_mode='';
-                TRUNCATE parents__child_expo;
+                DELETE FROM parents__child_expo WHERE child_yearattending_id IN (SELECT id FROM yearsattending WHERE year_id=myyear_id) OR parent_yearattending_id IN (SELECT id FROM yearsattending WHERE year_id=myyear_id);
                 INSERT INTO parents__child_expo (child_yearattending_id, parent_yearattending_id, created_at)
                     SELECT ya.id, yap.id, NOW()
                         FROM

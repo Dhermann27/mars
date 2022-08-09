@@ -57,7 +57,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
             <option value="0">Choose a program</option>
             @foreach($programs as $program)
                 <option value="{{ $program->id }}"
-                        @selected($program->id == old('program_id.' . $looper,  $camper->yearsattending[0]->program_id) || ($program->id == \App\Enums\Programname::YoungAdult && \App\Enums\Programname::YoungAdultUnderAge == old('program_id.' . $looper,  ($camper->yearsattending[0]->program_id ?? '0'))))
+                        @selected($program->id == old('program_id.' . $looper,  $camper->yearsattending[0]->program_id))
                         @isset($program->subtitle) data-mdb-secondary-text="{{ str_replace("YEAR", $year->year, $program->subtitle) }}" @endisset>
                     {{ $program->title }}
                 </option>
@@ -82,7 +82,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
             <div class="form-outline autocomplete">
                 <input id="churchname-{{ $looper }}" name="churchname[]" type="text"
                        class="form-control church-search @error('churchid.' . $looper) is-invalid @enderror"
-                       value="{{ old('churchname.' . $looper, $camper->getChurchName()) }}"
+                       value="{{ old('churchname.' . $looper, $camper->church_name) }}"
                        placeholder="Begin typing your UU church name or city"
                        @can('readonly') aria-label="Church Affilation" readonly @endif />
                 <label for="churchname-{{ $looper }}" class="form-label">Church Affilation</label>

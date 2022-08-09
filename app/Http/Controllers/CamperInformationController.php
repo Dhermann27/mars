@@ -91,11 +91,6 @@ class CamperInformationController extends Controller
         } else {
             $family_id = $this->getFamilyId();
         }
-        $step = $this->getStepData();
-        if (!$step["isAddressCurrent"]) {
-            $request->session()->flash('warning', 'Please update your address before proceeding.');
-            return redirect()->route('household.index');
-        }
 
         $campers = Camper::where('family_id', $family_id)
             ->with(['yearsattending' => function ($query) {
@@ -120,7 +115,7 @@ class CamperInformationController extends Controller
 
         return view('camperinfo', ['pronouns' => Pronoun::all(), 'foodoptions' => Foodoption::all(),
             'campers' => $campers, 'programs' => Program::whereNotNull('title')->orderBy('order')->get(),
-            'stepdata' => $step, 'isReadonly' => false]);
+            'stepdata' => $this->getStepData(), 'isReadonly' => false]);
 
     }
 

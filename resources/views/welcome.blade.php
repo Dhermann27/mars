@@ -152,7 +152,7 @@
             <div>
                 @can('register', $year)
                     @auth
-                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                        <a class="btn btn-lg btn-primary" href="{{ route('dashboard') }}" role="button">
                             Your Registration
                         </a>
                     @else
@@ -248,13 +248,9 @@
                      alt="A hummingbird in dire need of a sugar scholarship"/>
                 <div class="card-body">
                     <h4 class="card-title">Scholarship Opportunities</h4>
-                    <p class="card-text">If finances are tight and MUUSA doesn't quite fit into
-                        your budget this
-                        year, we
-                        hope you will apply for a scholarship. These funds strengthen our
-                        community and we want to
-                        be sure
-                        you know they are available.</p>
+                    <p class="card-text">If finances are tight and MUUSA doesn't quite fit into your budget this year,
+                        we hope you will apply for a scholarship. These funds strengthen our community and we want to be
+                        sure you know they are available.</p>
                 </div>
                 <div class="card-footer text-center">
                     <a href="{{ route('scholarship') }}" class="btn btn-lg btn-primary">Application

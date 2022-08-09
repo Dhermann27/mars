@@ -17,7 +17,7 @@ return new class extends Migration
         DB::unprepared("CREATE DEFINER =`root`@`localhost` PROCEDURE `expose_nametags_year`(myyear_id INT)
             BEGIN
                 SET sql_mode='';
-                TRUNCATE nametag_expo;
+                DELETE FROM nametag_expo WHERE yearattending_id IN (SELECT id FROM yearsattending WHERE year_id=myyear_id);
                 INSERT INTO nametag_expo (yearattending_id, pronoun, name, surname, line1, line2, line3, line4, font, parent, icon, created_at)
                     SELECT ya.id,
                         IF(SUBSTR(ya.nametag, 1, 1) = \"2\", p.name, \"\") pronoun,

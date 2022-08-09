@@ -34,7 +34,9 @@ class CamperInfoTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)->visit(route(self::ROUTE))->assertSee('update your address');
+            $browser->loginAs($user)->visit(route(self::ROUTE))
+                ->assertInputValue('firstname[]', 'New Camper')
+                ->assertInputValue('email[]', $user->email);
         });
         $this->assertDatabaseHas('campers', ['email' => $user->email]);
     }

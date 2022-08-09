@@ -72,6 +72,7 @@ class ContactTest extends DuskTestCase
 //
 //        });
 //    }
+
     public function testBadWords()
     {
         $faker = Factory::create();
@@ -158,8 +159,6 @@ class ContactTest extends DuskTestCase
                 ->assertSee('Contact Us')
                 ->assertValue('#yourname', $camper->firstname . ' ' . $camper->lastname)
                 ->assertValue('#email', $camper->email)
-//            $this->assertEquals($browser->attribute('#yourname', 'value'), $camper->firstname . ' ' . $camper->lastname);
-//            $this->assertEquals($browser->attribute('#email', 'value'), $camper->email);
                 ->assertSeeIn('select#mailbox', $box->name)
                 ->select('mailbox', $box->id)
                 ->type('message', $fakedGraph);
