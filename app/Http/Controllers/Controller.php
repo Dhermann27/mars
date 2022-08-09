@@ -78,7 +78,7 @@ class Controller extends BaseController
                         $this->steps["amountDueNow"] = $charges->filter(function ($charge) {
                             return $charge->chargetype_id == Chargetypename::Deposit || $charge->amount < 0;
                         })->sum('amount');
-                        if ($this->steps["amountDueNow"] <= 0) {
+                        if ($this->year->is_brochure && $this->steps["amountDueNow"] <= 0) {
                             $this->runPostPaymentChecks($yearsattending, $campers);
                         }
                     }

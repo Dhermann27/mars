@@ -105,7 +105,7 @@ function runOnLoad() {
             new mdb.Autocomplete(inputs[i].parentNode, {
                 filter: camperFilter,
                 autoSelect: true,
-                threshold: 5,
+                threshold: 3,
                 displayValue: (value) => value.firstname + " " + value.lastname,
                 itemContent: (result) => {
                     return `

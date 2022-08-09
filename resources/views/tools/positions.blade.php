@@ -90,7 +90,7 @@
                             <x-form-group label="Position" name="staffposition_id" type="select" data-mdb-filter="true">
                                 <option value="0">Choose a position</option>
                                 @foreach($positions as $position)
-                                    <option value="{{ $position->id }}">{{ $position->name }}
+                                    <option value="{{ $position->id }}">{!! $position->name !!}
                                 @endforeach
                             </x-form-group>
 

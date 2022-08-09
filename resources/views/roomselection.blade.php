@@ -165,7 +165,7 @@
 @endsection
 
 @section('script')
-    @if(!$locked)
+    @if(Gate::allows('select-room', $year) && !$locked)
         <script>
             const rects = document.querySelectorAll('rect.available');
             for (i = 0; i < rects.length; i++) {
