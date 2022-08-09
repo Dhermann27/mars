@@ -30,9 +30,8 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
         </span>
     </x-form-group>
 
-    <x-form-group label="Phone Number <i class='fa-duotone fa-flag-usa'></i>"
+    <x-form-group label="Phone Number"
                   name="phonenbr[]" errorKey="phonenbr.{{ $looper }}" class="phone-mask" :formobject="$camper"/>
-
     <div class="row align-self-center mb-3">
         <div class="container-md col-lg-6">
             <div class="form-outline datepicker" data-mdb-inline="true" data-mdb-format="yyyy-mm-dd">

@@ -41,19 +41,22 @@ class CamperInfoTest extends DuskTestCase
         $this->assertDatabaseHas('campers', ['email' => $user->email]);
     }
 
-    public function testNewCamperChangeLogin()
+    public function testNewCamperChangeLoginLastProgramID()
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
             'email' => $user->email, 'roommate' => __FUNCTION__]);
-        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'program_id' => null]);
+        $lya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$lastyear->id,
+            'program_id' => Programname::Burt]);
 
         $changes = Camper::factory()->make(['roommate' => __FUNCTION__]);
         $cya = Yearattending::factory()->make();
-        $this->browse(function (Browser $browser) use ($user, $camper, $ya, $changes, $cya) {
+        $this->browse(function (Browser $browser) use ($user, $camper, $lya, $changes, $cya) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB)
-                ->within(new CamperInfo, function ($browser) use ($camper, $ya, $changes, $cya) {
-                    $browser->changeCamper([$camper, $ya], [$changes, $cya]);
+                ->within(new CamperInfo, function ($browser) use ($camper, $lya, $changes, $cya) {
+                    $browser->changeCamper([$camper, $lya], [$changes, $cya]);
                 });
             $this->submitSuccess($browser, self::WAIT);
         });
@@ -237,13 +240,14 @@ class CamperInfoTest extends DuskTestCase
 //    }
 //
 
-    public function testReturningYAUniqueEmailUnder20()
+    public function testReturningYAUniqueEmailUnder20NoPhone()
     {
 
         $user = User::factory()->create();
 
         $camper = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
-            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate()]);
+            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate(),
+            'phonenbr' => null]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'program_id' => Programname::YoungAdult]);
 

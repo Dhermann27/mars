@@ -135,7 +135,7 @@ class CamperInformationController extends Controller
             }
         }
         $camper->email = $request->input('email')[$i];
-        $camper->phonenbr = preg_replace('/-/', '', $request->input('phonenbr')[$i] ?? '');
+        $camper->phonenbr = preg_replace('/-/', '', $request->input('phonenbr')[$i] ?? null);
         $camper->birthdate = $request->input('birthdate')[$i];
 
         $program_id = $request->input('program_id')[$i];

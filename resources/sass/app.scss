@@ -2,6 +2,7 @@
 @import '@fortawesome/fontawesome-pro/scss/solid';
 @import '@fortawesome/fontawesome-pro/scss/regular';
 @import '@fortawesome/fontawesome-pro/scss/brands';
+@import '@fortawesome/fontawesome-pro/scss/duotone';
 @import 'mdb.pro.scss';
 
 $my-theme-primary: #17301c; // theme primary color, change this value to customize theme
@@ -338,6 +339,10 @@ textarea {
     left: 52px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.grecaptcha-badge {
+    visibility: hidden !important;
 }
 
 // ******** Nametags

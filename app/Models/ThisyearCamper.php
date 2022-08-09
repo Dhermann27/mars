@@ -74,7 +74,7 @@ class ThisyearCamper extends Model
             $result = $matches[1] . '-' . $matches[2] . '-' . $matches[3];
             return $result;
         }
-        return "";
+        return $this->phonenbr;
     }
 
     public function parents()

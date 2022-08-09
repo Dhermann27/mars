@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('css')
+    <style>
+        .grecaptcha-badge {
+            visibility: visible !important;
+        }
+    </style>
+@endsection
+
 @section('title')
     Contact Us
 @endsection
@@ -13,7 +21,8 @@
 @endsection
 
 @section('content')
-    <form id="contactus" class="form-horizontal m-5" role="form" method="POST" action="{{ route('contact.index') }}">
+    <form id="contactus" class="form-horizontal m-5" role="form" method="POST"
+          action="{{ route('contact.index') }}">
         @include('includes.flash')
 
         @if(isset(Auth::user()->camper))
@@ -36,7 +45,7 @@
             @endforeach
         </x-form-group>
 
-        <x-form-group type="textarea" name="message" label="Message" />
+        <x-form-group type="textarea" name="message" label="Message"/>
 
         {!! RecaptchaV3::field('contact') !!}
 

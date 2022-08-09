@@ -94,6 +94,10 @@ class CamperInfo extends BaseComponent
 
     private function formatPhone($nbr)
     {
-        return substr($nbr, 0, 3) . '-' . substr($nbr, 3, 3) . '-' . substr($nbr, 6);
+        if (preg_match('/^(\d{3})(\d{3})(\d{4})$/', $nbr, $matches)) {
+            $result = $matches[1] . '-' . $matches[2] . '-' . $matches[3];
+            return $result;
+        }
+        return $nbr;
     }
 }
