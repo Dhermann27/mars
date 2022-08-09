@@ -18,7 +18,8 @@ class BrochureEnabled
     public function handle(Request $request, Closure $next)
     {
         $year = Year::where('is_current', '1')->firstOrFail();
-        if($year->can_register != 1) {
+        if($year->is_brochure != 1) {
+            $request->session()->flash('warning', 'This function will be enabled when the brochure is released.');
             return redirect('home');
         }
         return $next($request);
