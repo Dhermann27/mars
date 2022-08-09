@@ -246,13 +246,13 @@ class CamperInfoTest extends DuskTestCase
         $user = User::factory()->create();
 
         $camper = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
-            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate(),
-            'phonenbr' => null]);
+            'email' => $user->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate()]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'program_id' => Programname::YoungAdult]);
 
         $snowflake = Camper::factory()->create(['roommate' => __FUNCTION__]);
-        $changes = Camper::factory()->make(['roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate()]);
+        $changes = Camper::factory()->make(['roommate' => __FUNCTION__, 'birthdate' => $this->getYABirthdate(),
+            'phonenbr' => null]);
         $oldemail = $changes->email;
         $changes->email = $snowflake->email;
         $cya = Yearattending::factory()->make(['camper_id' => $camper->id, 'year_id' => self::$year->id,
@@ -487,9 +487,10 @@ class CamperInfoTest extends DuskTestCase
     {
         $this->assertDatabaseHas('campers', ['pronoun_id' => $camper->pronoun_id,
             'firstname' => $camper->firstname, 'lastname' => $camper->lastname, 'email' => $camper->email,
-            'phonenbr' => str_replace('-', '', $camper->phonenbr), 'birthdate' => $camper->birthdate,
-            'roommate' => $camper->roommate, 'sponsor' => $camper->sponsor, 'is_handicap' => $camper->is_handicap,
-            'foodoption_id' => $camper->foodoption_id, 'church_id' => $camper->church_id]);
+            'phonenbr' => isset($camper->phonenbr) ? str_replace('-', '', $camper->phonenbr) : null,
+            'birthdate' => $camper->birthdate, 'roommate' => $camper->roommate, 'sponsor' => $camper->sponsor,
+            'is_handicap' => $camper->is_handicap, 'foodoption_id' => $camper->foodoption_id,
+            'church_id' => $camper->church_id]);
     }
 
 }
