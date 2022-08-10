@@ -225,7 +225,7 @@
                     if (amt == 0.0) return false;
                     if (document.getElementById('addthree').checked) amt *= 1.03;
                     if (amt < 0) amt *= -1;
-                    window.paypalModal.show();
+                    if(data.paymentSource !== "card") window.paypalModal.show();
 
                     return actions.order.create({
                         purchase_units: [{
