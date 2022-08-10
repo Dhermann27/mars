@@ -225,7 +225,6 @@
                     if (amt == 0.0) return false;
                     if (document.getElementById('addthree').checked) amt *= 1.03;
                     if (amt < 0) amt *= -1;
-                    if(data.paymentSource !== "card") window.paypalModal.show();
 
                     return actions.order.create({
                         purchase_units: [{
@@ -245,6 +244,7 @@
                 },
 
                 onApprove: (data, actions) => {
+                    window.paypalModal.show();
                     return actions.order.capture().then(function (orderData) {
                         document.getElementById('orderid').value = orderData?.id;
                         window.removeEvent(window, 'beforeunload', checkDirty);
