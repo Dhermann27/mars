@@ -107,8 +107,10 @@
 
                         <div class="ms-3">
                             Please consider at least a $10.00 donation to the MUUSA Scholarship fund.
-                            <input type="submit" value="Donate" class="btn btn-primary ms-2" data-mdb-toggle="tooltip"
-                                title="Using any of the PayPal buttons will also process your donation."/>
+                            <button type="submit" dusk="donate" class="btn btn-primary ms-2" data-mdb-toggle="tooltip"
+                                    title="Using any of the PayPal buttons will also process your donation.">
+                                Donate
+                            </button>
                         </div>
                     </div>
                     @error('donation')
@@ -199,10 +201,10 @@
         <script>
             window.addEvent(document.getElementById('donation'), 'change', function (e) {
                 let total = parseFloat(e.target.value);
-                if(typeof document.getElementById('amountNow') != "undefined") {
+                if (typeof document.getElementById('amountNow') != "undefined") {
                     total += parseFloat(document.getElementById('amountNow').innerText);
                 }
-                if(total <= 0.0 && typeof document.getElementById('amountArrival') != "undefined") {
+                if (total <= 0.0 && typeof document.getElementById('amountArrival') != "undefined") {
                     total += parseFloat(document.getElementById('amountArrival').innerText);
                 }
                 document.getElementById('payment').value = Math.max(0, total).toFixed(2);
@@ -218,7 +220,7 @@
 
                 createOrder: (data, actions) => {
                     const alerts = document.querySelectorAll('div.alert');
-                    for(let i=0; i<alerts.length; i++) {
+                    for (let i = 0; i < alerts.length; i++) {
                         alerts[0].style.display = 'none';
                     }
                     var amt = parseFloat(document.getElementById('payment').value);

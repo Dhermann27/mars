@@ -43,7 +43,7 @@
                                     <td>
                                         <x-admin.delete
                                             :id="$assignment->camper_id . '-' . $assignment->staffposition_id"
-                                            dusk="delete{{ $program->name . $assignment->staffpositionname }}"/>
+                                            :dusk="'delete' . $program->name . $assignment->staffpositionname"/>
                                     </td>
                                 </tr>
                             @endforeach

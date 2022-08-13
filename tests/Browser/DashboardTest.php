@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Enums\Buildingtype;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\Charge;
@@ -164,12 +163,14 @@ class DashboardTest extends DuskTestCase
     {
         $user = User::factory()->create();
         $camper = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
-        $room = Room::factory()->create(['building_id' => Buildingtype::Trout, 'room_number' => __FUNCTION__]);
-        $rate = Rate::factory()->create(['building_id' => Buildingtype::Trout, 'min_occupancy' => 1, 'max_occupancy' => 4]);
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $rate = Rate::factory()->create(['building_id' => $room->building_id, 'min_occupancy' => 1,
+            'max_occupancy' => 4]);
         $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
             'room_id' => $room->id, 'program_id' => $rate->program_id]);
         GenerateCharges::dispatchSync(self::$year->id);
-        $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id, 'amount' => -9999]);
+        $charge = Charge::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'amount' => -9999]);
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user->id)->visit(route(self::ROUTE))->pause(self::WAIT);
             $this->assertBefore($browser, 5, self::FA_SUCCESS);

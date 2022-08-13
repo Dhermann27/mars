@@ -193,14 +193,13 @@ class PaymentTest extends DuskTestCase
                 ->assertSee('Deposit for ' . self::$year->year)
                 ->assertSeeIn('span#amountNow', 400.0)
                 ->assertValue('input#payment', 400.0)
-                ->type('input#donation', $bigdonation)->click('input#payment')->pause(self::WAIT)
+                ->keys('input#donation', $bigdonation, '{tab}')->pause(self::WAIT)
                 ->assertValue('input#payment', 400.0 + $bigdonation)
-                ->scrollIntoView('input[value=Donate]')->press('Donate')->waitFor('div.alert')
+                ->scrollIntoView('@donate')->press('DONATE')->waitFor('div.alert')
                 ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback')
-                ->clear('donation')->type('input#donation', $lildonation)
-                ->click('input#payment')->pause(self::WAIT)
-                ->assertValue('input#payment', 400.0 + $lildonation)
-                ->press('Donate')->waitFor('div.alert')
+                ->clear('donation')->keys('input#donation', $lildonation, '{tab}')
+                ->pause(self::WAIT)->assertValue('input#payment', 400.0 + $lildonation)
+                ->press('DONATE')->waitFor('div.alert')
                 ->assertVisible('div.alert-success');
             $browser->within(new Paypal(), function ($browser) use ($lildonation) {
                 $browser->pay(400 + $lildonation);
@@ -462,7 +461,6 @@ class PaymentTest extends DuskTestCase
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
                 ->assertDontSee('Deposit for ' . self::$year->year)
                 ->assertSee('MUUSA Fees')
-//                ->assertSeeIn('span#amountNow', 200.00) TODO: Probably bad
                 ->assertSeeIn('span#amountArrival', number_format($rate->rate * 6, 2))
                 ->assertValue('input#payment', number_format($rate->rate * 6, 2, '.', ''));
 

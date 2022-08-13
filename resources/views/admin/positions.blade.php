@@ -51,7 +51,7 @@
                                         {{ number_format($position->compensationlevel->max_compensation, 2) }}
                                     </td>
                                     <td>
-                                        <x-admin.delete :id="$position->id" />
+                                        <x-admin.delete :id="$position->id" :dusk="'delete' . $position->name"/>
                                     </td>
                                 </tr>
                             @empty

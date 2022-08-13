@@ -89,7 +89,7 @@ class AdminTest extends DuskTestCase
             $this->pressTab($browser, $program->id, self::WAIT)->assertSee($staffposition->name)
                 ->assertSee($staffposition->compensationlevel->name)
                 ->assertSee(number_format($staffposition->compensationlevel->max_compensation, 2))
-                ->check('delete-' . $staffposition->id);
+                ->check('@delete' . $staffposition->name);
             $this->pressTab($browser, $newprogram->id, self::WAIT)->assertSee('No positions found')
                 ->select('program_id', $newposition->program_id)->type('name', $newposition->name)
                 ->select('compensationlevel_id', $newposition->compensationlevel_id)

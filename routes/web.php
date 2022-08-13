@@ -7,7 +7,6 @@ use App\Http\Controllers\ConfirmController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
-use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\NametagController;
@@ -42,10 +41,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
     Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('registration_on');
-//    Route::get('/{id?}', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('can:is-council');
+    Route::get('/{id?}', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('can:is-council');
     Route::post('/', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('registration_on');
-    //    Route::get('/{id?}', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('can:is-super');
-
+    Route::post('/{id?}', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'household', 'middleware' => 'auth'], function () {

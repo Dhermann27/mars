@@ -50,7 +50,7 @@ class YearsTest extends DuskTestCase
             $browser->visit('/dashboard')->assertPathIs('/dashboard');
         });
 
-        self::$year->can_register = 1;
+        self::$year->is_brochure = 1;
         self::$year->save();
 
     }

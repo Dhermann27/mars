@@ -69,9 +69,10 @@ class Paypal extends BaseComponent
             ->click('@nextbutton')->waitFor('@loginbutton')
             ->type('@passfield', config('paypal.test_password'))
             ->click('@loginbutton')->waitForText('Ship to', 30)
-            ->assertSee('$' . number_format($amount, 2))->scrollIntoView('@paybutton')
-            ->pause(self::WAIT)->click('@acceptall')
+            ->assertSee('$' . number_format($amount, 2))
+            ->scrollIntoView('@acceptall')->pause(self::WAIT)->click('@acceptall')
             ->waitUntilMissingText('cookies')->pause(self::WAIT)
+            ->scrollIntoView('@paybutton')->pause(self::WAIT)
             ->click('@paybutton');
 
         $browser->driver->switchTo()->window($windowHandle);

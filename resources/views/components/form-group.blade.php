@@ -1,10 +1,13 @@
 @if($type=='checkbox')
+    {{--    Value actually sets checked, not value--}}
     <div {{ $attributes->class(['row', 'align-self-center', 'mb-3', 'admin-only' => $isAdminonly]) }}>
         <div class="container-md col-lg-6">
             <div class="form-check">
-                <input type="hidden" value="0" name="{{ $name }}">
-                <input
-                    {{ $attributes->class(['form-check-input','is-invalid' => $errors->has($errorKey)]) }}
+                @if(!str_contains($name, '[]'))
+                    <input type="hidden" value="0" name="{{ $name }}">
+                @endif
+                <input @can('readonly') disabled @endcan
+                    {{ $attributes->class(['form-check-input' => !$isDusk(),'is-invalid' => $errors->has($errorKey)]) }}
                     type="checkbox" id="{{ $name }}" name="{{ $name }}" value="1" @checked($getSafeDefault()) />
                 <label class="form-check-label" for="{{$name}}">{{$label}}</label>
                 @error($errorKey)
@@ -16,7 +19,8 @@
 @elseif($type=='select')
     <div {{ $attributes->class(['row', 'align-self-center', 'mb-3', 'admin-only' => $isAdminonly]) }}>
         <div class="container-md col-lg-6 position-relative">
-            <select {{ $attributes->class(['select' => !$isDusk()]) }} id="{{ $name }}" name="{{ $name }}">
+            <select {{ $attributes->class(['select' => !$isDusk()]) }} id="{{ $name }}" name="{{ $name }}"
+                    @can('readonly') disabled @endcan>
                 {{ $slot }}
             </select>
             @error($errorKey)
@@ -49,12 +53,12 @@
         <div class="container-md col-lg-6 position-relative">
             <div class="form-outline">
                 @if($type=='textarea')
-                    <textarea id="{{ $name }}" name="{{ $name }}"
+                    <textarea id="{{ $name }}" name="{{ $name }}" @can('readonly') readonly @endcan
                     {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($name)]) }}>{{ $getSafeDefault() }}</textarea>
                 @else
                     <input id="{{ $name }}" name="{{ $name }}" type="{{ $type }}" value="{{ $getSafeDefault() }}"
                            {{ $attributes->class(['form-control', 'is-invalid' => $errors->has($errorKey)]) }}
-                           @can('readonly') aria-label="{{ $getSafeDefault() }}" readonly @endif />
+                           @can('readonly') aria-label="{{ $getSafeDefault() }}" @can('readonly') readonly @endcan @endif />
                 @endif
 
                 @error($errorKey)

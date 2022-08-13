@@ -96,7 +96,8 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
     </div>
 
     <x-form-group label="Do you require assistance or have any needs of which the Registrar should be aware?"
-                  name="is_handicap[]" errorKey="is_handicap.{{ $looper }}" type="checkbox" :formobject="$camper"/>
+                  name="is_handicap[]" errorKey="is_handicap.{{ $looper }}" type="checkbox" :formobject="$camper"
+                  :value="$camper->id" />
 
     <x-form-group label="Food Restriction" name="foodoption_id[]" errorKey="foodoption_id.{{ $looper }}" type="select">
         @foreach($foodoptions as $foodoption)

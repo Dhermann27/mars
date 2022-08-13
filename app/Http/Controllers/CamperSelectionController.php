@@ -14,13 +14,11 @@ use App\Models\Yearattending;
 use App\Models\YearattendingStaff;
 use App\Models\YearattendingWorkshop;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CamperSelectionController extends Controller
 {
     public function store(Request $request, $id = null)
     {
-
         foreach ($request->all() as $key => $value) {
             $matches = array();
             if (preg_match('/(camper|newname)-(\d+)/', $key, $matches)) {
@@ -49,15 +47,15 @@ class CamperSelectionController extends Controller
                     }
                 } elseif (strlen($value) >= 2) {
                     $newnames = explode(' ', $value);
-                    $newcamper = $matches[2] >= 1000 ? Camper::find($matches[2]) : new Camper();
-                    $newcamper->family_id = Auth::user()->camper->family_id;
+                    $newcamper = $matches[2] >= 1000 ? Camper::findOrFail($matches[2]) : new Camper();
                     if (count($newnames) == 2) {
                         $newcamper->firstname = $newnames[0];
                         $newcamper->lastname = $newnames[1];
                     } else {
                         $newcamper->firstname = $value;
                     }
-                    if(config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
+                    $newcamper->family_id = $this->getFamilyId($id);
+                    if (config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
                     $newcamper->save();
                     if ($request->input('newcheck-' . $matches[2]) == '1') {
                         Yearattending::create(['camper_id' => $newcamper->id, 'year_id' => $this->year->id]);
@@ -76,11 +74,14 @@ class CamperSelectionController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = $this->getFamilyId();
-        $campers = Camper::where('family_id', $family_id)
-            ->with(['yearsattending' => function ($query) {
-                $query->where('year_id', $this->year->id);
-            }])->orderBy('birthdate')->get();
+        $family_id = $this->getFamilyId($id);
+
+        $campers = Camper::where('family_id', $family_id)->with(['yearsattending' => function ($query) {
+            $query->where('year_id', $this->year->id);
+        }])->orderBy('birthdate')->get();
+
+        if($id == '0') $request->route()->setParameter('id', $campers[0]->id);
+
         return view('register.camperselect', ['campers' => $campers, 'stepdata' => $this->getStepData()]);
     }
 

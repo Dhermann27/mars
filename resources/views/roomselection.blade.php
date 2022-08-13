@@ -14,6 +14,7 @@
         form#roomselection rect.available {
             opacity: 1;
             fill: #fff;
+            cursor: pointer;
         }
 
         form#roomselection rect.highlight {

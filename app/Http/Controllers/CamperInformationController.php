@@ -27,7 +27,7 @@ class CamperInformationController extends Controller
         'email.*.email' => 'Please enter a valid email address.',
         'email.*.distinct' => 'Please do not use the same email address for multiple campers.',
         'email.*.unique' => 'This email address has already been taken. Please contact us to merge your records.',
-        'phonenbr.*.regex' => 'Please enter your phone number in 800-555-1212 format.',
+        'phonenbr.*.regex' => 'Please enter your phone number in 800-555-1212 format. International numbers are not accepted.',
         'birthdate.*.required' => 'Please enter your birthdate in 2016-12-31 format.',
         'birthdate.*.regex' => 'Please enter your birthdate in 2016-12-31 format.'];
 
@@ -47,7 +47,6 @@ class CamperInformationController extends Controller
                 'roommate.*' => 'max:255',
                 'sponsor.*' => 'max:255',
                 'church_id.*' => 'exists:churches,id',
-                'is_handicap.*' => 'in:0,1',
                 'foodoption_id.*' => 'exists:foodoptions,id',
             ], $this->messages);
 
@@ -86,26 +85,27 @@ class CamperInformationController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        if ($id && Gate::allows('is-council')) {
-            $family_id = Camper::find($id)->family_id;
-        } else {
-            $family_id = $this->getFamilyId();
-        }
+        $family_id = $this->getFamilyId($id);
 
-        $campers = Camper::where('family_id', $family_id)
-            ->with(['yearsattending' => function ($query) {
-                $query->selectRaw('*, ' . self::LAST_PROGRAM_SELECT, [$this->year->year])
-                    ->where('year_id', $this->year->id);
-            }])->orderBy('birthdate')->get();
+            $campers = Camper::where('family_id', $family_id)
+                ->with(['yearsattending' => function ($query) {
+                    $query->selectRaw('*, ' . self::LAST_PROGRAM_SELECT, [$this->year->year])
+                        ->where('year_id', $this->year->id);
+                }])->orderBy('birthdate')->get();
+
+        if (count($campers) == 0) {
+            $request->session()->flash('warning', 'Please identify the campers before proceeding.');
+            return redirect()->route('camperselect.index', ['id' => $id]);
+        }
 
         // Find most recent program_id and reset for 18-20 YA
         foreach ($campers as $camper) {
             $program_id = 0;
             if (isset($camper->yearsattending[0])) {
                 $ya = $camper->yearsattending[0];
-                if(isset($ya->program_id)) {
+                if (isset($ya->program_id)) {
                     $program_id = $ya->program_id;
-                } elseif(isset($ya->lastprogram_id)) {
+                } elseif (isset($ya->lastprogram_id)) {
                     $program_id = $ya->lastprogram_id;
                 }
                 if ($program_id == Programname::YoungAdultUnderAge) $program_id = Programname::YoungAdult;
@@ -135,7 +135,7 @@ class CamperInformationController extends Controller
             }
         }
         $camper->email = $request->input('email')[$i];
-        if(isset($request->input('phonenbr')[$i])) {
+        if (isset($request->input('phonenbr')[$i])) {
             $camper->phonenbr = preg_replace('/-/', '', $request->input('phonenbr')[$i]);
         } else {
             $camper->phonenbr = null;
@@ -150,11 +150,10 @@ class CamperInformationController extends Controller
         $camper->roommate = $request->input('roommate')[$i];
         $camper->sponsor = $request->input('sponsor')[$i];
         $camper->church_id = $request->input('churchid')[$i];
-        $camper->is_handicap = $request->input('is_handicap')[$i];
+        $camper->is_handicap = in_array($camper->id, $request->input('is_handicap') ?? array()) ? 1 : 0;
         $camper->foodoption_id = $request->input('foodoption_id')[$i];
 
         $camper->save();
-
 
         $ya = Yearattending::where('camper_id', $camper->id)->where('year_id', $this->year->id)->first();
         if ($ya) {

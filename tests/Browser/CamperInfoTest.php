@@ -120,7 +120,7 @@ class CamperInfoTest extends DuskTestCase
 //
 //    }
 //
-    public function testReturningCoupleDistinctEmails()
+    public function testReturningCoupleHandicapDistinctEmails()
     {
         $users = User::factory()->count(2)->create();
 
@@ -128,11 +128,11 @@ class CamperInfoTest extends DuskTestCase
         $campers[0] = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
             'email' => $users[0]->email, 'roommate' => __FUNCTION__, 'birthdate' => self::$year->year - 35 . '-01-01']);
         $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__,
-            'birthdate' => self::$year->year - 30 . '-01-01', 'email' => $users[1]->email]);
+            'birthdate' => self::$year->year - 30 . '-01-01', 'email' => $users[1]->email, 'is_handicap' => 1]);
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
 
-        $changes = Camper::factory()->count(2)->make(['roommate' => __FUNCTION__]);
+        $changes = Camper::factory()->count(2)->make(['roommate' => __FUNCTION__, 'is_handicap' => rand(0,1)]);
         $cyas[0] = Yearattending::factory()->make(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $cyas[1] = Yearattending::factory()->make(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $this->browse(function (Browser $browser) use ($users, $campers, $yas, $changes, $cyas) {

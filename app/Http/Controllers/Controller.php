@@ -16,6 +16,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 
 class Controller extends BaseController
@@ -38,22 +39,30 @@ class Controller extends BaseController
      * If User has an associated camper, get the family_id, otherwise create one
      * @return int
      */
-    public function getFamilyId(): int
+    public function getFamilyId($id = null): int
     {
-        $family_id = 0;
-        if (!isset(Auth::user()->camper)) {
-            $family = new Family();
-            $family->save();
-            $family_id = $family->id;
-            $newcamper = new Camper();
-            $newcamper->family_id = $family->id;
-            $newcamper->email = Auth::user()->email;
-            if(config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
-            $newcamper->save();
-            Auth::user()->load('camper');
+        if (isset($id) && Gate::allows('is-council')) {
+            $family_id = ($id != 0) ? Camper::findOrFail($id)->family_id : $this->createFamilyAndCamper();
         } else {
-            $family_id = Auth::user()->camper->family_id;
+            if (!isset(Auth::user()->camper)) {
+                $family_id = $this->createFamilyAndCamper(Auth::user()->email);
+                Auth::user()->load('camper');
+            } else {
+                $family_id = Auth::user()->camper->family_id;
+            }
         }
+        return $family_id;
+    }
+
+    private function createFamilyAndCamper($email = null) :int {
+        $family = new Family();
+        $family->save();
+        $family_id = $family->id;
+        $newcamper = new Camper();
+        $newcamper->family_id = $family->id;
+        $newcamper->email = $email;
+        if (config('app.name') == 'MUUSADusk') $newcamper->roommate = __FUNCTION__;
+        $newcamper->save();
         return $family_id;
     }
 
