@@ -41,7 +41,7 @@
 <!--Main Navigation-->
 <header>
     <!-- Animated navbar-->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-scroll">
+    <nav @class(['navbar', 'navbar-expand-lg', 'navbar-scroll', 'fixed-top' => config('app.name') != 'MUUSADusk'])>
         <div class="container-fluid">
             <button class="navbar-toggler ps-0" type="button" data-mdb-toggle="collapse"
                     data-mdb-target="#navbarMars" aria-controls="navbarMars" aria-expanded="false"
@@ -107,20 +107,20 @@
                                     <i class="fas fa-binoculars fa-fw"></i> Excursions
                                 </a>
                             </li>
-{{--                            <li>--}}
-{{--                                <hr class="dropdown-divider"/>--}}
-{{--                            </li>--}}
-{{--                            <span class="text-muted ms-2">For Campers Only</span>--}}
+                            {{--                            <li>--}}
+                            {{--                                <hr class="dropdown-divider"/>--}}
+                            {{--                            </li>--}}
+                            {{--                            <span class="text-muted ms-2">For Campers Only</span>--}}
                             @if($year->is_calendar)
                                 <li>
                                     <a href="#" class="dropdown-item">
                                         <i class="fas fa-calendar-alt fa-fw"></i> Daily Schedule</a>
                                 </li>
                             @endif
-{{--                            <li>--}}
-{{--                                <a href="{{ route('directory') }}" class="dropdown-item">--}}
-{{--                                    <i class="fas fa-address-book fa-fw"></i> Online Directory</a>--}}
-{{--                            </li>--}}
+                            {{--                            <li>--}}
+                            {{--                                <a href="{{ route('directory') }}" class="dropdown-item">--}}
+                            {{--                                    <i class="fas fa-address-book fa-fw"></i> Online Directory</a>--}}
+                            {{--                            </li>--}}
                             @if($year->is_artfair)
                                 <li>
                                     <a href="#" class="dropdown-item">
@@ -142,7 +142,8 @@
                         </li>
                     @endif
                     <li class="nav-item pe-3"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
-                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>
+{{--                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>--}}
+                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>
 
                     @can('is-council')
                         <li class="nav-item pe-3 dropdown has-megamenu">
@@ -165,6 +166,9 @@
                                         <div class="col-megamenu">
                                             <h6 class="title">Reports</h6>
                                             <ul class="list-unstyled">
+                                                <li>
+                                                    <a href="{{ route('reports.deposits') }}">Bank Deposits</a>
+                                                </li>
                                                 <li>
                                                     <a href="{{ route('reports.workshops') }}"
                                                        data-mdb-toggle="tooltip" title="Slow call">
@@ -206,20 +210,20 @@
                                             <div class="col-megamenu">
                                                 <h6 class="title">Superuser</h6>
                                                 <ul class="list-unstyled">
-                                                    <li><a href="{{ route('admin.positions.index') }}">Staff
-                                                            Positions</a></li>
+                                                    <li>
+                                                        <a href="{{ route('camperselect.index', ['id' => 0]) }}">
+                                                            Create New Family
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('admin.positions.index') }}">Staff
+                                                            Positions</a>
+                                                    </li>
                                                 </ul>
                                             </div>  <!-- col-megamenu.// -->
                                         </div>
                                     @endcan
                                 </div><!-- end row -->
-
-                                {{--                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">--}}
-                                {{--                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
-                                {{--                                </li>--}}
-                                {{--                                <li>--}}
-                                {{--                                    <hr class="dropdown-divider"/>--}}
-                                {{--                                </li>--}}
                             </div>
                         </li>
                     @endcan
@@ -431,8 +435,6 @@
 {{--                                        <div class="dropdown-divider"></div>--}}
 {{--                                    @endif--}}
 {{--                                    <a class="disabled pl-2" tabindex="-1" href="#">Reports</a>--}}
-{{--                                    <a class="dropdown-item" href="{{ route('reports.deposits') }}">--}}
-{{--                                        Bank Deposits</a>--}}
 {{--                                    <a class="dropdown-item" href="{{ route('reports.campers') }}">Campers</a>--}}
 {{--                                    <a class="dropdown-item" href="{{ route('reports.outstanding') }}">--}}
 {{--                                        Outstanding Balances</a>--}}
@@ -611,14 +613,14 @@
 
                     <hr class="dropdown-divider"/>
 
-{{--                    <h5 class="mt-5">For Registered Campers Only</h5>--}}
+                    {{--                    <h5 class="mt-5">For Registered Campers Only</h5>--}}
                     <ul class="list-unstyled mb-0">
                         @if($year->is_calendar)
                             <li><a class="text-white underlined-link" href="#">Daily Schedule</a></li>
                         @endif
-{{--                        <li><a class="text-white underlined-link" href="{{ route('directory') }}">Online--}}
-{{--                                Directory</a>--}}
-{{--                        </li>--}}
+                        {{--                        <li><a class="text-white underlined-link" href="{{ route('directory') }}">Online--}}
+                        {{--                                Directory</a>--}}
+                        {{--                        </li>--}}
                         @if($year->is_artfair)
                             <li><a class="text-white underlined-link" href="#">Art Fair Submission</a></li>
                         @endif
