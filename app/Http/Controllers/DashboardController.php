@@ -22,9 +22,9 @@ class DashboardController extends Controller
             ->orderBy('updated_at', 'desc')->with('camper')->get();
         $deposits = ThisyearCharge::where('is_deposited', '1')
             ->join('chargetypes', 'chargetypes.id', 'thisyear_charges.chargetype_id')->count();
-        $charges = ThisyearCharge::selectRaw('CONCAT(chargetypename,"s") AS name, FORMAT(SUM(amount), 2) AS total')->where('amount', '>', '0')
+        $charges = ThisyearCharge::selectRaw('CONCAT(chargetypename,"s") AS name, SUM(amount) AS amounts, FORMAT(SUM(amount), 2) AS total')->where('amount', '>', '0')
             ->groupBy('chargetype_id')->get();
-        $charges->prepend(['name' => 'Guarantee Amount', 'total' => 230000-$charges->sum('amount')]);
+        $charges->prepend(['name' => 'Guarantee Amount', 'total' => 230000-($charges->sum('amounts'))]);
         return view('admin.admin', ['campers' => $campers, 'last7' => $last7, 'deposits' => $deposits,
             'homeless' => $homeless, 'average' => $average, 'charges' => $charges]);
 

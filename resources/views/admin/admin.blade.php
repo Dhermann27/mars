@@ -12,10 +12,10 @@
                     <div class="card-body">
                         <h5 class="card-title">Registered for {{ $year->year }}</h5>
                         <div
-                            class="card-text display-4 text-{{ intdiv(count($campers), $average->average) >= .95 ? 'green' : 'red'}}">
+                            class="card-text display-4 text-{{ count($campers)/$average->average >= .95 ? 'green' : 'red'}}">
                             {{ count($campers) }} / <span data-mdb-toggle="tooltip"
                                                           title="Average count on {{ $average->onlyday }}: {{ number_format($average->average, 0) }}">
-                                {{ number_format(intdiv(count($campers), $average->average)*100, 0) }}%
+                                {{ number_format(count($campers)/$average->average*100, 0) }}%
                             </span>
                         </div>
                         <div class="card-footer">
@@ -113,7 +113,7 @@
                 <tbody>
                 @foreach($campers as $camper)
                     <tr>
-                        <td>{{ strlen($camper->familyname) > 15 ? substr($camper->familyname,0,10) . '&hellip;' : $camper->familyname }}</td>
+                        <td>{!! strlen($camper->familyname) > 15 ? substr($camper->familyname,0,10) . '&hellip;' : $camper->familyname !!}</td>
                         <td>{{ $camper->city }}, {{ $camper->provincecode }}</td>
                         <td>{{ $camper->firstname }}</td>
                         <td>
