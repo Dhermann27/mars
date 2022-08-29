@@ -3,10 +3,10 @@
 aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}">
     <x-form-group type="hidden" name="id[]" errorKey="id.{{ $looper }}" value="{{ $camper->id }}"/>
 
-    @can('is-super')
+    @if(count($camper->yearsattending) == 1 && Gate::allows('is-council'))
         <x-form-group label="Days Attending" name="days[]" errorKey="days.{{ $looper }}" is-adminonly="true"
                       class="days-mask" value="{{ $camper->yearsattending[0]->days ?? 0}}"/>
-    @endcan
+    @endif
 
     <x-form-group label="Pronouns" name="pronoun_id[]" errorKey="pronoun_id.{{ $looper }}" type="select">
         <x-slot:tooltip>{!! __('registration.pronoun') !!}</x-slot:tooltip>
@@ -32,11 +32,11 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
 
     <x-form-group label="Phone Number"
                   name="phonenbr[]" errorKey="phonenbr.{{ $looper }}" class="phone-mask" :formobject="$camper"/>
+
     <div class="row align-self-center mb-3">
         <div class="container-md col-lg-6">
             <div class="form-outline datepicker" data-mdb-inline="true" data-mdb-format="yyyy-mm-dd">
-                <input id="birthdate-{{ $looper }}" name="birthdate[]" errorKey="birthdate.{{ $looper }}"
-                       data-mdb-toggle="datepicker"
+                <input id="birthdate-{{ $looper }}" name="birthdate[]" data-mdb-toggle="datepicker"
                        class="form-control @error('birthdate.' . $looper) is-invalid @enderror"
                        value="{{ old('birthdate.' . $looper, $camper->birthdate) }}" placeholder="yyyy-mm-dd"
                        @can('readonly') aria-label="Birthdate" readonly @endif />
@@ -97,7 +97,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
 
     <x-form-group label="Do you require assistance or have any needs of which the Registrar should be aware?"
                   name="is_handicap[]" errorKey="is_handicap.{{ $looper }}" type="checkbox" :formobject="$camper"
-                  :value="$camper->id" />
+                  :formvalue="$camper->id"/>
 
     <x-form-group label="Food Restriction" name="foodoption_id[]" errorKey="foodoption_id.{{ $looper }}" type="select">
         @foreach($foodoptions as $foodoption)

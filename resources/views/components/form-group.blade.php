@@ -1,5 +1,5 @@
 @if($type=='checkbox')
-    {{--    Value actually sets checked, not value--}}
+    {{--    Value actually sets checked, formvalue sets value--}}
     <div {{ $attributes->class(['row', 'align-self-center', 'mb-3', 'admin-only' => $isAdminonly]) }}>
         <div class="container-md col-lg-6">
             <div class="form-check">
@@ -8,7 +8,8 @@
                 @endif
                 <input @can('readonly') disabled @endcan
                     {{ $attributes->class(['form-check-input' => !$isDusk(),'is-invalid' => $errors->has($errorKey)]) }}
-                    type="checkbox" id="{{ $name }}" name="{{ $name }}" value="1" @checked($getSafeDefault()) />
+                    type="checkbox" id="{{ $name }}" name="{{ $name }}" value="{{ $formvalue ?? 1 }}"
+                    @checked($getSafeDefault()) />
                 <label class="form-check-label" for="{{$name}}">{{$label}}</label>
                 @error($errorKey)
                 <span class="muusa-invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

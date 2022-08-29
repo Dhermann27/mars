@@ -15,10 +15,10 @@ class ChargetypeSeeder extends Seeder
     public function run()
     {
         DB::table('chargetypes')->insert([
-            ['name' => 'MUUSA Fees', 'is_shown' => 0, 'is_deposited' => 0],
+            ['name' => 'Housing Fee', 'is_shown' => 0, 'is_deposited' => 0],
             ['name' => 'Pre-Reg Check Deposit', 'is_shown' => 0, 'is_deposited' => 0],
             ['name' => 'Workshop Fee', 'is_shown' => 1, 'is_deposited' => 0],
-            ['name' => 'MUUSA Deposit', 'is_shown' => 0, 'is_deposited' => 0],
+            ['name' => 'Deposit', 'is_shown' => 0, 'is_deposited' => 0],
             ['name' => 'Housing Deposit', 'is_shown' => 0, 'is_deposited' => 0],
             ['name' => 'Paypal Payment', 'is_shown' => 1, 'is_deposited' => 1],
             ['name' => 'Check Payment', 'is_shown' => 1, 'is_deposited' => 1],

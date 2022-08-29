@@ -84,12 +84,17 @@ class Household extends BaseComponent
 
     public function viewHousehold(Browser $browser, $hh)
     {
-        $browser->assertInputValue('@adr1', $hh->address1)->assertDisabled('@adr1')
-            ->assertInputValue('@adr2', $hh->address2)->assertDisabled('@adr2')
-            ->assertInputValue('@city', $hh->city)->assertDisabled('@city')
+        $browser->assertInputValue('@adr1', $hh->address1)
+            ->assertAttributeContains('@adr1', 'readonly', 'true')
+            ->assertInputValue('@adr2', $hh->address2)
+            ->assertAttributeContains('@adr1', 'readonly', 'true')
+            ->assertInputValue('@city', $hh->city)
+            ->assertAttributeContains('@adr1', 'readonly', 'true')
             ->assertSelected('@state', $hh->province_id)->assertDisabled('@state')
-            ->assertInputValue('@zip', $hh->zipcd)->assertDisabled('@zip')
-            ->assertInputValue('@country', $hh->country)->assertDisabled('@country');
+            ->assertInputValue('@zip', $hh->zipcd)
+            ->assertAttributeContains('@adr1', 'readonly', 'true')
+            ->assertInputValue('@country', $hh->country)
+            ->assertAttributeContains('@adr1', 'readonly', 'true');
         if ($hh->is_address_current) $browser->assertChecked('@iac'); else $browser->assertNotChecked('@iac');
         if ($hh->is_ecomm) $browser->assertChecked('@ie'); else $browser->assertNotChecked('@ie');
         if ($hh->is_scholar) $browser->assertChecked('@is'); else $browser->assertNotChecked('@is');

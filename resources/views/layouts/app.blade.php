@@ -156,9 +156,12 @@
                                 <div class="row g-3">
                                     <div class="col-lg-3 col-6">
                                         <div class="col-megamenu">
-                                            <h6 class="title"><a href="#">Dashboard</a></h6>
-                                            <ul class="list-unstyled">
-                                                {{-- +X campers in last week, most recent campers or payments?                                               --}}
+                                            <div>
+                                                <a class="btn btn-lg btn-primary" href="{{ route('admin') }}">Dashboard</a>
+                                            </div>
+                                            <strong>Recent Searches</strong>
+                                            <ul id="recentSearches" class="list-unstyled">
+                                                <li>Loading campers... <i class="fa fa-spinner-third fa-spin m-1"></i></li>
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end col-3 -->
@@ -249,26 +252,24 @@
                                         <hr class="dropdown-divider"/>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item"
-                                           href="{{ route('camperselect.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <a class="dropdown-item" href="{{ route('camperselect.index')}}">
                                             <i class="fas fa-users fa-fw"></i> Camper Selection
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item"
-                                           href="{{ route('household.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                        <a class="dropdown-item" href="{{ route('household.index')}}">
                                             <i class="fas fa-home fa-fw"></i> Billing Address
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{{ route('camperinfo.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                           href="{{ route('camperinfo.index')}}">
                                             <i class="fas fa-user-gear fa-fw"></i> Camper Information
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                           href="{{ route('payment.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null])}}">
+                                           href="{{ route('payment.index')}}">
                                             <i class="fas fa-usd-square fa-fw"></i> Account Statement
                                         </a>
                                     </li>

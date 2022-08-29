@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Camper;
 use App\Models\Church;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class DataController extends Controller
 {
@@ -18,9 +16,13 @@ class DataController extends Controller
             ->join('provinces', 'families.province_id', 'provinces.id')
             ->where('campers.firstname', 'LIKE', '%' . $request->term . '%')
             ->orWhere('campers.lastname', 'LIKE', '%' . $request->term . '%')
+//            ->orWhereRaw('CONCAT(campers.firstname," ",campers.lastname) LIKE "%' . trim($request->term) . '%"')
             ->orWhere('campers.email', 'LIKE', '%' . $request->term . '%')->get();
         foreach ($campers as $camper) {
             $camper->term = $request->term;
+            $camper->firstname = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->firstname);
+            $camper->lastname = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->lastname);
+            $camper->email = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->email);
         }
         return $campers;
     }
@@ -34,6 +36,13 @@ class DataController extends Controller
             $church->term = $request->term;
         }
         return $churches;
+    }
+
+    public function recents()
+    {
+        $campers = Camper::select('campers.id', 'campers.firstname', 'campers.lastname')
+            ->orderBy('updated_at', 'desc')->limit(7)->get();
+        return $campers;
     }
 
 //    public function loginsearch(Request $request)

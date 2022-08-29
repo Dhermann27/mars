@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Enums\Chargetypename;
+use App\Enums\Usertype;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
 use App\Models\Charge;
@@ -29,6 +30,7 @@ class PaymentTest extends DuskTestCase
 
     private const ROUTE = 'payment.index';
     private const WAIT = 400;
+    private const ACTIVETAB = 'form#muusapayment div.tab-content div.active';
 
     public function testNewVisitor()
     {
@@ -92,76 +94,59 @@ class PaymentTest extends DuskTestCase
 
     }
 
-    /**
-     * @group Charlie
-     * @throws Throwable
-     */
-//    public function testCharlieCheck()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//
-//        $charge = Charge::factory()->make(['chargetype_id' => Chargetypename::CheckPayment,
-//            'camper_id' => $camper->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $charge) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor('form#muusapayment')
-//                ->select('chargetype_id', $charge->chargetype_id)->type('amount', $charge->amount)
-//                ->type('timestamp', $charge->timestamp)->type('memo', $charge->memo)
-//                ->click('button[type="submit"]')->waitFor('div.alert')
-//                ->assertVisible('div.alert-success')->logout();
-//        });
-//
-//        $this->assertDatabaseHas('charges', ['year_id' => self::$year->id, 'chargetype_id' => Chargetypename::CheckPayment]);
-//
-//        foreach (static::$browsers as $browser) {
-//            $browser->driver->manage()->deleteAllCookies();
-//        }
-//
-//        $this->browse(function (Browser $browser) use ($cuser, $camper, $charge) {
-//            $browser->loginAs($cuser->id)->visitRoute(self::ROUTE)
-//                ->waitFor(self::ACTIVETAB)
-//                ->assertSee(Chargetype::findOrFail(Chargetypename::CheckPayment)->name)->assertSee($charge->amount)
-//                ->assertSeeIn('#amountNow', '0.00')->assertSee('Registration')
-//                ->assertDontSee('Register Now');
-//        });
-//
-//    }
-//
-//    /**
-//     * @group Charlie
-//     * @throws Throwable
-//     */
-//    public function testCharlieRO()
-//    {
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//
-//        $charge = Charge::factory()->create(['chargetype_id' => Chargetypename::CheckPayment,
-//            'camper_id' => $camper->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $charge) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->assertSee(Chargetype::findOrFail(Chargetypename::CheckPayment)->name)
-//                ->assertSee($charge->amount)->assertSeeIn('#amountArrival', '0.00')
-//                ->assertMissing('button[type="submit"]');
-//        });
-//
-//
-//    }
+    public function testReturningCamperCheckAdmin()
+    {
+
+        $user = User::factory()->create(['usertype' => Usertype::Admin]);
+        $admin = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $yas[] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+        $yas[] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$lastyear->id]);
+        GenerateCharges::dispatchSync(self::$lastyear->id);
+        GenerateCharges::dispatchSync(self::$year->id);
+
+        $charge = Charge::factory()->make(['chargetype_id' => Chargetypename::CheckPayment,
+            'camper_id' => $camper->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $charge) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->waitFor(self::ACTIVETAB)->assertSee('Amount Due')
+                ->assertAttributeContains('#tab-' . self::$year->year, 'class', 'active')
+                ->select('chargetype_id', $charge->chargetype_id)->type('amount', $charge->amount)
+                ->keys('#timestamp', $charge->timestamp)->type('memo', $charge->memo);
+            $this->submitSuccess($browser, self::WAIT)->assertSee('Amount Owed')
+                ->assertSee('Check Payment')->assertSee(abs($charge->amount));
+        });
+
+        $this->assertDatabaseHas('charges', ['year_id' => self::$year->id, 'chargetype_id' => Chargetypename::CheckPayment]);
+
+    }
+
+    public function testReturningCamperRO()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Pc]);
+        $admin = Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $yas[] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+        $yas[] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$lastyear->id]);
+        GenerateCharges::dispatchSync(self::$lastyear->id);
+        GenerateCharges::dispatchSync(self::$year->id);
+
+        $charge = Charge::factory()->create(['chargetype_id' => Chargetypename::CheckPayment,
+            'camper_id' => $camper->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $charge) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->waitFor('div.tab-content div.active')->assertSee('Check Payment')
+                ->assertSee(abs($charge->amount))->assertMissing('button[type="submit"]');
+        });
+
+
+    }
 
 
     /**
@@ -207,6 +192,7 @@ class PaymentTest extends DuskTestCase
 
             $browser->waitFor('div.alert')
                 ->assertSeeIn('div.alert-success', 'By paying your deposit, your room from');
+
         });
         $this->assertDatabaseHas('charges', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
             'chargetype_id' => Chargetypename::Donation, 'amount' => $lildonation, 'timestamp' => date("Y-m-d")]);
@@ -226,110 +212,6 @@ class PaymentTest extends DuskTestCase
         $year->is_brochure = 1;
         $year->save();
     }
-
-    /**
-     * @group Franklin
-     * @throws Throwable
-     */
-//    public function testFranklinMultipleYears()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $campers[0] = Camper::factory()->create(['firstname' => 'Franklin', 'email' => $cuser->email]);
-//        Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
-//        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id]);
-//        Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//
-//        $charge = Charge::factory()->create(['chargetype_id' => Chargetypename::CreditCardPayment,
-//            'camper_id' => $campers[0]->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
-//        $newcharge = Charge::factory()->create(['chargetype_id' => Chargetypename::CheckPayment,
-//            'camper_id' => $campers[0]->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$lastyear->id]);
-//
-//        foreach (self::$years as $year) {
-//            $charges = array();
-//            foreach ($campers as $camper) {
-//                Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => $year->id]);
-//                array_push($charges, Charge::factory()->create([
-//                    'chargetype_id' => Chargetypename::CreditCardPayment, 'camper_id' => $camper->id,
-//                    'amount' => rand(-20000, -100000) / 100, 'year_id' => $year->id]));
-//            }
-//            $year->charges = $charges;
-//            GenerateCharges::dispatchSync($year->id);
-//        }
-//
-//        $this->browse(function (Browser $browser) use ($user, $campers, $charge, $newcharge) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $campers[0]->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->clickLink(self::$year->year)->pause(self::WAIT)
-//                ->assertSeeIn(self::ACTIVETAB, $charge->amount);
-//            foreach (self::$years as $year) {
-//                $browser->clickLink($year->year)->pause(self::WAIT)->assertSelected('year_id', $year->id);
-//                foreach ($year->charges as $charge) {
-//                    $browser->assertSeeIn(self::ACTIVETAB, $charge->amount);
-//                }
-//            }
-//            $browser->clickLink(self::$lastyear->year)->pause(self::WAIT)
-//                ->select('chargetype_id', $newcharge->chargetype_id)
-//                ->type('amount', $newcharge->amount)->type('timestamp', $newcharge->timestamp)
-//                ->type('memo', $newcharge->memo)->click('button[type="submit"]')
-//                ->waitFor('div.alert')->assertVisible('div.alert-success');
-//        });
-//
-//        $this->assertDatabaseHas('charges', ['year_id' => $newcharge->year_id,
-//            'chargetype_id' => $newcharge->chargetype_id, 'amount' => $newcharge->amount,
-//            'timestamp' => $newcharge->timestamp, 'memo' => $newcharge->memo]);
-//
-//    }
-//
-//    /**
-//     * @group Franklin
-//     * @throws Throwable
-//     */
-//    public function testFranklinRO()
-//    {
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $campers[0] = Camper::factory()->create(['firstname' => 'Franklin', 'email' => $cuser->email]);
-//        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
-//        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id]);
-//        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//
-//        $charge = Charge::factory()->create(['chargetype_id' => Chargetypename::CreditCardPayment,
-//            'camper_id' => $campers[0]->id, 'amount' => rand(-20000, -100000) / 100, 'year_id' => self::$year->id]);
-//
-//        foreach (self::$years as $year) {
-//            $charges = array();
-//            foreach ($campers as $camper) {
-//                Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => $year->id]);
-//                array_push($charges, Charge::factory()->create([
-//                    'chargetype_id' => Chargetypename::CreditCardPayment, 'camper_id' => $camper->id,
-//                    'amount' => rand(-20000, -100000) / 100, 'year_id' => $year->id]));
-//            }
-//            $year->charges = $charges;
-//            GenerateCharges::dispatchSync($year->id);
-//        }
-//
-//        $this->browse(function (Browser $browser) use ($user, $campers, $charge) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $campers[0]->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->clickLink(self::$year->year)->pause(self::WAIT)
-//                ->assertSeeIn(self::ACTIVETAB, $charge->amount);
-//            foreach (self::$years as $year) {
-//                $browser->clickLink($year->year)->pause(self::WAIT);
-//                foreach ($year->charges as $charge) {
-//                    $browser->assertSeeIn(self::ACTIVETAB, $charge->amount);
-//                }
-//            }
-//            $browser->assertDontSee('Save Changes');
-//        });
-//    }
 
     public function testReturningYANoPaypal()
     {
@@ -352,68 +234,32 @@ class PaymentTest extends DuskTestCase
         $year->save();
     }
 
-    /**
-     * @group Ingrid
-     * @throws Throwable
-     */
-//    public function testIngridDelete()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - 20;
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Ingrid', 'email' => $cuser->email,
-//            'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//        $charges = Charge::factory()->count(rand(2, 10))->create(['camper_id' => $camper->id,
-//            'chargetype_id' => Chargetypename::PayPalPayment, 'year_id' => self::$year->id]);
-//        $this->browse(function (Browser $browser) use ($user, $camper, $charges) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB);
-//            foreach ($charges as $charge) {
-//                $browser->check('delete-' . $charge->id);
-//            }
-//            $browser->click('button[type="submit"]')->waitFor('div.alert')
-//                ->assertVisible('div.alert-success')->assertSee('Deposit');
-//        });
-//
-//        foreach ($charges as $charge) {
-//            $this->assertDatabaseMissing('charges', ['id' => $charge->id]);
-//        }
-//
-//    }
-//
-//    /**
-//     * @group Ingrid
-//     * @throws Throwable
-//     */
-//    public function testIngridRO()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - 20;
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Ingrid', 'email' => $cuser->email,
-//            'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//        Charge::factory()->count(rand(2, 10))->create(['camper_id' => $camper->id,
-//            'chargetype_id' => Chargetypename::PayPalPayment, 'year_id' => self::$year->id]);
-//        $this->browse(function (Browser $browser) use ($user, $camper) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->assertMissing('button[type="submit"]')->assertDontSee('Delete');
-////                ->assertMissing('form#muusapayment input[type="checkbox"]');
-//        });
-//
-//    }
+    public function testNewYADeleteAdmin()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Admin]);
+        Camper::factory()->create(['email' => $user->email, 'roommate' => __FUNCTION__]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__,
+            'birthdate' => $this->getYABirthdate()]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+        GenerateCharges::dispatchSync(self::$year->id);
+        $charges = Charge::factory()->count(rand(2, 10))->create(['camper_id' => $camper->id,
+            'chargetype_id' => Chargetypename::PayPalPayment, 'year_id' => self::$year->id]);
+        $this->browse(function (Browser $browser) use ($user, $camper, $charges) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->waitFor('form#muusapayment');
+            foreach ($charges as $charge) {
+                $browser->check('@charge' . $charge->id);
+            }
+            $this->submitSuccess($browser, self::WAIT)->assertMissing('PayPal Payment');
+        });
+
+        foreach ($charges as $charge) {
+            $this->assertDatabaseMissing('charges', ['id' => $charge->id]);
+        }
+
+    }
 
     public function testReturningFamilyNoDeposit()
     {
@@ -443,6 +289,8 @@ class PaymentTest extends DuskTestCase
                 ->assertSeeIn('span#amountNow', 0.00)
                 ->assertValue('input#payment', 0.00)
                 ->assertDontSee('Amount Due upon Arrival');
+
+            $browser->scrollIntoView('@previous')->pause(self::WAIT)->press('@previous')->assertPathIs('/camperinfo');
         });
     }
 
@@ -460,7 +308,7 @@ class PaymentTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $rate, $camper) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
                 ->assertDontSee('Deposit for ' . self::$year->year)
-                ->assertSee('MUUSA Fees')
+                ->assertSee('Housing Fee')
                 ->assertSeeIn('span#amountArrival', number_format($rate->rate * 6, 2))
                 ->assertValue('input#payment', number_format($rate->rate * 6, 2, '.', ''));
 
@@ -470,10 +318,12 @@ class PaymentTest extends DuskTestCase
 
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
                 ->assertDontSee('Deposit for ' . self::$year->year)
-                ->assertSee('MUUSA Fees')
+                ->assertSee('Housing Fee')
                 ->assertSeeIn('span#amountNow', 0.00)
                 ->assertSeeIn('span#amountArrival', number_format($rate->rate * 6 + $charge->amount, 2))
                 ->assertValue('input#payment', number_format($rate->rate * 6 + $charge->amount, 2, '.', ''));
+
+            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/roomselection');
         });
     }
 }

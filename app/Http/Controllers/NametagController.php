@@ -72,7 +72,7 @@ class NametagController extends Controller
         } else {
             $family_id = $this->getFamilyId();
         }
-        $steps = $this->getStepData();
+        $steps = $this->getStepData($id);
         ExposeParentsChildByFamily::dispatchSync($family_id);
         ExposeNametagsByFamily::dispatchSync($family_id);
         $campers = $this->getCampers($family_id);

@@ -47,7 +47,7 @@ class RoomSelectionController extends Controller
         } else {
             $family_id = $this->getFamilyId();
         }
-        $step = $this->getStepData();
+        $step = $this->getStepData($id);
         $locked = 0;
         $ya = Yearattending::where('camper_id', Auth::user()->camper->id)->where('year_id', $this->year->id)->first();
         $campers = ThisyearCamper::where('family_id', $family_id)->where('is_program_housing', '0')->orderBy('birthdate')->get();

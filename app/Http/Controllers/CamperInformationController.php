@@ -62,7 +62,7 @@ class CamperInformationController extends Controller
                     'email.' . $i => 'unique:users,email' . (isset($camper->user) ? ',' . $camper->user->id : ''),
                 ], $this->messages);
 
-                if ($camper->family_id == Auth::user()->camper->family_id || Gate::allows('is-super')) {
+                if (($id && Gate::allows('is-super')) || $camper->family_id == Auth::user()->camper->family_id) {
                     $this->upsertCamper($request, $camper, $i);
                 }
 
@@ -87,11 +87,11 @@ class CamperInformationController extends Controller
     {
         $family_id = $this->getFamilyId($id);
 
-            $campers = Camper::where('family_id', $family_id)
-                ->with(['yearsattending' => function ($query) {
-                    $query->selectRaw('*, ' . self::LAST_PROGRAM_SELECT, [$this->year->year])
-                        ->where('year_id', $this->year->id);
-                }])->orderBy('birthdate')->get();
+        $campers = Camper::where('family_id', $family_id)
+            ->with(['yearsattending' => function ($query) {
+                $query->selectRaw('*, ' . self::LAST_PROGRAM_SELECT, [$this->year->year])
+                    ->where('year_id', $this->year->id);
+            }])->orderBy('birthdate')->get();
 
         if (count($campers) == 0) {
             $request->session()->flash('warning', 'Please identify the campers before proceeding.');
@@ -115,7 +115,7 @@ class CamperInformationController extends Controller
 
         return view('camperinfo', ['pronouns' => Pronoun::all(), 'foodoptions' => Foodoption::all(),
             'campers' => $campers, 'programs' => Program::whereNotNull('title')->orderBy('order')->get(),
-            'stepdata' => $this->getStepData(), 'isReadonly' => false]);
+            'stepdata' => $this->getStepData($id), 'isReadonly' => false]);
 
     }
 

@@ -36,7 +36,7 @@
                                             <td>{{ $camper->age }}</td>
                                             <td>{{ $camper->programname }}</td>
                                             <td>
-                                                @include('includes.admin.controls', ['id' => $camper->id])
+                                                @include('components.admin.controls', ['id' => $camper->id])
                                             </td>
                                         </tr>
                                     @endforeach

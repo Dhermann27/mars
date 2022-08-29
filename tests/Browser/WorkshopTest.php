@@ -209,6 +209,8 @@ class WorkshopTest extends DuskTestCase
 //                ->waitFor(self::ACTIVETAB . ' button.active')
                 ->assertAttributeContains('#workshop-' . $camper->id . '-' . $workshops[1]->id, 'class', 'active');
             $this->submitSuccess($browser, self::WAIT);
+
+            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/nametag');
         });
 
         $this->assertDatabaseHas('yearsattending__workshop', ['yearattending_id' => $ya->id,
@@ -252,6 +254,8 @@ class WorkshopTest extends DuskTestCase
             $this->pressTab($browser, $campers[1]->id, self::WAIT);
             $browser->assertAttributeContains('#workshop-' . $campers[1]->id . '-' . $workshop->id, 'class', 'active');
             $this->submitSuccess($browser, self::WAIT);
+
+            $browser->scrollIntoView('@previous')->pause(self::WAIT)->press('@previous')->assertPathIs('/roomselection');
         });
 
         $this->assertDatabaseMissing('yearsattending__workshop', ['yearattending_id' => $hw->id,

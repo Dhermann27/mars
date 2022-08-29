@@ -59,7 +59,7 @@ class WorkshopController extends Controller
         } else {
             $family_id = $this->getFamilyId();
         }
-        $steps = $this->getStepData();
+        $steps = $this->getStepData($id);
         $campers = $this->getCampers($id ? $camper->family_id : $family_id);
         if ($steps["amountDueNow"] > 0) {
             $request->session()->flash('error', 'You cannot register for workshops until your deposit has been paid.');

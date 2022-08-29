@@ -14,13 +14,11 @@ window.hasClass = function (el, className) {
 }
 
 window.addClass = function (el, className) {
-    if (el.classList) el.classList.add(className);
-    else if (!hasClass(el, className)) el.className += ' ' + className;
+    if (el.classList) el.classList.add(className); else if (!hasClass(el, className)) el.className += ' ' + className;
 }
 
 window.removeClass = function (el, className) {
-    if (el.classList) el.classList.remove(className);
-    else el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+    if (el.classList) el.classList.remove(className); else el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
 }
 
 window.getAjax = function (url, success) {
@@ -74,6 +72,7 @@ function runOnLoad() {
             e.stopPropagation();
         });
     }
+
     const inputs = document.querySelectorAll("select, textarea, input:not([type='hidden'])");
     for (let i = 0; i < inputs.length; i++) {
         window.addEvent(inputs[i], 'change', function () {
@@ -86,31 +85,27 @@ function runOnLoad() {
         }
         if (window.hasClass(inputs[i], 'days-mask')) {
             IMask(inputs[i], {
-                mask: Number,
-                scale: 0,
-                min: 0,
-                max: 30
+                mask: Number, scale: 0, min: 0, max: 30
             });
         }
         if (window.hasClass(inputs[i], 'amount-mask')) {
             window.lastAmountMask = IMask(inputs[i], {
-                mask: Number,
-                radix: '.',
-                normalizeZeros: false,
-                min: 0,
-                max: 99999.99
+                mask: Number, radix: '.', normalizeZeros: false, min: 0, max: 99999.99
             });
         }
         if (window.hasClass(inputs[i], 'camper-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {
-                filter: camperFilter,
-                autoSelect: true,
-                threshold: 3,
-                displayValue: (value) => value.firstname + " " + value.lastname,
-                itemContent: (result) => {
+                filter: camperFilter, autoSelect: true, threshold: 3, displayValue: (value) => {
+                    const links = document.querySelectorAll('form#campersearch a');
+                    for (let i = 0; i < links.length; i++) {
+                        links[i].href = links[i].href.replace(/\d+$/, value.id);
+                        window.removeClass(links[i], 'disabled');
+                    }
+                    return (value.firstname + " " + value.lastname).replace(/(<([^>]+)>)/gi, "")
+                }, itemContent: (result) => {
                     return `
                         <div class="autocomplete-custom-item-content">
-                            <div class="autocomplete-custom-item-title">${result.firstname} ${result.lastname} &lt;${result.email}&gt;</div>
+                            <div class="autocomplete-custom-item-title">${result.firstname} ${result.lastname}` + (result.email ? ` &lt;${result.email}&gt;` : ``) + `</div>
                             <div class="autocomplete-custom-item-subtitle">${result.city}, ${result.code}</div>
                         </div>`;
                 },
@@ -119,6 +114,7 @@ function runOnLoad() {
                 event.target.querySelector('.autocomplete-custom-content').value = event.value.id;
             })
         }
+
         if (window.hasClass(inputs[i], 'church-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {
                 filter: churchFilter,
@@ -153,12 +149,33 @@ function runOnLoad() {
 
         window.addEvent(window, 'beforeunload', checkDirty);
 
-        const forms = document.querySelectorAll('form');
-        for (let i = 0; i < forms.length; i++) {
-            window.addEvent(forms[i], 'submit', function () {
-                window.removeEvent(window, 'beforeunload', checkDirty);
-            });
-        }
+    }
+    const forms = document.querySelectorAll('form');
+    for (let i = 0; i < forms.length; i++) {
+        window.addEvent(forms[i], 'submit', function () {
+            window.removeEvent(window, 'beforeunload', checkDirty);
+        });
+    }
+
+    const datatable = document.getElementById('datatable');
+    if (datatable) {
+        const instance = new mdb.Datatable(datatable);
+        window.addEvent(document.getElementById('adminSearch'), 'keyup', (e) => {
+            instance.search(e.target.value);
+        });
+    }
+
+    const recents = document.getElementById('recentSearches');
+    if (recents) {
+        window.getAjax('/data/recentlist', function (data) {
+            recents.innerHTML = '';
+            for (let i = 0; i < data.length; i++) {
+                let el = document.createElement('li');
+                el.innerHTML = `<a href="/camperselect/` + data[i].id + `">` + data[i].firstname + ` `
+                    + (data[i].lastname ?? '') + `</a>`;
+                recents.appendChild(el);
+            }
+        });
     }
 }
 

@@ -112,9 +112,21 @@ td.amount {
     border-top-right-radius: 0px;
 }
 
-
 .navbar .megamenu {
     padding: 1rem;
+}
+
+.adminControls a:first-child{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.text-green {
+    color: $green-400;
+}
+
+.text-red {
+    color: $red-400;
 }
 
 /* ============ desktop view ============ */

@@ -42,7 +42,7 @@
 @endsection
 
 @section('content')
-    <x-layouts.register :stepdata="$stepdata" step="6" previous="roomselect" next="nametag">
+    <x-layouts.register :stepdata="$stepdata" step="6" previous="roomselection" next="nametag">
         <div class="display-6 mt-3 border-bottom text-end">Choose workshops</div>
         <form id="workshops" class="form-horizontal" role="form" method="POST"
               action="{{ route('workshopchoice.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">

@@ -22,12 +22,12 @@
     <x-layouts.register :stepdata="$stepdata" step="2" previous="household" next="payment">
         <div class="display-6 mt-3 border-bottom text-end">Update Details for each Camper</div>
         <form id="camperinfo" class="form-horizontal" role="form" method="POST"
-              action="{{ route('camperinfo.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+              action="{{ route('camperinfo.store', ['id' => request()->route('id')]) }}">
             @include('includes.flash')
 
             <x-navtabs :tabs="$campers" option="firstname" active-tab="{{ Session::get('activeTab') ?? 0}}">
                 @foreach($campers as $camper)
-                    <x-camper :camper="$camper" :looper="$loop->index" :pronouns="$pronouns" :programs="$programs"
+                    <x-camper-form :camper="$camper" :looper="$loop->index" :pronouns="$pronouns" :programs="$programs"
                               :foodoptions="$foodoptions" active-tab="{{ Session::get('activeTab') ?? 0}}"/>
                 @endforeach
             </x-navtabs>
@@ -41,14 +41,14 @@
 
 @section('script')
     <script type="text/javascript">
-        let firstnameChange = (event) => {
+        const firstnameChange = (event) => {
             tab = document.getElementById('tablink-' + event.target.getAttribute('tabid'));
             tab.value = event.target.value;
             tab.innerText = event.target.value;
             tab.ariaControls = event.target.value;
         };
-        let firstnames = document.getElementsByName('firstname[]');
-        for(i=0; i<firstnames.length; i++) {
+        const firstnames = document.getElementsByName('firstname[]');
+        for (let i = 0; i < firstnames.length; i++) {
             window.addEvent(firstnames[i], 'change', firstnameChange);
         }
     </script>

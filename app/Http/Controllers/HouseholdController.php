@@ -26,8 +26,7 @@ class HouseholdController extends Controller
             'is_scholar' => 'required|in:0,1'
         ], $messages);
 
-        $family = Family::findOrFail($id > 0 && Gate::allows('is-super') ?
-            Camper::findOrFail($id)->family_id : Auth::user()->camper->family_id);
+        $family = Family::findOrFail($this->getFamilyId($id));
 
         $family->address1 = $request->input('address1');
         $family->address2 = $request->input('address2');
@@ -51,9 +50,10 @@ class HouseholdController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $family_id = $this->getFamilyId();
+        if($id == 0) redirect()->route('camperselect.index', ['id' => 0]);
+        $family_id = $this->getFamilyId($id);
         $family = Family::find($family_id);
-        return view('household', ['stepdata' => $this->getStepData(), 'family' => $family,
+        return view('household', ['stepdata' => $this->getStepData($id), 'family' => $family,
             'provinces' => Province::orderBy('name')->get()]);
     }
 

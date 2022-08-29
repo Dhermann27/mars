@@ -80,9 +80,12 @@ class CamperSelectionController extends Controller
             $query->where('year_id', $this->year->id);
         }])->orderBy('birthdate')->get();
 
-        if($id == '0') $request->route()->setParameter('id', $campers[0]->id);
+        if($id == '0') {
+            $id = $campers[0]->id;
+            $request->route()->setParameter('id', $campers[0]->id);
+        }
 
-        return view('register.camperselect', ['campers' => $campers, 'stepdata' => $this->getStepData()]);
+        return view('register.camperselect', ['campers' => $campers, 'stepdata' => $this->getStepData($id)]);
     }
 
 }

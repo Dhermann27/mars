@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use App\Enums\Chargetypename;
 use App\Enums\Programname;
+use App\Enums\Usertype;
 use App\Models\Camper;
 use App\Models\Family;
 use App\Models\User;
@@ -51,14 +52,16 @@ class CamperInfoTest extends DuskTestCase
         $lya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$lastyear->id,
             'program_id' => Programname::Burt]);
 
-        $changes = Camper::factory()->make(['roommate' => __FUNCTION__]);
-        $cya = Yearattending::factory()->make();
+        $changes = Camper::factory()->make(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__]);
+        $cya = Yearattending::factory()->make(['camper_id' => $camper->id, 'year_id' => self::$lastyear->id]);
         $this->browse(function (Browser $browser) use ($user, $camper, $lya, $changes, $cya) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)->waitFor(self::ACTIVETAB)
                 ->within(new CamperInfo, function ($browser) use ($camper, $lya, $changes, $cya) {
                     $browser->changeCamper([$camper, $lya], [$changes, $cya]);
                 });
             $this->submitSuccess($browser, self::WAIT);
+
+            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/payment');
         });
 
         $this->assertDatabaseHas('users', ['email' => $changes->email]);
@@ -68,58 +71,55 @@ class CamperInfoTest extends DuskTestCase
 
     }
 
-//    /**
-//     * @group Charlie
-//     * @throws Throwable
-//     */
-//    public function testCharlie()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $changes = Camper::factory()->make(['family_id' => $camper->family_id, 'firstname' => 'Charlie']);
-//        $cya = Yearattending::factory()->make(['year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $ya, $changes, $cya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB);
-//            $this->changeCamper($browser, $camper, $ya, $changes, $cya);
-//            $browser->press('Save Changes')->waitFor('div.alert')
-//                ->assertVisible('div.alert-success');
-//        });
-//
-//        $this->assertDatabaseHas('users', ['email' => $changes->email]);
-//        $this->adh($changes);
-//        $this->assertDatabaseHas('yearsattending', ['year_id' => self::$year->id, 'program_id' => $cya->program_id, 'days' => $cya->days]);
-//    }
-//
-//    /**
-//     * @group Charlie
-//     * @throws Throwable
-//     */
-//    public function testCharlieRO()
-//    {
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $ya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB);
-//            $browser->within(new CamperForm, function ($browser) use ($camper, $ya) {
-//                $browser->viewCamper($camper, $ya);
-//            })->assertMissing('button[type="submit"]');
-//        });
-//
-//
-//    }
-//
+    public function testReturningCamperAdmin()
+    {
+
+        $user = User::factory()->create(['usertype' => Usertype::Admin]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+
+        $changes = Camper::factory()->make(['family_id' => $camper->family_id, 'roommate' => __FUNCTION__]);
+        $cya = Yearattending::factory()->make(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $ya, $changes, $cya) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->waitFor(self::ACTIVETAB)
+                ->within(new CamperInfo, function ($browser) use ($camper, $ya, $changes, $cya) {
+                    $browser->changeCamper([$camper, $ya], [$changes, $cya]);
+                })->assertInputValue(self::ACTIVETAB . ' input[name="days[]"]', $cya->days)
+                ->clear(self::ACTIVETAB . ' input[name="days[]"]')
+                ->type(self::ACTIVETAB . ' input[name="days[]"]', $cya->days);
+            $this->submitSuccess($browser, self::WAIT);
+        });
+
+        $this->assertDatabaseHas('users', ['email' => $changes->email]);
+        $this->adh($changes);
+        $this->assertDatabaseHas('yearsattending', ['year_id' => self::$year->id, 'program_id' => $cya->program_id, 'days' => $cya->days]);
+    }
+
+    public function testReturningCamperRO()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Pc]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $ya) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->waitFor(self::ACTIVETAB);
+            $browser->within(new CamperInfo, function ($browser) use ($camper, $ya) {
+                $browser->viewCamper($camper, $ya);
+            })->assertInputValue(self::ACTIVETAB . ' input[name="days[]"]', $ya->days)
+                ->assertAttributeContains(self::ACTIVETAB . ' input[name="days[]"]', 'readonly', 'true')
+                ->assertMissing('button[type="submit"]');
+        });
+
+
+    }
+
     public function testReturningCoupleHandicapDistinctEmails()
     {
         $users = User::factory()->count(2)->create();
@@ -132,7 +132,7 @@ class CamperInfoTest extends DuskTestCase
         $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
 
-        $changes = Camper::factory()->count(2)->make(['roommate' => __FUNCTION__, 'is_handicap' => rand(0,1)]);
+        $changes = Camper::factory()->count(2)->make(['roommate' => __FUNCTION__, 'is_handicap' => 1]);
         $cyas[0] = Yearattending::factory()->make(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
         $cyas[1] = Yearattending::factory()->make(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $this->browse(function (Browser $browser) use ($users, $campers, $yas, $changes, $cyas) {
@@ -165,80 +165,44 @@ class CamperInfoTest extends DuskTestCase
         $this->assertDatabaseHas('thisyear_charges', ['family_id' => $campers[0]->family_id,
             'amount' => 400, 'chargetype_id' => Chargetypename::Deposit]);
     }
-//
-//    /**
-//     * @group Franklin
-//     * @throws Throwable
-//     */
-//    public function testFranklinDistinct()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//
-//        $cuser = User::factory()->create();
-//        $campers[0] = Camper::factory()->create(['firstname' => 'Franklin', 'email' => $cuser->email]);
-//        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
-//        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id]);
-//        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
-//
-//        $changes = Camper::factory()->count(2)->make(['family_id' => $campers[0]->family_id]);
-//        $changes[0]->firstname = "Franklin";
-//        $changes[1]->email = $changes[0]->email;
-//        $cyas = Yearattending::factory()->count(2)->make(['year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $campers, $yas, $changes, $cyas) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $campers[0]->id])
-//                ->waitFor(self::ACTIVETAB);
-//            for ($i = 0; $i < count($campers); $i++) {
-//                $browser->script('window.scrollTo(0,0)');
-//                $browser->pause(self::WAIT)->clickLink($campers[$i]->firstname)->pause(self::WAIT);
-//                $this->changeCamper($browser, $campers[$i], $yas[$i], $changes[$i], $cyas[$i]);
-//            }
-//            $browser->press('Save Changes')->waitFor('div.alert')
-//                ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback');
-//            $changes[1]->email = 'franklin@email.org';
-//            $browser->script('window.scrollTo(0,0)');
-//            $browser->pause(self::WAIT)->clickLink($changes[1]->firstname)->pause(self::WAIT)
-//                ->type('form#camperinfo div.tab-content div.active input[name="email[]"]', $changes[1]->email);
-//            $browser->press('Save Changes')->waitFor('div.alert')
-//                ->assertVisible('div.alert-success');
-//        });
-//
-//        foreach ($changes as $camper) $this->adh($camper);
-//        foreach ($cyas as $ya) {
-//            $this->assertDatabaseHas('yearsattending', ['year_id' => self::$year->id, 'program_id' => $ya->program_id, 'days' => $ya->days]);
-//        }
-//    }
-//
-//    /**
-//     * @group Franklin
-//     * @throws Throwable
-//     */
-//    public function testFranklinRO()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//
-//        $cuser = User::factory()->create();
-//        $campers[0] = Camper::factory()->create(['firstname' => 'Franklin', 'email' => $cuser->email]);
-//        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
-//        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id]);
-//        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $campers, $yas) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $campers[0]->id])
-//                ->waitFor(self::ACTIVETAB);
-//            for ($i = 0; $i < count($campers); $i++) {
-//                $browser->script('window.scrollTo(0,0)');
-//                $browser->pause(self::WAIT)->clickLink($campers[$i]->firstname)->pause(self::WAIT);
-//                $browser->within(new CamperForm, function (Browser $browser) use ($i, $campers, $yas) {
-//                    $browser->viewCamper($campers[$i], $yas[$i]);
-//                });
-//            }
-//            $browser->assertMissing('button[type="submit"]');
-//        });
-//    }
-//
+
+    public function testReturningCoupleDaysAdmin()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Admin]);
+
+        $cuser = User::factory()->create();
+        $campers[0] = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $yas[0] = Yearattending::factory()->create(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id, 'roommate' => __FUNCTION__]);
+        $yas[1] = Yearattending::factory()->create(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
+
+        $changes = Camper::factory()->count(2)->make(['family_id' => $campers[0]->family_id,
+            'roommate' => __FUNCTION__]);
+        $cyas[0] = Yearattending::factory()->make(['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,
+            'days' => rand(1, 5)]);
+        $cyas[1] = Yearattending::factory()->make(['camper_id' => $campers[1]->id, 'year_id' => self::$year->id,
+            'days' => rand(1, 5)]);
+
+        $this->browse(function (Browser $browser) use ($user, $campers, $yas, $changes, $cyas) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $campers[0]->id])
+                ->waitFor(self::ACTIVETAB);
+            for ($i = 0; $i < count($campers); $i++) {
+                $this->pressTab($browser, $campers[$i]->id, self::WAIT)
+                    ->within(new CamperInfo, function ($browser) use ($i, $campers, $yas, $changes, $cyas) {
+                        $browser->changeCamper([$campers[$i], $yas[$i]], [$changes[$i], $cyas[$i]]);
+                    })->assertInputValue(self::ACTIVETAB . ' input[name="days[]"]', $yas[$i]->days)
+                    ->clear(self::ACTIVETAB . ' input[name="days[]"]')
+                    ->type(self::ACTIVETAB . ' input[name="days[]"]', $cyas[$i]->days);
+            }
+            $this->submitSuccess($browser, self::WAIT);
+        });
+
+        foreach ($changes as $camper) $this->adh($camper);
+        foreach ($cyas as $ya) {
+            $this->assertDatabaseHas('yearsattending', ['year_id' => self::$year->id,
+                'program_id' => $ya->program_id, 'days' => $ya->days]);
+        }
+    }
 
     public function testReturningYAUniqueEmailUnder20NoPhone()
     {
@@ -302,6 +266,8 @@ class CamperInfoTest extends DuskTestCase
             $changes->email = $oldemail;
             $browser->type('email[]', $oldemail);
             $this->submitSuccess($browser, self::WAIT);
+
+            $browser->scrollIntoView('@previous')->pause(self::WAIT)->press('@previous')->assertPathIs('/household');
         });
 
         $this->adh($changes);
@@ -312,64 +278,7 @@ class CamperInfoTest extends DuskTestCase
             'amount' => 200, 'chargetype_id' => Chargetypename::Deposit]);
 
     }
-//
-//    /**
-//     * @group Ingrid
-//     * @throws Throwable
-//     */
-//    public function testIngridUniqueCamper()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - 20;
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Ingrid', 'email' => $cuser->email,
-//            'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $snowflake = Camper::factory()->create();
-//        $changes = Camper::factory()->make(['firstname' => 'Ingrid', 'email' => $snowflake->email,
-//            'family_id' => $camper->family_id, 'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $cya = Yearattending::factory()->make(['year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $ya, $changes, $cya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB);
-//            $this->changeCamper($browser, $camper, $ya, $changes, $cya);
-//            $browser->press('Save Changes')->waitFor('div.alert')
-//                ->assertVisible('div.alert-danger')->assertPresent('span.muusa-invalid-feedback');
-//        });
-//    }
-//
-//    /**
-//     * @group Ingrid
-//     * @throws Throwable
-//     */
-//    public function testIngridRO()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - 20;
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//
-//        $cuser = User::factory()->create();
-//        $family = Family::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Ingrid', 'family_id' => $family->id, 'email' => $cuser->email, 'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $ya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB);
-//            $browser->within(new CamperForm, function ($browser) use ($camper, $ya) {
-//                $browser->viewCamper($camper, $ya);
-//            })->assertMissing('button[type="submit"]');
-//        });
-//
-//    }
-//
-//
+
     public function testReturningFamilyOneKidCantComeClickTwice()
     {
         $user = User::factory()->create();
@@ -415,73 +324,69 @@ class CamperInfoTest extends DuskTestCase
         $this->assertDatabaseHas('thisyear_charges', ['family_id' => $campers[0]->family_id,
             'amount' => 400, 'chargetype_id' => Chargetypename::Deposit]);
     }
-//
-//    /**
-//     * @group Lucy
-//     * @throws Throwable
-//     */
-//    public function testLucyAdultNotComing()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - rand(1, 17);
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
-//
-//        $adult = Camper::factory()->create(['email' => $user->email]);
-//        $camper = Camper::factory()->create(['firstname' => 'Lucy', 'sponsor' => 'Ingrid Illia',
-//            'family_id' => $adult->family_id, 'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $yas[0] = Yearattending::factory()->create(['camper_id' => $adult->id, 'year_id' => self::$year->id]);
-//        $yas[1] = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $changes = Camper::factory()->make(['firstname' => 'Lucy', 'family_id' => $camper->family_id,
-//            'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $cya = Yearattending::factory()->make(['year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $adult, $camper, $yas, $changes, $cya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->clickLink($camper->firstname)->pause(self::WAIT);
-//            $this->changeCamper($browser, $camper, $yas[1], $changes, $cya);
-//            $browser->clickLink($adult->firstname)->pause(self::WAIT)
-//                ->select('form#camperinfo div.tab-content div.active select[name="days[]"]', 0)
-//                ->press('Save Changes')->waitFor('div.alert')
-//                ->assertVisible('div.alert-success');
-//        });
-//
-//        $this->adh($adult);
-//        $this->adh($changes);
-//        $this->assertDatabaseMissing('yearsattending', ['camper_id' => $adult->id, 'year_id' => self::$year->id]);
-//        $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id, 'program_id' => $cya->program_id, 'days' => $cya->days]);;
-//    }
-//
-//    /**
-//     * @group Lucy
-//     * @throws Throwable
-//     */
-//    public function testLucyRO()
-//    {
-//        $birth = Carbon::now();
-//        $birth->year = self::$year->year - rand(1, 17);
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//
-//        $adult = Camper::factory()->create(['email' => $user->email]);
-//        $camper = Camper::factory()->create(['firstname' => 'Lucy', 'sponsor' => 'Ingrid Illia',
-//            'family_id' => $adult->family_id, 'birthdate' => $birth->addDays(rand(0, 364))->toDateString()]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $adult, $camper, $ya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->waitFor(self::ACTIVETAB)
-//                ->clickLink($camper->firstname)->pause(self::WAIT);
-//            $browser->within(new CamperForm, function ($browser) use ($camper, $ya) {
-//                $browser->viewCamper($camper, $ya);
-//            })->assertMissing('button[type="submit"]');
-//            $browser->clickLink($adult->firstname)->pause(self::WAIT)
-//                ->assertSelected('form#camperinfo div.tab-content div.active select[name="days[]"]', 0);
-//        });
-//
-//    }
+
+    public function testUpdateNonattendingFamilyMultipleUsersAdmin()
+    {
+        $admin = User::factory()->create(['usertype' => Usertype::Admin]);
+        $users = User::factory()->count(4)->create();
+
+        $campers[0] = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
+            'email' => $users[0]->email, 'roommate' => __FUNCTION__]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[1]->email, 'roommate' => __FUNCTION__]);
+        $campers[2] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[2]->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getChildBirthdate()]);
+        $campers[3] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[3]->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getChildBirthdate()]);
+
+        $changes = Camper::factory()->count(4)->make(['roommate' => __FUNCTION__]);
+
+        $this->browse(function (Browser $browser) use ($admin, $users, $campers, $changes) {
+            $browser->loginAs($admin->id)->visitRoute(self::ROUTE, ['id' => $campers[2]->id])
+                ->waitFor(self::ACTIVETAB);
+            for ($i = 0; $i < count($campers); $i++) {
+                $this->pressTab($browser, $campers[$i]->id, self::WAIT)
+                    ->within(new CamperInfo, function ($browser) use ($i, $campers, $changes) {
+                        $browser->changeCamper([$campers[$i], null], [$changes[$i], null]);
+                    })->assertMissing(self::ACTIVETAB . ' input[name="days[]"]');
+            }
+            $this->submitSuccess($browser, self::WAIT);
+        });
+
+        foreach ($users as $user) $this->assertDatabaseMissing('users', ['email' => $user->email]);
+        foreach ($changes as $change) {
+            $this->adh($change);
+            $this->assertDatabaseHas('users', ['email' => $change->email]);
+        }
+        $this->assertDatabaseMissing('thisyear_charges', ['family_id' => $campers[0]->family_id]);
+    }
+
+    public function testNonattendingFamilyRO()
+    {
+        $pc = User::factory()->create(['usertype' => Usertype::Pc]);
+        $users = User::factory()->count(4)->create();
+
+        $campers[0] = Camper::factory()->create(['family_id' => Family::factory()->create(['is_address_current' => 1])->id,
+            'email' => $users[0]->email, 'roommate' => __FUNCTION__]);
+        $campers[1] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[1]->email, 'roommate' => __FUNCTION__]);
+        $campers[2] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[2]->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getChildBirthdate()]);
+        $campers[3] = Camper::factory()->create(['family_id' => $campers[0]->family_id,
+            'email' => $users[3]->email, 'roommate' => __FUNCTION__, 'birthdate' => $this->getChildBirthdate()]);
+
+        $this->browse(function (Browser $browser) use ($pc, $campers) {
+            $browser->loginAs($pc)->visitRoute(self::ROUTE, ['id' => $campers[2]->id])
+                ->waitFor(self::ACTIVETAB);
+            for ($i = 0; $i < count($campers); $i++) {
+                $this->pressTab($browser, $campers[$i]->id, self::WAIT)
+                    ->within(new CamperInfo, function ($browser) use ($i, $campers) {
+                        $browser->viewCamper($campers[$i], null);
+                    })->assertMissing(self::ACTIVETAB . ' input[name="days[]"]');;
+            }
+            $browser->assertMissing('input[type=submit]');
+        });
+    }
 
     private function adh($camper)
     {

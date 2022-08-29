@@ -1,6 +1,7 @@
 <div class="stepper-mobile-footer bg-light">
     <div class="stepper-back-btn">
-        <a href="{{ $previous }}" {{ $attributes->class(['btn', 'btn-link', 'disabled' => $previous == '#']) }}>
+        <a @if($previous != '#') href="{{ route($previous . '.index', ['id' => request()->route('id')]) }}" @endif
+            {{ $attributes->class(['btn', 'btn-link', 'disabled' => $previous == '#']) }} dusk="previous">
             <i class="fas fa-chevron-left"></i>
             Back
         </a>
@@ -11,7 +12,8 @@
     </div>
 
     <div class="stepper-next-btn">
-        <a href="{{ $next }}" {{ $attributes->class(['btn', 'btn-link', 'disabled' => $next == '#']) }}>
+        <a @if($next != '#') href="{{ route($next . '.index', ['id' => request()->route('id')]) }}" @endif
+            {{ $attributes->class(['btn', 'btn-link', 'disabled' => $next == '#']) }} dusk="next">
             Next
             <i class="fas fa-chevron-right"></i>
         </a>

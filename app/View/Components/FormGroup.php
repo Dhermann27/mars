@@ -64,12 +64,19 @@ class FormGroup extends Component
     public $isReadonly;
 
     /**
+     * Value to be sent by checkboxes
+     *
+     * @var string
+     */
+    public $formvalue;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
     public function __construct($label = null, $name = null, $value = null, $type = 'text', $errorKey = null,
-                                $formobject = null, $isAdminonly = false, $isReadonly = false)
+                                $formobject = null, $isAdminonly = false, $isReadonly = false, $formvalue = null)
     {
         $this->name = $name;
         $this->label = $label;
@@ -79,11 +86,12 @@ class FormGroup extends Component
         $this->formobject = $formobject;
         $this->isAdminonly = $isAdminonly;
         $this->isReadonly = $isReadonly;
+        $this->formvalue = $formvalue;
     }
 
     public function getSafeDefault()
     {
-        $name = preg_replace('/\\[\\]/', '', $this->name);
+        $name = preg_replace('/\[]/', '', $this->name);
         $value = $this->formobject->$name ?? $this->value;
         return old($this->errorKey, $value);
     }

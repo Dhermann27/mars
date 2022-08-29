@@ -41,7 +41,7 @@
                                         <td>{{ $user->camper->lastname }}, {{ $user->camper->firstname }}</td>
                                         <td>{{ $user->camper->email }}</td>
                                         <td>
-                                            @include('includes.admin.controls', ['id' => $user->id])
+                                            @include('components.admin.controls', ['id' => $user->id])
                                         </td>
                                         <td>
                                             @include('components.admin.delete', ['id' => $user->id])

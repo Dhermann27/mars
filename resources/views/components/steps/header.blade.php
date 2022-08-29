@@ -1,9 +1,10 @@
-<a href="{{ $isLinkActive() ? route($url . '.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) : '#' }}"
-   @if(!$isLinkActive()) data-mdb-toggle="tooltip" data-mdb-placement="right" title="{{ $tooltip }}" @endif>
-{{--    @if($isRequired === true)--}}
-        <i {{ $attributes->class(['fas', 'stepper-state-icon', 'fa-' . ($isLarge ? '5x' : '2x'), $getIconState()]) }}
-           dusk="step-{{ $url }}"></i>
-{{--    @endif--}}
+<a @if($isLinkActive())
+       href="{{ route($url . '.index', ['id' => request()->route('id')]) }}"
+   @else
+       data-mdb-toggle="tooltip" data-mdb-placement="right" title="{{ $tooltip }}"
+   @endif>
+    <i {{ $attributes->class(['fas', 'stepper-state-icon', 'fa-' . ($isLarge ? '5x' : '2x'), $getIconState()]) }}
+       dusk="step-{{ $url }}"></i>
     <div {{ $attributes->class(['stepper-head', $getDataState()]) }}>
         <span
             class="stepper-head-icon"><i {{ $attributes->class(['far', 'fa-' . $icon, 'fa-2x' => $isLarge]) }}></i></span>

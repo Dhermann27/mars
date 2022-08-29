@@ -61,7 +61,7 @@ return [
     |
     */
 
-    'home' => '/dashboard', //RouteServiceProvider::HOME,
+    'home' => RouteServiceProvider::HOME, // Overridden in FortifyServiceProvider
 
     /*
     |--------------------------------------------------------------------------

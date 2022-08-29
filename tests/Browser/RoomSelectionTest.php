@@ -119,6 +119,8 @@ class RoomSelectionTest extends DuskTestCase
                 ->assertSeeIn('div.tooltip-inner', 'Locked by:')
                 ->assertSeeIn('div.tooltip-inner', $camper->firstname . ' ' . $camper->lastname)
                 ->assertSeeIn('div.tooltip-inner', 'Current selection');
+
+            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/workshopchoice');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
@@ -245,6 +247,8 @@ class RoomSelectionTest extends DuskTestCase
                 ->assertSeeIn('div.tooltip-inner', $newroom->room_number)
                 ->click('rect#room-' . $newroom->id);
             $this->submitSuccess($browser, self::WAIT, 'Lock Room');
+
+            $browser->scrollIntoView('@previous')->pause(self::WAIT)->press('@previous')->assertPathIs('/payment');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $campers[0]->id, 'year_id' => self::$year->id,

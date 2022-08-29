@@ -12,7 +12,7 @@
     <x-layouts.register :stepdata="$stepdata" step="2" previous="camperselect" next="camperinfo">
         <div class="display-6 mt-3 border-bottom text-end mb-3">Mailing Address</div>
         <form id="household" class="form-horizontal" role="form" method="POST"
-              action="{{ route('household.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+              action="{{ route('household.store', ['id' => request()->route('id')]) }}">
             @include('includes.flash')
             <x-form-group label="Address Line #1" name="address1" :formobject="$family"/>
 

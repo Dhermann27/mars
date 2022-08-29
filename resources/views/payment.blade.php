@@ -13,90 +13,83 @@
     <x-layouts.register :stepdata="$stepdata" step="4" previous="camperinfo" next="roomselection">
         <div class="display-6 mt-3 border-bottom text-end">Your Balance</div>
         <form id="muusapayment" class="form-horizontal" role="form" method="POST"
-              action="{{ route('payment.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+              action="{{ route('payment.store', ['id' => request()->route('id')]) }}">
             @include('includes.flash')
             @if(count($years) == 1 && $years->first()->first()->year_id == $year->id)
                 <x-statement :stepdata="$stepdata" :charges="$years->first()" :deposit="$deposit"/>
             @elseif(count($years) == 0)
                 <h4 class="m-4">No charges present</h4>
             @else
-                <x-navtabs :tabs="$years->sortKeys()->keys()" option="year">
-                    @foreach($years->sortKeys() as $thisyear => $charges)
-                        <div role="tabpanel" id="year-{{ $thisyear }}"
-                             class="tab-pane fade {{ $loop->index == 0 ? 'active show' : '' }}">
+                <x-navtabs :tabs="$years->keys()" option="year"
+                           :active-tab="array_search($year->year, array_keys($years->toArray()))">
+                    @foreach($years as $thisyear => $charges)
+                        <div role="tabpanel" id="tab-{{ $thisyear }}"
+                             class="tab-pane fade {{ $thisyear == $year->year ? 'active show' : '' }} ">
                             <x-statement :stepdata="$stepdata" :charges="$charges"/>
                         </div>
                     @endforeach
                 </x-navtabs>
             @endif
 
-            {{--            @if(session()->has('camper') && Gate::allows('is-super'))--}}
+            @if(request()->route()->hasParameter('id'))
+                @can('is-super')
 
-            {{--                <div class="well">--}}
-            {{--                    <h4>Add New Charge</h4>--}}
-            {{--                    <div class="form-group row @error('year_id') has-danger @enderror">--}}
-            {{--                        <label for="year_id" class="col-md-4 col-form-label text-md-right">--}}
-            {{--                            Fiscal Year--}}
-            {{--                        </label>--}}
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">Add Charge</div>
+                                <div class="card-body">
+                                    <x-form-group type="select" name="year_id" label="Fiscal Year">
+                                        @foreach($fiscalyears as $fiscalyear)
+                                            <option value="{{ $fiscalyear->id }}"
+                                                @selected( $fiscalyear->year == date('Y'))>
+                                                {{ $fiscalyear->year }}
+                                            </option>
+                                        @endforeach
+                                    </x-form-group>
 
-            {{--                        <div class="col-md-6">--}}
-            {{--                            <select id="year_id" name="year_id"--}}
-            {{--                                    class="form-control @error('year_id') is-invalid @enderror">--}}
-            {{--                                @foreach($fiscalyears as $year)--}}
-            {{--                                    <option--}}
-            {{--                                        value="{{ $year->id }}" @selected(old('year_id') == $year->id)>--}}
-            {{--                                        {{ $year->year }}--}}
-            {{--                                    </option>--}}
-            {{--                                @endforeach--}}
-            {{--                            </select>--}}
+                                    <x-form-group type="select" name="chargetype_id" label="Chargetype">
+                                        <option value="0">Choose a chargetype</option>
+                                        @foreach($chargetypes as $chargetype)
+                                            <option value="{{ $chargetype->id }}">{{ $chargetype->name }}</option>
+                                        @endforeach
+                                    </x-form-group>
 
-            {{--                            @error('year_id')--}}
-            {{--                            <span class="invalid-feedback" role="alert">--}}
-            {{--                                                <strong>{{ $message }}</strong>--}}
-            {{--                                            </span>--}}
-            {{--                            @enderror--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
+                                    <x-form-group name="amount" label="Amount (negative for credit)"
+                                                  placeholder="0.00"/>
 
-            {{--                    @include('includes.formgroup', ['type' => 'select',--}}
-            {{--                        'label' => 'Chargetype', 'attribs' => ['name' => 'chargetype_id'],--}}
-            {{--                        'default' => 'Choose a chargetype', 'list' => $chargetypes, 'option' => 'name'])--}}
+                                    <div class="row align-self-center mb-3">
+                                        <div class="container-md col-lg-6">
+                                            <div class="form-outline datepicker" data-mdb-inline="true"
+                                                 data-mdb-format="yyyy-mm-dd">
+                                                <input id="timestamp" name="timestamp" data-mdb-toggle="datepicker"
+                                                       class="form-control @error('timestamp') is-invalid @enderror"
+                                                       value="{{ old('timestamp') }}" placeholder="yyyy-mm-dd"/>
+                                                <label for="timestamp" class="form-label">Timestamp</label>
+                                                <button class="datepicker-toggle-button" data-mdb-toggle="datepicker">
+                                                    <i class="fas fa-calendar datepicker-toggle-icon me-1"></i>
+                                                </button>
+                                                @error('timestamp')
+                                                <span
+                                                    class="muusa-invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
 
-            {{--                    @include('includes.formgroup', ['label' => 'Amount', 'attribs' => ['name' => 'amount']])--}}
+                                    <x-form-group name="memo" label="Memo"/>
 
-            {{--                    <div class="form-group row @error('timestamp') has-danger @enderror">--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            {{--                        <label for="timestamp" class="col-md-4 col-form-label text-md-right">--}}
-            {{--                            Timestamp (yyyy-mm-dd)--}}
-            {{--                        </label>--}}
-            {{--                        <div class="col-md-6">--}}
-            {{--                            <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd"--}}
-            {{--                                 data-date-autoclose="true">--}}
-            {{--                                <input id="timestamp" type="text" class="form-control" name="timestamp"--}}
-            {{--                                       value="{{ old('timestamp', date('Y-m-d')) }}">--}}
-            {{--                                <div class="input-group-append">--}}
-            {{--                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>--}}
-            {{--                                </div>--}}
-            {{--                                <div class="input-group-addon">--}}
-            {{--                                </div>--}}
-            {{--                            </div>--}}
-            {{--                            @error('timestamp')--}}
-            {{--                            <span class="invalid-feedback" role="alert">--}}
-            {{--                                                <strong>{{ $message }}</strong>--}}
-            {{--                                            </span>--}}
-            {{--                            @enderror--}}
-            {{--                        </div>--}}
-            {{--                    </div>--}}
-
-            {{--                    @include('includes.formgroup', ['label' => 'Memo', 'attribs' => ['name' => 'memo']])--}}
-
-            {{--                    @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => 'Save Changes']])--}}
-            {{--                </div>--}}
-            {{--            @else if($year->is_accept_paypal)--}}
-
-            @if(!session()->has('camper'))
+                    <x-form-group type="submit" label="Save Changes" />
+                @endcan
+            @else
                 @can('accept-paypal', $year)
-                    <div class="d-flex d-flex-row align-items-center note note-info text-black mb-5">
+                    <div
+                        class="d-flex d-flex-row align-items-center note note-info text-black mb-5">
                         <label for="donation" class="visually-hidden">Donation</label>
                         <div class="input-group w-25">
                             <span class="input-group-text"><i class="fas fa-dollar-sign fa-fw"></i></span>
@@ -106,8 +99,10 @@
                         </div>
 
                         <div class="ms-3">
-                            Please consider at least a $10.00 donation to the MUUSA Scholarship fund.
-                            <button type="submit" dusk="donate" class="btn btn-primary ms-2" data-mdb-toggle="tooltip"
+                            Please consider at least a $10.00 donation to the MUUSA Scholarship
+                            fund.
+                            <button type="submit" dusk="donate" class="btn btn-primary ms-2"
+                                    data-mdb-toggle="tooltip"
                                     title="Using any of the PayPal buttons will also process your donation.">
                                 Donate
                             </button>
@@ -137,7 +132,8 @@
                             <h4>To Pay via PayPal:</h4>
                             <label for="donation" class="visually-hidden">Donation</label>
                             <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="fas fa-dollar-sign fa-fw"></i></span>
+                                                    <span class="input-group-text"><i
+                                                            class="fas fa-dollar-sign fa-fw"></i></span>
                                 <input id="payment" name="payment"
                                        class="form-control amount-mask @error('payment') is-invalid @enderror"
                                        placeholder="Or enter another amount..."
@@ -150,9 +146,10 @@
 
                             <div class="form-check mb-3">
                                 <input type="hidden" value="0" name="addthree">
-                                <input class="form-check-input @error('addthree') is-invalid @enderror"
-                                       type="checkbox" id="addthree" name="addthree"
-                                       value="1" @checked(old('addthree')) />
+                                <input
+                                    class="form-check-input @error('addthree') is-invalid @enderror"
+                                    type="checkbox" id="addthree" name="addthree"
+                                    value="1" @checked(old('addthree')) />
                                 <label class="form-check-label" for="addthree">
                                     Add 3% to my payment to cover the PayPal service fee
                                 </label>
@@ -169,8 +166,10 @@
                     <div class="row p-7 justify-content-center my-4">
                         <div class="col-md-6">
                             <h4>To Pay Your Bill:</h4>
-                            Please bring payment to checkin on the first day of camp, {{ $year->checkin }}.
-                            While we do accept VISA, Mastercard, Discover, we prefer a check (to minimize fees).
+                            Please bring payment to checkin on the first day of
+                            camp, {{ $year->checkin }}.
+                            While we do accept VISA, Mastercard, Discover, we prefer a check (to
+                            minimize fees).
                         </div>
                     </div>
                 @endcan
@@ -195,21 +194,26 @@
 @endsection
 
 @section('script')
-    @can('accept-paypal', $year)
+    @if(!request()->route()->hasParameter('id') && Gate::allows('accept-paypal', $year))
         <script
             src="https://www.paypal.com/sdk/js?client-id={{ config('app.paypal_client_id') }}&enable-funding=venmo,paylater"></script>
         <script>
-            window.addEvent(document.getElementById('donation'), 'change', function (e) {
-                let total = parseFloat(e.target.value);
-                if (typeof document.getElementById('amountNow') != "undefined") {
-                    total += parseFloat(document.getElementById('amountNow').innerText);
-                }
-                if (total <= 0.0 && typeof document.getElementById('amountArrival') != "undefined") {
-                    total += parseFloat(document.getElementById('amountArrival').innerText);
-                }
-                document.getElementById('payment').value = Math.max(0, total).toFixed(2);
-                window.lastAmountMask.updateValue();
-            });
+            const donation = document.getElementById('donation');
+            if(donation) {
+                window.addEvent(donation, 'change', function (e) {
+                    let total = parseFloat(e.target.value);
+                    const now = document.getElementById('amountNow');
+                    if (now) {
+                        total += parseFloat(now.innerText);
+                    }
+                    const arrival = document.getElementById('amountArrival');
+                    if (total <= 0.0 && arrival) {
+                        total += parseFloat(arrival.innerText);
+                    }
+                    document.getElementById('payment').value = Math.max(0, total).toFixed(2);
+                    window.lastAmountMask.updateValue();
+                });
+            }
 
             paypal.Buttons({
                 style: {
@@ -256,6 +260,6 @@
             }).render('#paypal-button');
 
         </script>
-    @endcan
+    @endif
 
 @endsection

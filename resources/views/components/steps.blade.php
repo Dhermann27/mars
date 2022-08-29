@@ -1,4 +1,7 @@
 <ul {{ $attributes->class(['stepper', 'stepper-vertical' => $isVertical, 'stepper-large' => $isLarge]) }}>
+    @if(request()->route()->hasParameter('id'))
+        <li class="text-bold mt-2 text-md-center"><i class="far fa-user-alt"></i> {!! $stepdata['username'] !!}</li>
+    @endif
     <li class="stepper-step mt-3">
         <x-steps.header url="camperselect" :stepdata="$stepdata['campersSelected']" operation="gt"
                         comparator="0" icon="users" :is-large="$isLarge" :tooltip="__('registration.completeabove')">

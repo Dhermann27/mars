@@ -38,6 +38,7 @@ Route::get('/excursions', [WorkshopController::class, 'excursions'])->name('work
 //Route::get('/directory', [DirectoryController::class, 'index'])->name('directory')->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth', 'registration_on']);
+Route::get('/admin', [DashboardController::class, 'admin'])->name('admin')->middleware(['can:is-council']);
 
 Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
     Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('registration_on');
@@ -97,6 +98,7 @@ Route::group(['prefix' => 'medicalresponse', 'middleware' => 'auth'], function (
 Route::group(['prefix' => 'data'], function () {
     Route::get('camperlist', [DataController::class, 'campers'])->middleware('can:is-council');
     Route::get('churchlist', [DataController::class, 'churches'])->middleware(['auth', 'registration_on']);
+    Route::get('recentlist', [DataController::class, 'recents'])->middleware('can:is-council');
 });
 
 Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports'], function () {

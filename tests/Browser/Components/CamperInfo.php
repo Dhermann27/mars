@@ -67,10 +67,12 @@ class CamperInfo extends BaseComponent
         }
         $browser->assertInputValue('@room', $from[0]->roommate)->type('@room', $to[0]->roommate)
             ->assertInputValue('@spon', $from[0]->sponsor)->type('@spon', $to[0]->sponsor);
+        $browser->scrollIntoView('@ih')->pause(self::WAIT);
         if ($from[0]->is_handicap == 1) $browser->assertChecked('@ih'); else $browser->assertNotChecked('@ih');
         if ($to[0]->is_handicap == 1) $browser->check('@ih'); else $browser->uncheck('@ih');
-        $browser->assertSelected('@food', $from[0]->foodoption_id)->select('@food', $to[0]->foodoption_id);
-        $browser->assertInputValue('@churchid', $from[0]->church_id)
+        $browser->pause(self::WAIT)
+            ->assertSelected('@food', $from[0]->foodoption_id)->select('@food', $to[0]->foodoption_id)
+            ->assertInputValue('@churchid', $from[0]->church_id)
             ->clear('@churchname')->type('@churchname', substr($to[0]->church->name, 0, -1))
             ->pause(self::WAIT)->keys('@churchname', '{arrow_down}', '{tab}');
     }
@@ -78,17 +80,27 @@ class CamperInfo extends BaseComponent
     public function viewCamper(Browser $browser, $camper, $ya)
     {
         $browser->assertSelected('@pronoun', $camper->pronoun_id)->assertDisabled('@pronoun')
-            ->assertInputValue('@first', $camper->firstname)->assertDisabled('@first')
-            ->assertInputValue('@last', $camper->lastname)->assertDisabled('@last')
-            ->assertInputValue('@email', $camper->email)->assertDisabled('@email')
-            ->assertInputValue('@phone', $this->formatPhone($camper->phonenbr))->assertDisabled('@phone')
-            ->assertInputValue('@bday', $camper->birthdate)->assertDisabled('@bday')
-            ->assertSelected('@prog', $ya->program_id)->assertDisabled('@prog')
-            ->assertInputValue('@room', $camper->roommate)->assertDisabled('@room')
-            ->assertInputValue('@spon', $camper->sponsor)->assertDisabled('@spon')
+            ->assertInputValue('@first', $camper->firstname)
+            ->assertAttributeContains('@first', 'readonly', 'true')
+            ->assertInputValue('@last', $camper->lastname)
+            ->assertAttributeContains('@last', 'readonly', 'true')
+            ->assertInputValue('@email', $camper->email)
+            ->assertAttributeContains('@email', 'readonly', 'true')
+            ->assertInputValue('@phone', $this->formatPhone($camper->phonenbr))
+            ->assertAttributeContains('@phone', 'readonly', 'true')
+            ->assertInputValue('@bday', $camper->birthdate)
+            ->assertAttributeContains('@bday', 'readonly', 'true');
+        if ($browser->element('@prog')) {
+            $browser->assertSelected('@prog', $ya->program_id)->assertDisabled('@prog');
+        }
+        $browser->assertInputValue('@room', $camper->roommate)
+            ->assertAttributeContains('@room', 'readonly', 'true')
+            ->assertInputValue('@spon', $camper->sponsor)
+            ->assertAttributeContains('@spon', 'readonly', 'true')
             ->assertInputValue('@churchid', $camper->church_id);
         if ($camper->is_handicap == 1) $browser->assertChecked('@ih'); else $browser->assertNotChecked('@ih');
-        $browser->assertSelected('@food', $camper->foodoption_id)->assertDisabled('@food');
+        $browser->assertDisabled('@ih')
+            ->assertSelected('@food', $camper->foodoption_id)->assertDisabled('@food');
 
     }
 

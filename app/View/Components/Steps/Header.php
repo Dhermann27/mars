@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Steps;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
 
@@ -43,13 +44,6 @@ class Header extends Component
     public $isLarge;
 
     /**
-     * If the step is required
-     *
-     * @var bool
-     */
-    public $isRequired;
-
-    /**
      * String containing FontAwesome icon to use
      *
      * @var string
@@ -75,13 +69,12 @@ class Header extends Component
      * @param string $tooltip
      * @return void
      */
-    public function __construct($url, $stepdata, $icon, $isLarge = false, $isRequired = true, $operation = 'eq', $comparator = true, $tooltip = '')
+    public function __construct($url, $stepdata, $icon, $isLarge = false, $operation = 'eq', $comparator = true, $tooltip = '')
     {
         $this->url = $url;
         $this->stepdata = $stepdata;
         $this->icon = $icon;
         $this->isLarge = $isLarge;
-        $this->isRequired = $isRequired;
         $this->operation = $operation;
         $this->comparator = $comparator;
         $this->tooltip = $tooltip;
@@ -94,10 +87,9 @@ class Header extends Component
      */
     public function getDataState()
     {
-        if(Route::currentRouteName() == $this->url . '.index') return 'stepper-active';
-        if ($this->stepdata !== null) {
+        if (Route::currentRouteName() == $this->url . '.index') return 'stepper-active';
+        if ($this->stepdata !== null || (request()->route()->hasParameter('id') && Gate::allows('is-council'))) {
             if ($this->dynamicCompare()) return 'stepper-success';
-            else if ($this->isRequired === 'false') return '';
             else return 'stepper-warning';
         }
         return 'stepper-blocked';
@@ -110,9 +102,8 @@ class Header extends Component
      */
     public function getIconState()
     {
-        if ($this->stepdata !== null) {
+        if ($this->stepdata !== null || (request()->route()->hasParameter('id') && Gate::allows('is-council'))) {
             if ($this->dynamicCompare()) return 'fa-square-check';
-            else if ($this->isRequired === 'false') return '';
             else return 'fa-diamond-exclamation';
         }
         return 'fa-do-not-enter';
@@ -125,7 +116,7 @@ class Header extends Component
      */
     public function isLinkActive()
     {
-        return $this->stepdata !== null;
+        return $this->stepdata !== null || (request()->route()->hasParameter('id') && Gate::allows('is-council'));
     }
 
     /**

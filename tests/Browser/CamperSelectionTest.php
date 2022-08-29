@@ -324,6 +324,8 @@ class CamperSelectionTest extends DuskTestCase
                 ->press('ADD NEW CAMPER')->assertChecked('newcheck-0')
                 ->type('newname-0', $partner->firstname . ' ' . $partner->lastname);
             $this->submitSuccess($browser, self::WAIT);
+
+            $browser->click('@next')->assertPathIs('/household/' . $camper->id);
         });
         $this->assertDatabaseHas('campers', ['email' => $user->email, 'family_id' => $camper->family_id]);
         $this->assertDatabaseHas('campers', ['family_id' => $camper->family_id,
@@ -425,6 +427,8 @@ class CamperSelectionTest extends DuskTestCase
             $this->submitSuccess($browser, self::WAIT);
             $browser->assertNotChecked('camper-' . $campers[1]->id)
                 ->assertChecked('camper-' . $campers[2]->id);
+
+            $browser->assertAttributeContains('@previous', 'class', 'disabled');
         });
         $this->assertDatabaseMissing('yearsattending', ['camper_id' => $campers[1]->id, 'year_id' => self::$year->id]);
         $this->assertDatabaseMissing('yearsattending__staff', ['yearattending_id' => $ys->yearattending_id,

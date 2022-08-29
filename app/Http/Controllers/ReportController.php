@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\UpdateWorkshops;
+use App\Models\Charge;
+use App\Models\Chargetype;
 use App\Models\Timeslot;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use function view;
 
 class ReportController extends Controller
@@ -47,32 +51,32 @@ class ReportController extends Controller
 //    }
 //
 //
-//    public function depositsMark(Request $request, $id)
-//    {
-//        $found = false;
-//        foreach ($request->all() as $key => $value) {
-//            $matches = array();
-//            if (preg_match('/delete-(\d+)/', $key, $matches)) {
-//                $charge = Charge::findOrFail($matches[1]);
-//                $charge->deposited_date = Carbon::now()->toDateString();
-//                $charge->save();
-//                $found = true;
-//            }
-//        }
-//        if (!$found) {
-//            Charge::where('chargetype_id', $id)->where('deposited_date', null)
-//                ->update(['deposited_date' => Carbon::now()->toDateString()]);
-//        }
-//        $request->session()->flash('success', 'John made me put this message here. Send help.');
-//        return redirect()->action([ReportController::class, 'deposits']);
-//    }
-//
-//    public function deposits()
-//    {
-//        $chargetypes = Chargetype::where('is_deposited', '1')
-//            ->with(['byyearcharges.camper', 'byyearcharges.children'])->get();
-//        return view('reports.deposits', ['chargetypes' => $chargetypes]);
-//    }
+    public function depositsMark(Request $request, $id)
+    {
+        $found = false;
+        if($request->has('mark')) {
+            for ($i = 0; $i < count($request->input('mark')); $i++) {
+                $charge = Charge::findOrFail($request->input('mark')[$i]);
+                $charge->deposited_date = Carbon::now()->toDateString();
+                $charge->save();
+                $found = true;
+            }
+        }
+        if (!$found) {
+            Charge::where('chargetype_id', $id)->where('deposited_date', null)
+                ->update(['deposited_date' => Carbon::now()->toDateString()]);
+        }
+        $request->session()->flash('success', 'John made me put this message here. I\'m in his basement. Send help. -Dan');
+        return redirect()->action([ReportController::class, 'deposits']);
+    }
+
+    public function deposits()
+    {
+        $chargetypes = Chargetype::where('is_deposited', '1')
+            ->with(['byyearcharges.camper', 'byyearcharges.children'])->get();
+        return view('reports.deposits', ['chargetypes' => $chargetypes]);
+    }
+
 //
 //    public function outstandingMark(Request $request, $id)
 //    {

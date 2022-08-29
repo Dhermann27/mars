@@ -5,16 +5,19 @@
 @endsection
 
 @section('content')
-    @component('components.navtabs', ['tabs' => $chargetypes, 'id'=> 'id', 'option' => 'name'])
+    <x-navtabs :tabs="$chargetypes" option="name">
         @foreach($chargetypes as $chargetype)
             <div class="tab-pane fade{!! $loop->first ? ' active show' : '' !!}" id="tab-{{ $chargetype->id }}"
                  role="tabpanel">
-                <form class="deposits" role="form" method="POST"
+                <form id="formdeposits" role="form" method="POST"
                       action="{{ route('reports.deposits.mark', ['id' => $chargetype->id]) }}">
                     @include('includes.flash')
                     <div class="accordion" id="accordion-{{ $chargetype->id }}">
                         @forelse($chargetype->byyearcharges->where('year', '>', $year->year-2)->groupBy('deposited_date')->sortKeys() as $deposited_date => $charges)
-                            @component('components.accordioncard', ['id' => $deposited_date, 'show' => $loop->first, 'heading' => $deposited_date ? 'Deposited on ' . $deposited_date : 'Undeposited' , 'parent' => $chargetype->id])
+                            <x-accordioncard :id="'date-' . $chargetype->id . '-' . $deposited_date"
+                                             :show="$loop->first"
+                                             :parent="$chargetype->id"
+                                             :heading="$deposited_date ? 'Deposited on ' . $deposited_date : 'Undeposited'">
                                 <table class="table">
                                     <thead>
                                     <tr>
@@ -26,7 +29,7 @@
                                         <th>Timestamp</th>
                                         <th>Memo</th>
                                         <th>Controls</th>
-                                        @can('is-super')
+                                        @if(Gate::allows('is-super') && !$deposited_date)
                                             <th>Deposited Today?</th>
                                         @endif
                                     </tr>
@@ -35,18 +38,24 @@
                                     @foreach($charges->sortBy('timestamp') as $charge)
                                         <tr>
                                             <td>{{ $charge->camper->firstname }} {{ $charge->camper->lastname }}</td>
-                                            <td>{{ number_format(abs($charge->amount), 2) }}</td>
-                                            <td>{{ number_format(abs($charge->amount + $charge->children->sum('amount')), 2) }}</td>
-                                            <td>{{ number_format(abs($charge->children->where('chargetype_id', \App\Enums\Chargetypename::Donation)->sum('amount')), 2) }}</td>
-                                            <td>{{ number_format(abs($charge->children->where('chargetype_id', \App\Enums\Chargetypename::PayPalServiceCharge)->sum('amount')), 2) }}</td>
+                                            <td class="amount">{{ number_format(abs($charge->amount), 2) }}</td>
+                                            <td class="amount">{{ number_format(abs($charge->amount + $charge->children->sum('amount')), 2) }}</td>
+                                            <td class="amount">{{ number_format(abs($charge->children->where('chargetype_id', \App\Enums\Chargetypename::Donation)->sum('amount')), 2) }}</td>
+                                            <td class="amount">{{ number_format(abs($charge->children->where('chargetype_id', \App\Enums\Chargetypename::PayPalServiceCharge)->sum('amount')), 2) }}</td>
                                             <td>{{ $charge->timestamp }}</td>
                                             <td>{{ $charge->memo }}</td>
                                             <td>
-                                                @include('includes.admin.controls', ['id' => $charge->camper->id])
+                                                {{--                                                @include('includes.admin.controls', ['id' => $charge->camper->id])--}}
                                             </td>
-                                            @can('is-super')
+                                            @if(Gate::allows('is-super') && !$deposited_date)
                                                 <td>
-                                                    @include('components.admin.delete', ['id' => $charge->id])
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               dusk="mark{{ $charge->id }}" name="mark[]" id="mark[]"
+                                                               value="{{ $charge->id }}"/>
+                                                        <label class="form-check-label visually-hidden"
+                                                               for="mark[]">Mark as Deposited?</label>
+                                                    </div>
                                                 </td>
                                             @endif
                                         </tr>
@@ -54,32 +63,35 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <td colspan="9" class="text-md-right">
-                                            Total Deposit: ${{ number_format(abs($charges->sum('amount')), 2) }}
+                                        <td colspan="9" class="text-md-end ">
+                                            <strong>Total Deposit:
+                                                ${{ number_format(abs($charges->sum('amount')), 2) }}
+                                            </strong>
                                         </td>
                                     </tr>
                                     </tfoot>
                                 </table>
-                            @endcomponent
+                                @if(Gate::allows('is-super') && !$deposited_date)
+                                    <div class="mt-2">
+                                        <x-form-group type="submit" label="Mark as Deposited"/>
+                                    </div>
+                                @endif
+                            </x-accordioncard>
                         @empty
                             <h3 class="ml-5">No charges found for this chargetype</h3>
                         @endforelse
                     </div>
-                    @can('is-super')
-                        <div class="mt-2">
-                            @include('includes.formgroup', ['type' => 'submit', 'label' => '', 'attribs' => ['name' => 'Mark as Deposited']])
-                        </div>
-                    @endif
                 </form>
             </div>
         @endforeach
-    @endcomponent
+    </x-navtabs>
 @endsection
 
 @section('script')
     <script type="text/javascript">
-        $('form.deposits').on('submit', function (e) {
-            if ($('input[type="checkbox"]:checked').length === 0 && !confirm("You are about to mark all charges of this chargetype as deposited today. Is this correct?")) {
+        window.addEvent(document.getElementById('formdeposits'), 'submit', function (e) {
+            checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (checks.length === 0 && !confirm("You are about to mark all charges of this chargetype as deposited today. Is this correct?")) {
                 return false;
             }
             return true;

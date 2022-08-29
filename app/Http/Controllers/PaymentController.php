@@ -6,7 +6,9 @@ use App\Enums\Chargetypename;
 use App\Jobs\GenerateCharges;
 use App\Mail\Confirm;
 use App\Models\ByyearCamper;
+use App\Models\ByyearCharge;
 use App\Models\Charge;
+use App\Models\Chargetype;
 use App\Models\Family;
 use App\Models\Province;
 use App\Models\ThisyearCamper;
@@ -31,15 +33,10 @@ class PaymentController extends Controller
 
         foreach ($request->all() as $key => $value) {
             $matches = array();
-            if (preg_match('/(delete|chargetype_id|amount|timestamp|memo)-(\d+)/', $key, $matches)) {
-                $charge = Charge::findOrFail($matches[2]);
-                if ($matches[1] == 'delete') {
-                    if ($value == 'on') {
-                        $charge->delete();
-                    }
-                } else {
-                    $charge->{$matches[1]} = $value;
-                    $charge->save();
+            if (preg_match('/delete-(\d+)/', $key, $matches)) {
+                $charge = Charge::findOrFail($matches[1]);
+                if ($value == '1') {
+                    $charge->delete();
                 }
             }
         }
@@ -158,30 +155,25 @@ class PaymentController extends Controller
 
     public function index(Request $request, $id = null)
     {
-        $chargetypes = array();
-//        if ($id && Gate::allows('is-council')) {
-//            $request->session()->flash('camper', Camper::findOrFail($id));
-//            $chargetypes = Chargetype::where('is_shown', 1)->get();
-//        }
         $deposit = 0.0;
 
-
-//        if ($id && Gate::allows('is-council')) {
-//            $family_id = Camper::findOrFail($id)->family_id;
-//            $years = ByyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get()->groupBy('year');
-//        } else {
-        $family_id = $this->getFamilyId();
-        $years = ThisyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
-        foreach ($years as $charge) {
-            if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit
-                || $charge->chargetype_id == Chargetypename::Donation) {
-                $deposit += $charge->amount;
+        $family_id = $this->getFamilyId($id);
+        if ($id) {
+            $years = ByyearCharge::where('family_id', $family_id)->where('year', '>=', $this->year->year - 9)
+                ->orderBy('timestamp')->orderBy('amount', 'desc')->get();
+        } else {
+            $years = ThisyearCharge::where('family_id', $family_id)->orderBy('timestamp')->orderBy('amount', 'desc')->get();
+            foreach ($years as $charge) {
+                if ($charge->amount < 0 || $charge->chargetype_id == Chargetypename::Deposit
+                    || $charge->chargetype_id == Chargetypename::Donation) {
+                    $deposit += $charge->amount;
+                }
             }
         }
-        $years = $years->groupBy('year');
-//        }
+        $years = $years->groupBy('year')->sortKeys();
         return view('payment', ['years' => $years, 'fiscalyears' => Year::orderBy('year', 'desc')->get(),
-            'deposit' => $deposit, 'chargetypes' => $chargetypes, 'stepdata' => $this->getStepData(),
+            'deposit' => $deposit, 'chargetypes' => Chargetype::where('is_shown', '1')->get(),
+            'stepdata' => $this->getStepData($id),
             'pastJune' => Carbon::now()->lt(Carbon::create($this->year->year, 5, 31))]);
     }
 
