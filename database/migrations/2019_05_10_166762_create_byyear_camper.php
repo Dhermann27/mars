@@ -53,10 +53,11 @@ return new class extends Migration
                         r.room_number,
                         b.id                                 building_id,
                         b.name                               buildingname
-                      FROM (byyear_families bf, campers c, yearsattending ya, programs p, pronouns o, years y)
+                      FROM (byyear_families bf, campers c, yearsattending ya, pronouns o, years y)
+                        LEFT JOIN (programs p) ON ya.program_id = p.id
                         LEFT JOIN (buildings b, rooms r) ON ya.room_id = r.id AND r.building_id = b.id
                         LEFT JOIN (churches u, provinces pvp) ON c.church_id=u.id AND u.province_id=pvp.id
-                      WHERE bf.id = c.family_id AND bf.year_id=y.id AND c.id = ya.camper_id AND p.id = ya.program_id AND ya.year_id=y.id
+                      WHERE bf.id = c.family_id AND bf.year_id=y.id AND c.id = ya.camper_id AND ya.year_id=y.id
                             AND c.pronoun_id = o.id;");
     }
 

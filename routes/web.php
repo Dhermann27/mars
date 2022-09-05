@@ -102,7 +102,7 @@ Route::group(['prefix' => 'data'], function () {
 });
 
 Route::group(['middleware' => ['auth', 'can:is-council'], 'prefix' => 'reports'], function () {
-//    Route::get('campers', [ReportController::class, 'campers'])->name('reports.campers');
+    Route::get('campers', [ReportController::class, 'campers'])->name('reports.campers');
 //    Route::get('campers/{year}.xls', [ReportController::class, 'campersExport'])->name('reports.campers.export');
 //    Route::get('chart', [ReportController::class, 'chart'])->name('reports.chart');
 //    Route::get('conflicts', [ReportController::class, 'conflicts');

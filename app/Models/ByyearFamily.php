@@ -13,6 +13,11 @@ class ByyearFamily extends Model
         return $this->hasMany(Camper::class, 'family_id', 'id');
     }
 
+    public function byyearcampers()
+    {
+        return $this->hasMany(ByyearCamper::class, 'family_id', 'id');
+    }
+
     public function getFormattedYearsAttribute()
     {
         $years = explode(",", $this->years);

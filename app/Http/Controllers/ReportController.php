@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\UpdateWorkshops;
+use App\Models\ByyearFamily;
 use App\Models\Charge;
 use App\Models\Chargetype;
+use App\Models\ThisyearFamily;
 use App\Models\Timeslot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,35 +14,13 @@ use function view;
 
 class ReportController extends Controller
 {
-//    public function campers()
-//    {
-//        $columns = ['familyname' => 'Family Name',
-//            'address1' => 'Address Line #1',
-//            'address2' => 'Address Line #2',
-//            'city' => 'City',
-//            'provincecode' => 'Province',
-//            'zipcd' => 'Postal Code',
-//            'country' => 'Country',
-//            'pronounname' => 'Pronouns',
-//            'firstname' => 'First Name',
-//            'lastname' => 'Last Name',
-//            'email' => 'Email',
-//            'birthday' => 'Birthday',
-//            'age' => 'Age',
-//            'programname' => 'Program',
-//            'days' => 'Days Attending',
-//            'buildingname' => 'Building',
-//            'room_number' => 'Room',
-//            'controls' => 'Admin Controls'];
-//        $visible = [0, 1, 2, 3, 4, 5, 6, 7, 11, 14];
-//        $years = Year::where('year', '>', $this->year->year - 7)->where('year', '<=', $this->year->year)
-//            ->orderBy('year')->with('byyearcampers')->get();
-//
-//        return view('reports.datatables', ['title' => 'Registered Campers', 'columns' => $columns,
-//            'visible' => $visible, 'groupColumn' => 0, 'tabs' => $years, 'tabfield' => 'year',
-//            'datafield' => "byyearcampers"]);
-//    }
-//
+    public function campers()
+    {
+        $years = ThisyearFamily::orderBy('familyname')->with('thisyearcampers')->get();
+
+        return view('reports.campers', ['years' => $years]);
+    }
+
 //    public function chart()
 //    {
 //        return view('reports.chart', ['years' => Year::where('year', '>', $this->year->year - 7)

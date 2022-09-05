@@ -45,7 +45,7 @@
                                             <td>{{ $charge->timestamp }}</td>
                                             <td>{{ $charge->memo }}</td>
                                             <td>
-                                                {{--                                                @include('includes.admin.controls', ['id' => $charge->camper->id])--}}
+                                                <x-admin.controls :id="$charge->camper->id" />
                                             </td>
                                             @if(Gate::allows('is-super') && !$deposited_date)
                                                 <td>

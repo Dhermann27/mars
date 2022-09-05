@@ -66,7 +66,7 @@ class ReportTest extends DuskTestCase
     {
         $faker = Factory::create();
         $user = User::factory()->create(['usertype' => Usertype::Admin]);
-        $charges = Charge::factory()->count(rand(3, 50))->create(['chargetype_id' => Chargetypename::PayPalPayment,
+        $charges = Charge::factory()->count(5)->create(['chargetype_id' => Chargetypename::PayPalPayment,
             'deposited_date' => null, 'year_id' => self::$year->id, 'created_at' => $faker->dateTimeThisMonth,
             'amount' => $faker->randomNumber(4) * -1]);
         $donation = Charge::factory()->create(['chargetype_id' => Chargetypename::Donation,
@@ -83,7 +83,7 @@ class ReportTest extends DuskTestCase
                 $browser->assertSee(number_format(abs($charge->amount), 2))->assertSee($charge->timestamp)
                     ->assertSee($charge->memo);
             }
-            $chunks = $charges->chunk(rand(1, count($charges) - 2));
+            $chunks = $charges->chunk(2);
             foreach ($chunks[0] as $mark) {
                 $browser->scrollIntoView('@mark' . $mark->id)->pause(250)
                     ->check('@mark' . $mark->id);
@@ -96,10 +96,7 @@ class ReportTest extends DuskTestCase
                     'deposited_date' => Carbon::now()->toDateString()]);
             }
 
-            $browser->pause(200)->scrollIntoView('button[type=submit]')->pause(200)
-                ->press('Mark as Deposited')->acceptDialog()->waitUntilMissing('div.alert-danger')
-                ->waitFor('div.alert')->assertVisible('div.alert-success');
-            $browser->assertDontSee('Undeposited');
+            $this->submitSuccess($browser, 250, 'Mark as Deposited')->assertDontSee('Undeposited');
 
             foreach ($chunks[1] as $charge) {
                 $this->assertDatabaseHas('charges', ['id' => $charge->id,

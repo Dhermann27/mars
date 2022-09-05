@@ -173,6 +173,9 @@
                                                     <a href="{{ route('reports.deposits') }}">Bank Deposits</a>
                                                 </li>
                                                 <li>
+                                                    <a href="{{ route('reports.campers') }}">Campers ({{ $year->year }})</a>
+                                                </li>
+                                                <li>
                                                     <a href="{{ route('reports.workshops') }}"
                                                        data-mdb-toggle="tooltip" title="Slow call">
                                                         Workshop Attendees

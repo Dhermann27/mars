@@ -96,7 +96,7 @@ function runOnLoad() {
         if (window.hasClass(inputs[i], 'camper-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {
                 filter: camperFilter, autoSelect: true, threshold: 3, displayValue: (value) => {
-                    const links = document.querySelectorAll('form#campersearch a');
+                    const links = document.querySelectorAll('div#campersearch a');
                     for (let i = 0; i < links.length; i++) {
                         links[i].href = links[i].href.replace(/\d+$/, value.id);
                         window.removeClass(links[i], 'disabled');

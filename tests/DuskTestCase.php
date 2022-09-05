@@ -158,8 +158,8 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function submitSuccess(Browser $browser, $wait, $buttontext = 'Save Changes')
     {
-        $browser->pause($wait)->scrollIntoView('button[type=submit]')->pause($wait)
-            ->press($buttontext)->waitUntilMissing('div.alert-danger')
+        $browser->pause($wait)->scrollIntoView('button[name="' . $buttontext . '"]')
+            ->pause($wait)->press($buttontext)->waitUntilMissing('div.alert-danger')
             ->waitFor('div.alert')->assertVisible('div.alert-success');
         return $browser;
     }

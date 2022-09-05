@@ -45,7 +45,7 @@
                                 {{--                            @include('includes.admin.controls', ['id' => $position->camper_id])--}}
                             </td>
                         </tr>
-                    @endforeach`
+                    @endforeach
                 @else
                     <td colspan="4">No positions assigned for this year</td>
                 @endif

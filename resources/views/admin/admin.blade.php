@@ -76,7 +76,7 @@
         </div>
         <div class="row my-5">
             <h3>All Camper Search</h3>
-            <form id="campersearch">
+            <div id="campersearch">
                 <div class="input-group adminControls">
                     <div class="form-outline autocomplete w-md-50 w-lg-75">
                         <input id="campersearch" name="campersearch" type="text"
@@ -88,7 +88,7 @@
                     </div>
                     <x-admin.controls id="0"/>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="input-group float-end w-25">
             <input type="text" class="form-control" id="adminSearch" placeholder="Search Table" autocomplete="off"/>
@@ -126,7 +126,7 @@
                                 <a class="m-1 p-1" href="tel:{{ $camper->phonenbr }}"><i class="far fa-phone"></i></a>
                             @endif
                             @if($camper->is_handicap)
-                                <i class="m-1 p-1 far fa-universal-access"></i>
+                                <i class="m-1 p-1 far fa-universal-access" title="Special Needs Request"></i>
                             @endif
                         </td>
                         <td>{{ $camper->age }}</td>

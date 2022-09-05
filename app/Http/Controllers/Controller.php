@@ -47,7 +47,7 @@ class Controller extends BaseController
                 $camper->touch('updated_at');
                 $family_id = $camper->family_id;
             } else {
-                $this->createFamilyAndCamper();
+                $family_id = $this->createFamilyAndCamper();
             }
         } else {
             if (!isset(Auth::user()->camper)) {

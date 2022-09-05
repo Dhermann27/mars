@@ -17,4 +17,9 @@ class ThisyearFamily extends Model
     {
         return $this->hasOne(Family::class, 'id', 'id');
     }
+
+    public function thisyearcampers()
+    {
+        return $this->hasMany(ThisyearCamper::class, 'family_id', 'id');
+    }
 }
