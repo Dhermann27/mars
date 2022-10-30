@@ -11,18 +11,24 @@ class DataController extends Controller
     public function campers(Request $request)
     {
         $this->validate($request, ['term' => 'required|between:3,50']);
-        $campers = Camper::select('campers.id', 'campers.firstname', 'campers.lastname', 'campers.email', 'families.city', 'provinces.code')
-            ->join('families', 'campers.family_id', 'families.id')
-            ->join('provinces', 'families.province_id', 'provinces.id')
-            ->where('campers.firstname', 'LIKE', '%' . $request->term . '%')
-            ->orWhere('campers.lastname', 'LIKE', '%' . $request->term . '%')
-//            ->orWhereRaw('CONCAT(campers.firstname," ",campers.lastname) LIKE "%' . trim($request->term) . '%"')
-            ->orWhere('campers.email', 'LIKE', '%' . $request->term . '%')->get();
+        $terms = explode(' ', $request->term);
+        $myquery = Camper::select('campers.id', 'campers.firstname', 'campers.lastname', 'campers.email', 'families.city', 'provinces.code');
+        foreach ($terms as $term) {
+            $myquery->where(function ($query) use ($term) {
+                $query->where('campers.firstname', 'LIKE', '%' . $term . '%')
+                    ->orWhere('campers.lastname', 'LIKE', '%' . $term . '%')
+                    ->orWhere('campers.email', 'LIKE', '%' . $term . '%');
+            });
+        }
+        $campers = $myquery->join('families', 'campers.family_id', 'families.id')
+            ->join('provinces', 'families.province_id', 'provinces.id')->get();
         foreach ($campers as $camper) {
             $camper->term = $request->term;
-            $camper->firstname = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->firstname);
-            $camper->lastname = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->lastname);
-            $camper->email = preg_replace('/(' . $request->term . ')/i', '<strong>$1</strong>', $camper->email);
+            foreach ($terms as $term) {
+                $camper->firstname = preg_replace('/(' . $term . ')/i', '<strong>$1</strong>', $camper->firstname);
+                $camper->lastname = preg_replace('/(' . $term . ')/i', '<strong>$1</strong>', $camper->lastname);
+                $camper->email = preg_replace('/(' . $term . ')/i', '<strong>$1</strong>', $camper->email);
+            }
         }
         return $campers;
     }

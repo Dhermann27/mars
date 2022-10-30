@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Registered for {{ $year->year }}</h5>
                         <div
-                            class="card-text display-4 text-{{ count($campers)/$average->average >= .95 ? 'green' : 'red'}}">
+                            class="card-text display-4 text-{{ count($campers)/$average->average >= .90 ? 'green' : 'red'}}">
                             {{ count($campers) }} / <span data-mdb-toggle="tooltip"
                                                           title="Average count on {{ $average->onlyday }}: {{ number_format($average->average, 0) }}">
                                 {{ number_format(count($campers)/$average->average*100, 0) }}%
@@ -76,11 +76,11 @@
         </div>
         <div class="row my-5">
             <h3>All Camper Search</h3>
-            <div id="campersearch">
+            <div id="campersearchgroup">
                 <div class="input-group adminControls">
                     <div class="form-outline autocomplete w-md-50 w-lg-75">
-                        <input id="campersearch" name="campersearch" type="text"
-                               class="form-control camper-search" autocomplete="off"
+                        <input id="campersearch" name="campersearch" type="text" spellcheck="false"
+                               class="form-control camper-search sterile" autocomplete="off"
                                placeholder="Begin typing the camper name or email"/>
                         <label for="campersearch" class="form-label">Camper Name</label>
                         <input id="camper_id" name="camper_id" type="hidden"
@@ -113,7 +113,7 @@
                 <tbody>
                 @foreach($campers as $camper)
                     <tr>
-                        <td>{!! strlen($camper->familyname) > 15 ? substr($camper->familyname,0,10) . '&hellip;' : $camper->familyname !!}</td>
+                        <td>{!! strlen($camper->familyname) > 20 ? substr($camper->familyname,0,20) . '&hellip;' : $camper->familyname !!}</td>
                         <td>{{ $camper->city }}, {{ $camper->provincecode }}</td>
                         <td>{{ $camper->firstname }}</td>
                         <td>

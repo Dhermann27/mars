@@ -21,9 +21,9 @@ class RoomSelectionController extends Controller
 
         $family_id = $id && Gate::allows('is-super') ? Camper::findOrFail($id)->family_id : Auth::user()->camper->family_id;
 
-        $family = ThisyearCamper::where(['is_program_housing' => '0', 'family_id' => $family_id])->get();
-        foreach ($family as $item) {
-            $ya = Yearattending::findOrFail($item->yearattending_id);
+        $campers = ThisyearCamper::where(['is_program_housing' => '0', 'family_id' => $family_id])->get();
+        foreach ($campers as $camper) {
+            $ya = Yearattending::findOrFail($camper->yearattending_id);
             $ya->room_id = $request->input('room_id');
             if ($id && Gate::allows('is-super')) {
                 $ya->is_setbyadmin = 1;
@@ -35,32 +35,31 @@ class RoomSelectionController extends Controller
         ExposeRoomselection::dispatch($this->year->id);
 
         $request->session()->flash('success', 'Room selection complete! Your room is locked in for the '
-            . count($family) . ' eligible members of your household. (This screen will update any lock changes in a few moments.');
+            . count($campers) . ' eligible members of your household. (This screen will update any lock changes in a few moments.');
 
         return redirect()->action([RoomSelectionController::class, 'index'], ['id' => $id]);
     }
 
     public function index(Request $request, $id = null)
     {
-        if ($id && Gate::allows('is-council')) {
-            $family_id = Camper::find($id)->family_id;
-        } else {
-            $family_id = $this->getFamilyId();
-        }
+
+        $family_id = $this->getFamilyId($id);
         $step = $this->getStepData($id);
         $locked = 0;
-        $ya = Yearattending::where('camper_id', Auth::user()->camper->id)->where('year_id', $this->year->id)->first();
-        $campers = ThisyearCamper::where('family_id', $family_id)->where('is_program_housing', '0')->orderBy('birthdate')->get();
+        $ya = Yearattending::where('camper_id', isset($id) && Gate::allows('is-council') ? $id : Auth::user()->camper->id)
+            ->where('year_id', $this->year->id)->first();
+        $campers = ThisyearCamper::where('family_id', $family_id)->where('is_program_housing', '0')
+            ->orderBy('birthdate')->get();
         if (!$id) {
+            $locked = 1;
             if ($step["amountDueNow"] > 0) {
                 $request->session()->flash('warning', 'You need to pay your deposit before selecting a room.');
-                $locked = 1;
             } elseif (count($campers) == 0) {
                 $request->session()->flash('warning', 'There are no campers whose rooms can be changed.');
-                $locked = 1;
             } elseif ($ya && $ya->is_setbyadmin == '1') {
                 $request->session()->flash('warning', 'This room has been locked by the Registrar. Please use the Contact Us form above to request any changes at this point.');
-                $locked = 1;
+            } else {
+                $locked = 0;
             }
         }
 

@@ -55,7 +55,7 @@
     <div class="d-flex bg-light mb-3">
         <div class="container p-3">
             <form id="roomselection" method="POST"
-                  action="{{ route('roomselection.store', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}">
+                  action="{{ route('roomselection.store', ['id' => request()->route('id')]) }}">
                 @include('includes.flash')
                 <svg id="rooms" height="731" width="1152" class="d-none d-xl-block">
                     <text x="30" y="40" font-family="Antic Slab" font-size="36px" fill="white">Trout Lodge</text>
@@ -150,7 +150,8 @@
                 @cannot('readonly')
                     @if($locked)
                         <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-lg btn-primary py-3 px-4 disabled">No changes allowed</button>
+                            <button type="submit" class="btn btn-lg btn-primary py-3 px-4 disabled">No changes allowed
+                            </button>
                         </div>
                     @elseif(Gate::allows('select-room', $year))
                         <input type="hidden" id="room_id" name="room_id"/>

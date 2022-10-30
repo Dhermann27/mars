@@ -387,25 +387,6 @@
 </header>
 <!--Main Navigation-->
 
-
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--            <div class="float-end">--}}
-{{--                @can('is-council')--}}
-{{--                    <ul id="adminblock" class="list-inline my-2">--}}
-{{--                        <li id="campersearch" class="list-inline-item">--}}
-{{--                            <div class="input-group p-0 m-0">--}}
-{{--                                <div class="input-group-prepend">--}}
-{{--                                    @include('includes.admin.controls', ['id' => null])--}}
-{{--                                </div>--}}
-
-{{--                                <label class="sr-only" for="camperlist">Camper Search</label>--}}
-{{--                                <select id="admin-camperlist" class="camperlist">--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--    </div>--}}
-
 {{--    <!--Navbar Start-->--}}
 {{--    <nav class="navbar navbar-expand-lg fixed-top navbar-custom" id="navbar">--}}
 {{--        <div class="container-fluid">--}}

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Chargetypename;
 use App\Models\ChartdataDays;
 use App\Models\ThisyearCamper;
 use App\Models\ThisyearCharge;
@@ -24,7 +23,7 @@ class DashboardController extends Controller
             ->join('chargetypes', 'chargetypes.id', 'thisyear_charges.chargetype_id')->count();
         $charges = ThisyearCharge::selectRaw('CONCAT(chargetypename,"s") AS name, SUM(amount) AS amounts, ROUND(SUM(amount), 2) AS total')
             ->where('amount', '>', '0')->groupBy('chargetype_id')->get();
-        $charges->prepend(['name' => 'Guarantee Amount', 'total' => 230000-($charges->sum('amounts'))]);
+        $charges->prepend(['name' => 'Guarantee Amount', 'total' => 236025 - ($charges->sum('amounts'))]);
         return view('admin.admin', ['campers' => $campers, 'last7' => $last7, 'deposits' => $deposits,
             'homeless' => $homeless, 'average' => $average, 'charges' => $charges]);
 

@@ -86,7 +86,7 @@ class NametagTest extends DuskTestCase
                 ->assertAttributeContains(self::ACTIVETAB . ' .label .name', 'style', 'font-size: 3.3em')
                 ->assertDontSeeIn('.label', $camper->pronoun->name);
 
-            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/medical');
+            $browser->scrollIntoView('@next')->pause(self::WAIT)->press('@next')->assertPathIs('/medicalresponse');
         });
 
         $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,

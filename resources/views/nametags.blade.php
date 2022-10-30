@@ -20,7 +20,7 @@
 @endsection
 
 @section('content')
-    <x-layouts.register :stepdata="$stepdata" step="7" previous="workshopchoice" next="medicalresponses">
+    <x-layouts.register :stepdata="$stepdata" step="7" previous="workshopchoice" next="medicalresponse">
         <div class="display-6 mt-3 border-bottom text-end">Choose a look</div>
         <form id="nametagform" class="form-horizontal" role="form" method="POST" action="{{ url('/nametag') .
                  (isset($readonly) && $readonly === false ? '/f/' . $campers->first()->family_id : '')}}">

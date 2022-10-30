@@ -75,9 +75,11 @@ function runOnLoad() {
 
     const inputs = document.querySelectorAll("select, textarea, input:not([type='hidden'])");
     for (let i = 0; i < inputs.length; i++) {
-        window.addEvent(inputs[i], 'change', function () {
-            isDirty = true;
-        });
+        if (!window.hasClass(inputs[i], 'sterile')) {
+            window.addEvent(inputs[i], 'change', function () {
+                isDirty = true;
+            });
+        }
         if (window.hasClass(inputs[i], 'phone-mask')) {
             IMask(inputs[i], {
                 mask: '000-000-0000'
@@ -96,7 +98,7 @@ function runOnLoad() {
         if (window.hasClass(inputs[i], 'camper-search')) {
             new mdb.Autocomplete(inputs[i].parentNode, {
                 filter: camperFilter, autoSelect: true, threshold: 3, displayValue: (value) => {
-                    const links = document.querySelectorAll('div#campersearch a');
+                    const links = document.querySelectorAll('div#campersearchgroup a');
                     for (let i = 0; i < links.length; i++) {
                         links[i].href = links[i].href.replace(/\d+$/, value.id);
                         window.removeClass(links[i], 'disabled');

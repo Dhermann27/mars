@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Enums\Chargetypename;
+use App\Enums\Usertype;
 use App\Jobs\ExposeRoomselection;
 use App\Jobs\GenerateCharges;
 use App\Models\Camper;
@@ -88,6 +89,7 @@ class RoomSelectionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $room) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
+                ->assertPresent('button[name="Lock Room"]')
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
@@ -134,72 +136,68 @@ class RoomSelectionTest extends DuskTestCase
 
     }
 
-    /**
-     * @group Charlie
-     * @throws Throwable
-     */
-//    public function testCharlieLocked()
-//    {
-//
-//        $user = User::factory()->create(['usertype' => Usertype::Admin]);
+    public function testReturningCamperAdminLocked()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Admin]);
 //        Camper::factory()->create(['email' => $user->email]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id]);
-//        GenerateCharges::dispatchSync(self::$year->id);
-//        Charge::factory()->create(['camper_id' => $camper->id, 'amount' => -200.0, 'year_id' => self::$year->id]);
-//
-//        $room = Room::factory()->create(['is_workshop' => 0]);
-//        $rate = Rate::factory()->create(['program_id' => $ya->program_id, 'building_id' => $room->building_id]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $room) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->click('rect#room-' . $room->id)->click('button[type="submit"]')
-//                ->acceptDialog()->waitFor('div.alert')->assertVisible('div.alert-success');
-//        });
-//
-//        $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
-//            'room_id' => $room->id, 'is_setbyadmin' => 1]);
-//        $this->assertDatabaseMissing('gencharges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
-//            'chargetype_id' => Chargetypename::Deposit, 'charge' => 200.0]);
-//        $this->assertDatabaseHas('gencharges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
-//            'chargetype_id' => Chargetypename::Fees, 'charge' => $rate->rate * 6]);
-//
-//        $this->browse(function (Browser $browser) use ($cuser, $camper, $room) {
-//            $browser->loginAs($cuser->id)->visitRoute(self::ROUTE)
-//                ->mouseover('rect#room-' . $room->id)
-//                ->waitFor('div.tooltip-inner')->assertSeeIn('div.tooltip-inner', 'Current selection')
-//                ->assertSee('locked by the Registrar');
-//        });
-//    }
 
-    /**
-     * @group Charlie
-     * @throws Throwable
-     */
-//    public function testCharlieRO()
-//    {
-//        $user = User::factory()->create(['usertype' => Usertype::Pc]);
-//
-//        $cuser = User::factory()->create();
-//        $camper = Camper::factory()->create(['firstname' => 'Charlie', 'email' => $cuser->email]);
-//        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
-//            'room_id' => function () {
-//                return Room::factory()->create(['is_workshop' => 0])->id;
-//            }
-//        ]);
-//
-//        $this->browse(function (Browser $browser) use ($user, $camper, $ya) {
-//            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
-//                ->mouseover('rect#room-' . $ya->room_id)->waitFor('div.tooltip-inner')
-//                ->assertSeeIn('div.tooltip-inner', 'Locked by')
-//                ->assertSeeIn('div.tooltip-inner', $camper->firstname . ' ' . $camper->lastname)
-//                ->assertMissing('button[type="submit"]');
-//        });
-//
-//
-//    }
+        $room = Room::factory()->create(['room_number' => __FUNCTION__]);
+        $rate = Rate::factory()->create(['building_id' => $room->building_id]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'program_id' => $rate->program_id]);
+        GenerateCharges::dispatchSync(self::$year->id);
+        Charge::factory()->create(['camper_id' => $camper->id, 'amount' => -200.0, 'year_id' => self::$year->id]);
+
+        ExposeRoomselection::dispatchSync(self::$year->id);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $room) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->click('rect#room-' . $room->id);
+            $this->submitSuccess($browser, self::WAIT, 'Lock Room');
+        });
+
+        $this->assertDatabaseHas('yearsattending', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'room_id' => $room->id, 'is_setbyadmin' => 1]);
+        $this->assertDatabaseMissing('gencharges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Deposit, 'charge' => 200.0]);
+        $this->assertDatabaseHas('gencharges', ['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'chargetype_id' => Chargetypename::Fees, 'charge' => $rate->rate * 6]);
+
+        $this->browse(function (Browser $browser) use ($cuser, $camper, $room) {
+            $browser->loginAs($cuser->id)->visitRoute(self::ROUTE)
+                ->mouseover('rect#room-' . $room->id)
+                ->waitFor('div.tooltip-inner')->assertSeeIn('div.tooltip-inner', 'Current selection')
+                ->assertSee('locked by the Registrar');
+        });
+    }
+
+    public function testReturningCamperRO()
+    {
+        $user = User::factory()->create(['usertype' => Usertype::Pc]);
+
+        $cuser = User::factory()->create();
+        $camper = Camper::factory()->create(['email' => $cuser->email, 'roommate' => __FUNCTION__]);
+        $ya = Yearattending::factory()->create(['camper_id' => $camper->id, 'year_id' => self::$year->id,
+            'room_id' => function () {
+                return Room::factory()->create(['room_number' => __FUNCTION__])->id;
+            }
+        ]);
+
+        ExposeRoomselection::dispatchSync(self::$year->id);
+
+        $this->browse(function (Browser $browser) use ($user, $camper, $ya) {
+            $browser->loginAs($user->id)->visitRoute(self::ROUTE, ['id' => $camper->id])
+                ->mouseover('rect#room-' . $ya->room_id)->waitFor('div.tooltip-inner')
+                ->assertSeeIn('div.tooltip-inner', 'Locked by')
+                ->assertSeeIn('div.tooltip-inner', $camper->firstname . ' ' . $camper->lastname)
+                ->assertMissing('button[type="submit"]');
+        });
+
+
+    }
 
     public function testReturningCoupleLockedByOtherFamily()
     {
@@ -230,6 +228,7 @@ class RoomSelectionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $room) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
+                ->assertPresent('button[name="Lock Room"]')
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
@@ -284,6 +283,7 @@ class RoomSelectionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $room) {
             $browser->loginAs($user->id)->visitRoute(self::ROUTE)
+                ->assertPresent('button[name="Lock Room"]')
                 ->mouseover('rect#room-' . $room->id)->waitFor('div.tooltip-inner')
                 ->assertSeeIn('div.tooltip-inner', $room->room_number)
                 ->click('rect#room-' . $room->id);
