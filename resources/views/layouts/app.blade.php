@@ -143,7 +143,7 @@
                     @endif
                     <li class="nav-item pe-3"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
 {{--                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>--}}
-                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>
+{{--                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>--}}
 
                     @can('is-council')
                         <li class="nav-item pe-3 dropdown has-megamenu">
@@ -357,9 +357,9 @@
                     @else
                         <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
                            role="button">Login</a>
-                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
-                            Get Started
-                        </a>
+{{--                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">--}}
+{{--                            Get Started--}}
+{{--                        </a>--}}
                     @endif
 
                 </div>

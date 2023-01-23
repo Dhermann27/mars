@@ -2,58 +2,59 @@
 
 @section('content')
 
-    <div>
+    <div class="mt-lg-5 pt-4 pt-md-6 bg-white">
+        <div class="container w-lg-70">
+            <div class="row mt-2 text-md-center">
         <!-- Carousel wrapper -->
-        <div id="carouselWelcome" class="carousel slide carousel-fade" data-mdb-ride="carousel" data-mdb-pause="false">
+{{--        <div id="carouselWelcome" class="carousel slide carousel-fade" data-mdb-ride="carousel" data-mdb-pause="false">--}}
             <!-- Indicators -->
-            <div class="carousel-indicators">
-                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="1"
-                        aria-label="Slide 2"></button>
-                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="2"
-                        aria-label="Slide 3"></button>
-                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="3"
-                        aria-label="Slide 4"></button>
-            </div>
+{{--            <div class="carousel-indicators">--}}
+{{--                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="0" class="active"--}}
+{{--                        aria-current="true" aria-label="Slide 1"></button>--}}
+{{--                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="1"--}}
+{{--                        aria-label="Slide 2"></button>--}}
+{{--                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="2"--}}
+{{--                        aria-label="Slide 3"></button>--}}
+{{--                <button type="button" data-mdb-target="#carouselWelcome" data-mdb-slide-to="3"--}}
+{{--                        aria-label="Slide 4"></button>--}}
+{{--            </div>--}}
 
             <!-- Inner -->
-            <div class="carousel-inner">
+{{--            <div class="carousel-inner">--}}
                 <!-- Single item -->
-                <div class="carousel-item active">
-                    <img src="{{ env('IMG_PATH') }}/images/lodge3.jpg" class="d-block w-100" alt="Trout Lodge"/>
+{{--                <div class="carousel-item active">--}}
+{{--                    <img src="{{ env('IMG_PATH') }}/images/lodge3.jpg" class="d-block w-100" alt="Trout Lodge"/>--}}
                     @include('includes.carouselcaption')
-                </div>
 
                 <!-- Single item -->
-                <div class="carousel-item">
-                    <img src="{{ env('IMG_PATH') }}/images/lodge1.jpg" class="d-block w-100" alt="Trout Lodge"/>
-                    @include('includes.carouselcaption')
-                </div>
+{{--                <div class="carousel-item">--}}
+{{--                    <img src="{{ env('IMG_PATH') }}/images/lodge1.jpg" class="d-block w-100" alt="Trout Lodge"/>--}}
+{{--                    @include('includes.carouselcaption')--}}
+{{--                </div>--}}
 
                 <!-- Single item -->
-                <div class="carousel-item">
-                    <img src="{{ env('IMG_PATH') }}/images/lodge2.jpg" class="d-block w-100" alt="Sunnen Lake"/>
-                    @include('includes.carouselcaption')
-                </div>
+{{--                <div class="carousel-item">--}}
+{{--                    <img src="{{ env('IMG_PATH') }}/images/lodge2.jpg" class="d-block w-100" alt="Sunnen Lake"/>--}}
+{{--                    @include('includes.carouselcaption')--}}
+{{--                </div>--}}
 
                 <!-- Single item -->
-                <div class="carousel-item">
-                    <img src="{{ env('IMG_PATH') }}/images/lodge4.jpg" class="d-block w-100" alt="Trout Lodge"/>
-                    @include('includes.carouselcaption')
-                </div>
-            </div>
+{{--                <div class="carousel-item">--}}
+{{--                    <img src="{{ env('IMG_PATH') }}/images/lodge4.jpg" class="d-block w-100" alt="Trout Lodge"/>--}}
+{{--                    @include('includes.carouselcaption')--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!-- Inner -->
 
             <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselWelcome"
-                    data-mdb-slide="prev">
-                <i class="fas fa-chevron-left fa-3x"></i> <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-mdb-target="#carouselWelcome"
-                    data-mdb-slide="next">
-                <i class="fas fa-chevron-right fa-3x"></i> <span class="visually-hidden">Next</span>
-            </button>
+{{--            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselWelcome"--}}
+{{--                    data-mdb-slide="prev">--}}
+{{--                <i class="fas fa-chevron-left fa-3x"></i> <span class="visually-hidden">Previous</span>--}}
+{{--            </button>--}}
+{{--            <button class="carousel-control-next" type="button" data-mdb-target="#carouselWelcome"--}}
+{{--                    data-mdb-slide="next">--}}
+{{--                <i class="fas fa-chevron-right fa-3x"></i> <span class="visually-hidden">Next</span>--}}
+{{--            </button>--}}
         </div>
     </div>
 
@@ -81,10 +82,10 @@
                                 @can('register', $year)
                                     While you can register right now to reserve your spot,
                                 @else
-                                    You'll be able to register soon, but
+                                    While you cannot register for this event, 
                                 @endcan
-                                our Planning Council is working diligently to prepare this year's brochure, which should
-                                be ready on {{ $year->brochure_date }}. You can currently see last year's to get an idea
+                                our Planning Council is working diligently to prepare this year's information, which should
+                                be ready soon. You can currently see last year's to get an idea
                                 of what it might contain.
                             @endif
                         </p>
@@ -97,30 +98,30 @@
         </div>
     </div>
 
-    <div class="bg-secondary py-4">
-        <div class="container-fluid d-lg-flex">
+{{--    <div class="bg-secondary py-4">--}}
+{{--        <div class="container-fluid d-lg-flex">--}}
 
-            <div class="note note-info text-black m-5">
-                <h2 class="display-4 mt-3 mt-lg-0">
-                    <i class="fas fa-shield-virus 3x"></i> COVID-19 Procedures
-                </h2>
-                <p class="line-height-30 py-md-2 op-7">
-                    Our goal is to provide a memorable camp experience that is as close to previous years with a new
-                    emphasis on safety. All campers who are eligible for vaccination must be fully vaccinated in
-                    accordance with CDC guidelines prior to the start of camp in {{ $year->year }}. Vaccines allow us to
-                    care for each other and our community. One camper getting sick is one too many, and we are grateful
-                    for this opportunity to protect each other.
-                </p>
-                <p>
-                    We do not yet know what best practices will be in July and our guidelines on masking, physical
-                    distancing, testing, etc. will be made in accordance with evidence-based public health
-                    recommendations closer to camp. We will provide these to you by June 1st. Questions should be
-                    directed to Duncan Metcalfe, the Omsbuddy and lead for the PC Covid Task Force using the <a
-                        href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").
-                </p>
-            </div>
-        </div>
-    </div>
+{{--            <div class="note note-info text-black m-5">--}}
+{{--                <h2 class="display-4 mt-3 mt-lg-0">--}}
+{{--                    <i class="fas fa-shield-virus 3x"></i> COVID-19 Procedures--}}
+{{--                </h2>--}}
+{{--                <p class="line-height-30 py-md-2 op-7">--}}
+{{--                    Our goal is to provide a memorable camp experience that is as close to previous years with a new--}}
+{{--                    emphasis on safety. All campers who are eligible for vaccination must be fully vaccinated in--}}
+{{--                    accordance with CDC guidelines prior to the start of camp in {{ $year->year }}. Vaccines allow us to--}}
+{{--                    care for each other and our community. One camper getting sick is one too many, and we are grateful--}}
+{{--                    for this opportunity to protect each other.--}}
+{{--                </p>--}}
+{{--                <p>--}}
+{{--                    We do not yet know what best practices will be in July and our guidelines on masking, physical--}}
+{{--                    distancing, testing, etc. will be made in accordance with evidence-based public health--}}
+{{--                    recommendations closer to camp. We will provide these to you by June 1st. Questions should be--}}
+{{--                    directed to Duncan Metcalfe, the Omsbuddy and lead for the PC Covid Task Force using the <a--}}
+{{--                        href="{{ route('contact.index') }}">Contact Us</a> form (choose "Omsbuddy").--}}
+{{--                </p>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="bg-primary py-4">
         <div class="container text-white d-lg-flex justify-content-center">
@@ -277,18 +278,18 @@
         </div>
     </div>
 
-    <div class="section bg-primary mt-5">
-        <div class="row">
-            <div class="my-3 pe-5 text-lg-end">
-                <div class="display-6">Located at YMCA of the Ozarks, outside Potosi, Missouri</div>
-            </div>
-            <div id="map-container-google-3" class="z-depth-1-half map-container-3">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2930.017719932353!2d-90.93029498484057!3d37.946753879728526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d99fbc4175e629%3A0xe1c9be8ab89a4075!2sTrout+Lodge%2C+Potosi%2C+MO+63664!5e1!3m2!1sen!2sus!4v1546112609663"
-                    width="100%" height="420" frameborder="0" style="border:0" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
+{{--    <div class="section bg-primary mt-5">--}}
+    {{--        <div class="row">--}}
+    {{--            <div class="my-3 pe-5 text-lg-end">--}}
+    {{--                <div class="display-6">Located at YMCA of the Ozarks, outside Potosi, Missouri</div>--}}
+    {{--            </div>--}}
+    {{--            <div id="map-container-google-3" class="z-depth-1-half map-container-3">--}}
+    {{--                <iframe--}}
+    {{--                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2930.017719932353!2d-90.93029498484057!3d37.946753879728526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87d99fbc4175e629%3A0xe1c9be8ab89a4075!2sTrout+Lodge%2C+Potosi%2C+MO+63664!5e1!3m2!1sen!2sus!4v1546112609663"--}}
+    {{--                    width="100%" height="420" frameborder="0" style="border:0" allowfullscreen></iframe>--}}
+    {{--            </div>--}}
+    {{--        </div>--}}
+    {{--    </div>--}}
 
     <div class="section bg-secondary pt-lg-5 border border-top-5 border-primary" id="testimonial">
         <div class="container-fluid">

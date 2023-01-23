@@ -1,4 +1,4 @@
-<div class="carousel-caption d-none d-md-block">
+{{--<div class="carousel-caption d-none d-md-block">--}}
     <h1 class="font-weight-bold text-letter-spacing-xs">
         Midwest Unitarian Universalist Summer Assembly
     </h1>
@@ -6,11 +6,13 @@
         An annual intergenerational Unitarian Universalist retreat for fun, fellowship, and personal growth
     </h6>
     <h4 class="my-2">
-        {{ $year->first_day }} through {{ $year->last_day }} {{ $year->year }}
+{{--        {{ $year->first_day }} through {{ $year->last_day }} {{ $year->year }}--}}
+        In the interim, Saturday, July 1 through Monday, July 3 2023<br /><br />
+        Meeting this year in Naperville, Illinois
     </h4>
     @can('register', $year)
         <p>
             <a href="{{ route('dashboard') }}" class="btn btn-lg btn-primary">Your Registration</a>
         </p>
     @endif
-</div>
+{{--</div>--}}
