@@ -82,7 +82,7 @@
                                 @can('register', $year)
                                     While you can register right now to reserve your spot,
                                 @else
-                                    While you cannot register for this event, 
+                                    While you cannot register for this event,
                                 @endcan
                                 our Planning Council is working diligently to prepare this year's information, which should
                                 be ready soon. You can currently see last year's to get an idea
