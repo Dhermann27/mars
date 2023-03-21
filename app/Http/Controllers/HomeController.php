@@ -39,4 +39,9 @@ class HomeController extends Controller
     {
         return view('themespeaker', ['background' => 'biographies.jpg']);
     }
+
+    public function termsofservice()
+    {
+        return view('termsofservice');
+    }
 }
