@@ -28,6 +28,7 @@ Route::get('/refreshcaptcha', [ContactController::class, 'refreshCaptcha'])->nam
 
 Route::get('/cost', [HomeController::class, 'campcost'])->name('cost');
 Route::get('/themespeaker', [HomeController::class, 'themespeaker'])->name('themespeaker');
+Route::get('/termsofservice', [HomeController::class, 'termsofservice'])->name('termsofservice');
 Route::get('/scholarship', [HomeController::class, 'scholarship'])->name('scholarship');
 Route::get('/programs', [HomeController::class, 'programs'])->name('programs');
 Route::get('/housing', [HomeController::class, 'housing'])->name('housing');

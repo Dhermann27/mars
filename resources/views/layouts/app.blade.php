@@ -142,8 +142,8 @@
                         </li>
                     @endif
                     <li class="nav-item pe-3"><a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
-{{--                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>--}}
-{{--                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>--}}
+                    {{--                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>--}}
+                    {{--                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>--}}
 
                     @can('is-council')
                         <li class="nav-item pe-3 dropdown has-megamenu">
@@ -157,11 +157,13 @@
                                     <div class="col-lg-3 col-6">
                                         <div class="col-megamenu">
                                             <div>
-                                                <a class="btn btn-lg btn-primary" href="{{ route('admin') }}">Dashboard</a>
+                                                <a class="btn btn-lg btn-primary"
+                                                   href="{{ route('admin') }}">Dashboard</a>
                                             </div>
                                             <strong>Recent Searches</strong>
                                             <ul id="recentSearches" class="list-unstyled">
-                                                <li>Loading campers... <i class="fa fa-spinner-third fa-spin m-1"></i></li>
+                                                <li>Loading campers... <i class="fa fa-spinner-third fa-spin m-1"></i>
+                                                </li>
                                             </ul>
                                         </div>  <!-- col-megamenu.// -->
                                     </div><!-- end col-3 -->
@@ -173,7 +175,8 @@
                                                     <a href="{{ route('reports.deposits') }}">Bank Deposits</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('reports.campers') }}">Campers ({{ $year->year }})</a>
+                                                    <a href="{{ route('reports.campers') }}">Campers ({{ $year->year }}
+                                                        )</a>
                                                 </li>
                                                 <li>
                                                     <a href="{{ route('reports.workshops') }}"
@@ -357,9 +360,9 @@
                     @else
                         <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
                            role="button">Login</a>
-{{--                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">--}}
-{{--                            Get Started--}}
-{{--                        </a>--}}
+                        {{--                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">--}}
+                        {{--                            Get Started--}}
+                        {{--                        </a>--}}
                     @endif
 
                 </div>
@@ -586,6 +589,10 @@
                         <li>
                             <a class="text-white underlined-link"
                                href="{{ route('workshops.excursions') }}">Excursions</a>
+                        </li>
+                        <li>
+                            <a class="text-white underlined-link" href="{{ route('termsofservice') }}">Terms of
+                                Service</a>
                         </li>
                     </ul>
                 </div>
