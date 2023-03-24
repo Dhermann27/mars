@@ -186,47 +186,47 @@
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100">
-                <img class="card-img-top" src="/images/housing.jpg" alt="The Hill to Trout Lodge"/>
-                <div class="card-body">
-                    <h4 class="card-title">Housing</h4>
-                    <p class="card-text">YMCA of the Ozarks, Trout Lodge, is located on 5,200 acres of pine and oak
-                        forest on a private 360-acre lake 75 miles southwest of St. Louis, Missouri, outside of
-                        Potosi.
-                        Accommodations are available for all budgets.</p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{{ route('housing') }}" class="btn btn-lg btn-primary">Housing Options</a>
-                </div>
-            </div>
-        </div>
+{{--        <div class="col">--}}
+{{--            <div class="card h-100">--}}
+{{--                <img class="card-img-top" src="/images/housing.jpg" alt="The Hill to Trout Lodge"/>--}}
+{{--                <div class="card-body">--}}
+{{--                    <h4 class="card-title">Housing</h4>--}}
+{{--                    <p class="card-text">YMCA of the Ozarks, Trout Lodge, is located on 5,200 acres of pine and oak--}}
+{{--                        forest on a private 360-acre lake 75 miles southwest of St. Louis, Missouri, outside of--}}
+{{--                        Potosi.--}}
+{{--                        Accommodations are available for all budgets.</p>--}}
+{{--                </div>--}}
+{{--                <div class="card-footer text-center">--}}
+{{--                    <a href="{{ route('housing') }}" class="btn btn-lg btn-primary">Housing Options</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
-        <div class="col">
-            <div class="card h-100">
-                <img class="card-img-top" src="/images/workshops.jpg"
-                     alt="Jay Warner, during a photography workshop"/>
-                <div class="card-body">
-                    <h4 class="card-title">Workshops</h4>
-                    <p class="card-text">Workshops offer opportunities for learning, personal growth, and fun. They
-                        are
-                        an excellent way to get to know other campers in a small group setting and to benefit from
-                        the
-                        wonderful talents, skills, and insights the workshop leaders have to offer.</p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{{ route('workshops.display') }}" class="btn btn-lg btn-primary">
-                        @if($year->is_brochure)
-                            Workshop List
-                        @else
-                            Last Year's Workshops (Sample)
-                        @endif
-                    </a>
-                </div>
-            </div>
-        </div>
+{{--        <div class="col">--}}
+{{--            <div class="card h-100">--}}
+{{--                <img class="card-img-top" src="/images/workshops.jpg"--}}
+{{--                     alt="Jay Warner, during a photography workshop"/>--}}
+{{--                <div class="card-body">--}}
+{{--                    <h4 class="card-title">Workshops</h4>--}}
+{{--                    <p class="card-text">Workshops offer opportunities for learning, personal growth, and fun. They--}}
+{{--                        are--}}
+{{--                        an excellent way to get to know other campers in a small group setting and to benefit from--}}
+{{--                        the--}}
+{{--                        wonderful talents, skills, and insights the workshop leaders have to offer.</p>--}}
+{{--                </div>--}}
+{{--                <div class="card-footer text-center">--}}
+{{--                    <a href="{{ route('workshops.display') }}" class="btn btn-lg btn-primary">--}}
+{{--                        @if($year->is_brochure)--}}
+{{--                            Workshop List--}}
+{{--                        @else--}}
+{{--                            Last Year's Workshops (Sample)--}}
+{{--                        @endif--}}
+{{--                    </a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
-        <div class="col">
+{{--        <div class="col">--}}
             <div class="card h-100">
                 <img class="card-img-bottom" src="/images/biographies.jpg"
                      alt="Chalice tattoo"/>
@@ -260,22 +260,22 @@
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100">
-                <img class="card-img-top" src="/images/calculator.jpg"
-                     alt="John Sandman, Treasurer, Legend"/>
-                <div class="card-body">
-                    <h4 class="card-title">Camp Cost Calculator</h4>
-                    <p class="card-text">Use this helpful tool to help estimate how much MUUSA will cost this year.
-                        Please consider sharing a room with as many others as possible to reduce your cost and make
-                        optimum use of housing. Full details can be found in the brochure.</p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{{ route('cost') }}" class="btn btn-lg btn-primary">Full-Week
-                        Rates</a>
-                </div>
-            </div>
-        </div>
+{{--        <div class="col">--}}
+{{--            <div class="card h-100">--}}
+{{--                <img class="card-img-top" src="/images/calculator.jpg"--}}
+{{--                     alt="John Sandman, Treasurer, Legend"/>--}}
+{{--                <div class="card-body">--}}
+{{--                    <h4 class="card-title">Camp Cost Calculator</h4>--}}
+{{--                    <p class="card-text">Use this helpful tool to help estimate how much MUUSA will cost this year.--}}
+{{--                        Please consider sharing a room with as many others as possible to reduce your cost and make--}}
+{{--                        optimum use of housing. Full details can be found in the brochure.</p>--}}
+{{--                </div>--}}
+{{--                <div class="card-footer text-center">--}}
+{{--                    <a href="{{ route('cost') }}" class="btn btn-lg btn-primary">Full-Week--}}
+{{--                        Rates</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 
 {{--    <div class="section bg-primary mt-5">--}}
