@@ -129,7 +129,7 @@
                             @endif
                             @if($year->is_workshop_proposal)
                                 <li>
-                                    <a href="https://docs.google.com/forms/d/1uD1UCGI1F4nPlAmKIAkRuEci1NudqqPa140fDHXUMEs/edit"
+                                    <a href="https://forms.gle/fNRBeXJ4nmTdvHjs8"
                                        class="dropdown-item">
                                         <i class="fal fa-chalkboard-teacher fa-fw"></i> Workshop Proposal
                                     </a>
@@ -619,7 +619,7 @@
                         @if($year->is_workshop_proposal)
                             <li>
                                 <a class="text-white underlined-link"
-                                   href="https://docs.google.com/forms/d/1uD1UCGI1F4nPlAmKIAkRuEci1NudqqPa140fDHXUMEs/edit">
+                                   href="https://forms.gle/fNRBeXJ4nmTdvHjs8">
                                     Workshop Proposal</a></li>
                         @endif
                     </ul>
