@@ -131,7 +131,7 @@
                                 <li>
                                     <a href="https://forms.gle/fNRBeXJ4nmTdvHjs8"
                                        class="dropdown-item">
-                                        <i class="fal fa-chalkboard-teacher fa-fw"></i> Workshop Proposal
+                                        <i class="fas fa-chalkboard-teacher fa-fw"></i> Workshop Proposal
                                     </a>
                                 </li>
                             @endif
