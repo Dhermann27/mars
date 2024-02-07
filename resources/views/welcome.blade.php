@@ -62,16 +62,16 @@
             <div class="container w-lg-70">
                 <div class="row mt-2">
                     <div class="col-lg-6 d-sm-flex">
-                        <a class="border border-2 border-bottom-0 border-primary rounded-top"
-                           href="{{ route('brochure') }}">
-                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"
-                                 alt="Web Brochure cover">
-                        </a>
+{{--                        <a class="border border-2 border-bottom-0 border-primary rounded-top"--}}
+{{--                           href="{{ route('brochure') }}">--}}
+{{--                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"--}}
+{{--                                 alt="Web Brochure cover">--}}
+{{--                        </a>--}}&nbsp;
                     </div>
                     <div class="col-lg-6 d-sm-flex align-content-center d-flex align-items-center">
                         <div class="mr-auto py-0 pl-lg-5 my-3 my-md-0">
                             <h2 class="display-4 mt-3 mt-lg-0">
-                                Web Brochure
+                                Welcome!
                             </h2>
                             <p class="line-height-30 py-md-2 op-7">
                             @if($year->is_brochure)
@@ -87,6 +87,7 @@
                                 <p>We are working to get the brochure and registration up and running by the middle of
                                     February 2024. Rev. Misha Sanders will be our theme speaker!</p>
                                 <p>Wednesday July 3rd through Sunday July 7th, 2024. Hope to see you there!</p>
+                                <p>&nbsp;</p>
 
                             @else
                                 @can('register', $year)
@@ -100,9 +101,9 @@
                                 of what it might contain.
                                 @endif
                                 </p>
-                                <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">
-                                    Take a look <i class="fas fa-file-pdf mx-2"></i>
-                                </a>
+{{--                                <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">--}}
+{{--                                    Take a look <i class="fas fa-file-pdf mx-2"></i>--}}
+{{--                                </a>--}}
                         </div>
                     </div>
                 </div>
