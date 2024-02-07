@@ -62,11 +62,11 @@
             <div class="container w-lg-70">
                 <div class="row mt-2">
                     <div class="col-lg-6 d-sm-flex">
-{{--                        <a class="border border-2 border-bottom-0 border-primary rounded-top"--}}
-{{--                           href="{{ route('brochure') }}">--}}
-{{--                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"--}}
-{{--                                 alt="Web Brochure cover">--}}
-{{--                        </a>--}}&nbsp;
+                        {{--                        <a class="border border-2 border-bottom-0 border-primary rounded-top"--}}
+                        {{--                           href="{{ route('brochure') }}">--}}
+                        {{--                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"--}}
+                        {{--                                 alt="Web Brochure cover">--}}
+                        {{--                        </a>--}}&nbsp;
                     </div>
                     <div class="col-lg-6 d-sm-flex align-content-center d-flex align-items-center">
                         <div class="mr-auto py-0 pl-lg-5 my-3 my-md-0">
@@ -101,9 +101,9 @@
                                 of what it might contain.
                                 @endif
                                 </p>
-{{--                                <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">--}}
-{{--                                    Take a look <i class="fas fa-file-pdf mx-2"></i>--}}
-{{--                                </a>--}}
+                                {{--                                <a class="btn btn-lg btn-primary" href="{{ route('brochure') }}">--}}
+                                {{--                                    Take a look <i class="fas fa-file-pdf mx-2"></i>--}}
+                                {{--                                </a>--}}
                         </div>
                     </div>
                 </div>
@@ -253,41 +253,41 @@
                         Biography</a>
                 </div>
             </div>
+            {{--        </div>--}}
+
+            {{--        <div class="col">--}}
+            <div class="card h-100">
+                <img class="card-img-top" src="/images/scholarship.jpg"
+                     alt="A hummingbird in dire need of a sugar scholarship"/>
+                <div class="card-body">
+                    <h4 class="card-title">Scholarship Opportunities</h4>
+                    <p class="card-text">If finances are tight and MUUSA doesn't quite fit into your budget this year,
+                        we hope you will apply for a scholarship. These funds strengthen our community and we want to be
+                        sure you know they are available.</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ route('scholarship') }}" class="btn btn-lg btn-primary">Application
+                        Process</a>
+                </div>
+            </div>
         </div>
 
         {{--        <div class="col">--}}
-        <div class="card h-100">
-            <img class="card-img-top" src="/images/scholarship.jpg"
-                 alt="A hummingbird in dire need of a sugar scholarship"/>
-            <div class="card-body">
-                <h4 class="card-title">Scholarship Opportunities</h4>
-                <p class="card-text">If finances are tight and MUUSA doesn't quite fit into your budget this year,
-                    we hope you will apply for a scholarship. These funds strengthen our community and we want to be
-                    sure you know they are available.</p>
-            </div>
-            <div class="card-footer text-center">
-                <a href="{{ route('scholarship') }}" class="btn btn-lg btn-primary">Application
-                    Process</a>
-            </div>
-        </div>
-    </div>
-
-    {{--        <div class="col">--}}
-    {{--            <div class="card h-100">--}}
-    {{--                <img class="card-img-top" src="/images/calculator.jpg"--}}
-    {{--                     alt="John Sandman, Treasurer, Legend"/>--}}
-    {{--                <div class="card-body">--}}
-    {{--                    <h4 class="card-title">Camp Cost Calculator</h4>--}}
-    {{--                    <p class="card-text">Use this helpful tool to help estimate how much MUUSA will cost this year.--}}
-    {{--                        Please consider sharing a room with as many others as possible to reduce your cost and make--}}
-    {{--                        optimum use of housing. Full details can be found in the brochure.</p>--}}
-    {{--                </div>--}}
-    {{--                <div class="card-footer text-center">--}}
-    {{--                    <a href="{{ route('cost') }}" class="btn btn-lg btn-primary">Full-Week--}}
-    {{--                        Rates</a>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
+        {{--            <div class="card h-100">--}}
+        {{--                <img class="card-img-top" src="/images/calculator.jpg"--}}
+        {{--                     alt="John Sandman, Treasurer, Legend"/>--}}
+        {{--                <div class="card-body">--}}
+        {{--                    <h4 class="card-title">Camp Cost Calculator</h4>--}}
+        {{--                    <p class="card-text">Use this helpful tool to help estimate how much MUUSA will cost this year.--}}
+        {{--                        Please consider sharing a room with as many others as possible to reduce your cost and make--}}
+        {{--                        optimum use of housing. Full details can be found in the brochure.</p>--}}
+        {{--                </div>--}}
+        {{--                <div class="card-footer text-center">--}}
+        {{--                    <a href="{{ route('cost') }}" class="btn btn-lg btn-primary">Full-Week--}}
+        {{--                        Rates</a>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
     </div>
 
     {{--    <div class="section bg-primary mt-5">--}}
