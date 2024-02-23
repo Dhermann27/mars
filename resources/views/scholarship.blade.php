@@ -54,35 +54,35 @@
                         any specific scholarship amount until they have received written (via email or
                         letter) confirmation of their scholarship award.</strong></p>
                 <h3 class="pb-2">Timing</h3>
-                <p>The Scholarship process will open on February 1. Campers seeking financial assistance
-                    must submit scholarship applications no later than April 15. The timeline for the
+                <p>The Scholarship process will open on February 20. Campers seeking financial assistance
+                    must submit scholarship applications no later than May 10. The timeline for the
                     process is as follows:</p>
                 <table>
                     <tbody>
                     <tr>
-                        <td class="pb-3"><strong>February 1</strong></td>
+                        <td class="pb-3"><strong>February 20</strong></td>
                         <td>Scholarship process opens; applications can be submitted</td>
                     </tr>
                     <tr>
-                        <td class="pb-3"><strong>April 15</strong></td>
+                        <td class="pb-3"><strong>May 10</strong></td>
                         <td>Applications due, including receipt of all financial information and
                             supplemental form.
                         </td>
                     </tr>
                     <tr>
-                        <td class="pb-3"><strong>May 15</strong></td>
+                        <td class="pb-3"><strong>May 20</strong></td>
                         <td>Scholarship determinations made and campers contacted.</td>
                     </tr>
                     </tbody>
                 </table>
-                <p>Applicants who submit their applications by the April 15 deadline will be notified of
-                    their award by May 15, barring unforeseen delays. Balances of camper invoices on the
+                <p>Applicants who submit their applications by the May 10 deadline will be notified of
+                    their award by May 20, barring unforeseen delays. Balances of camper invoices on the
                     MUUSA website will be updated as soon as feasible after scholarships are awarded.
                 <h3 class="pb-2">Details</h3>
                 <h4 class="pb-2">Review and Award of Scholarships</h4>
                 <p>The scholarship process will be administered by the MUUSA Scholarship Committee, which
-                    includes: Bill Pokorny, John Sandman, Duncan Metcalfe, Adrienne Cruise and Dorothy Ramsey for
-                    MUUSA {{ $year->year }}. Bill Pokorny will serve as the Scholarship Committee Coordinator and
+                    includes: Nate Warner, John Sandman, Duncan Metcalfe, Cheryl Heinz, and Karen Seymour-Ells for
+                    MUUSA {{ $year->year }}. Nate Warner will serve as the Scholarship Committee Coordinator and
                     the primary contact for the Scholarship Committee.</p>
                 <p>Upon receipt of the YMCA's determinations, the Scholarship Committee will review all
                     applications and independently determine how available scholarship funds will be
@@ -104,24 +104,17 @@
                 <p>For {{ $year->year }}, the total scholarship amounts awarded will initially be capped on
                     a per-camper (not per-family) basis. The maximum scholarship awards will be as
                     follows:</p>
-                <p>Adults (including YAs): $500 per person<br/> Children and Youth age 6 and up: $300 per
-                    person<br/> Children under age 6: $70 per person</p>
+                <p>Adults (including YAs): $400 per person<br/> Children and Youth age 6 and up: $250 per
+                    person<br/> Children under age 6: $0</p>
                 <p>Please note that these are maximum awards. In many cases a lower scholarship amount may
                     be awarded so as to share available funds among a broader group of applicants.</p>
                 <p>Additionally, scholarships awarded will not exceed total fees after all additions and
                     reductions (including staff honoraria) less $100 for each adult camper (including YAs)
-                    in Trout Lodge, Lakeview or Forest View, and $50 for each adult (including YAs) in
-                    Lakewood or tent camping. In other words, all adults receiving MUUSA scholarship funds
-                    will pay at least $100 or $50 (depending on housing) for their week at camp, regardless
+                    and $50 for each child in . In other words, all adults receiving MUUSA scholarship funds
+                    will pay at least $100 or $50 (depending on age) for their week at camp, regardless
                     of honoraria.</p>
                 <p>Scholarship amounts do not apply toward additional MUUSA workshop or class fees, such as
                     the float trip or supplies for the fabric workshop.</p>
-                <p>The Scholarship Committee may adjust the caps and minimum charges listed above for
-                    recipients of YMCA scholarships if the Treasurer projects that MUUSA will receive YMCA
-                    scholarship credits in excess of the above amounts after exceeding its minimum guarantee
-                    to Trout Lodge. Please refer to the appendix for more information on the minimum
-                    guarantee, how YMCA scholarship funds are applied, and sample scholarship
-                    calculations.</p>
                 <h4 class="pb-2">Why Would I Take on a Staff Role at MUUSA if I am Applying for a
                     Scholarship?</h4>
                 <p>Choosing to serve in a MUUSA staff role allows you to give back to the MUUSA community in
@@ -133,7 +126,7 @@
                 <p><strong>Thank you for your interest in applying for a scholarship for
                         MUUSA {{ $year->year }}. We hope this document has helped clarify the scholarship
                         process. If you have further questions or concerns please contact the Scholarship
-                        Committee Coordinator, Bill Pokorny using the Contact Us (select "Scholarship Coordinator") link above.</strong>
+                        Committee Coordinator, Nate Warner using the Contact Us (select "Scholarship Coordinator") link above.</strong>
                 </p>
             </div>
 

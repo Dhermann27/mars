@@ -82,31 +82,31 @@
                                     <i class="fas fa-sitemap fa-fw"></i> Programs
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('workshops.display') }}" class="dropdown-item">
-                                    <i class="fas fa-map fa-fw"></i> Workshop List
-                                </a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="{{ route('workshops.display') }}" class="dropdown-item">--}}
+{{--                                    <i class="fas fa-map fa-fw"></i> Workshop List--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                             <li>
                                 <a href="{{ route('themespeaker') }}" class="dropdown-item">
                                     <i class="fas fa-microphone fa-fw"></i> Theme Speakers
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('cost') }}" class="dropdown-item">
-                                    <i class="fas fa-calculator fa-fw"></i> Cost Calculator
-                                </a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="{{ route('cost') }}" class="dropdown-item">--}}
+{{--                                    <i class="fas fa-calculator fa-fw"></i> Cost Calculator--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                             <li>
                                 <a href="{{ route('scholarship') }}" class="dropdown-item">
                                     <i class="fas fa-universal-access fa-fw"></i> Scholarships
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ route('workshops.excursions') }}" class="dropdown-item">
-                                    <i class="fas fa-binoculars fa-fw"></i> Excursions
-                                </a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="{{ route('workshops.excursions') }}" class="dropdown-item">--}}
+{{--                                    <i class="fas fa-binoculars fa-fw"></i> Excursions--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                             {{--                            <li>--}}
                             {{--                                <hr class="dropdown-divider"/>--}}
                             {{--                            </li>--}}

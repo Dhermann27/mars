@@ -7,7 +7,7 @@
     </h6>
     <h4 class="my-2">
 {{--        {{ $year->first_day }} through {{ $year->last_day }} {{ $year->year }}--}}
-        In the interim, Wednesday, July 3 through Sunday, July 7 2023<br /><br />
+        In the interim, Wednesday, July 3 through Sunday, July 7 2024<br /><br />
         Meeting this year in Bloomington, Indiana
     </h4>
     @can('register', $year)
