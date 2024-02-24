@@ -35,20 +35,19 @@
         </ul>
         <div class="tab-content" id="sch-content">
             <div class="tab-pane fade active show py-3" id="tab-1" role="tabpanel">
-                <p class="mt-3">Our goal at MUUSA is to make camp
-                    affordable for those who wish to attend. We strive to accomplish this goal by providing
-                    lower-cost housing options, inviting campers to apply for staff positions that offer a credit
-                    toward camp expenses, and partnering with YMCA of the Ozarks (which operates Trout Lodge) to
-                    offer scholarship funds.</p>
+                <p class="mt-3">Our goal at MUUSA is to make camp affordable for those who wish to attend. We
+                    strive to accomplish this goal by providing lower-cost housing options, inviting
+                    campers to apply for staff positions that offer a credit toward camp expenses, and
+                    by offering scholarship funds to offset costs.</p>
                 <p>This document lays out the scholarship application process, details the sources of scholarship
                     funds that are available, and explains the scholarship award process.</p>
                 <h3 class="pb-2">How to Apply For a Scholarship</h3>
                 <h5>Begin an application form, available <a
-                            href="//docs.google.com/forms/d/1MOP0UtePIKBKeubNcj5hgX6z_a6KcgZ5fFMn_zLsgP0">here</a>.
+                            href="https://docs.google.com/forms/d/1UL5tRegpPlaIuSMLHhy9R5rPLOdpkGlKe2vHGHZuJyc/edit">here</a>.
                 </h5>
                 <p>If you are unable to use the online form, you may request a hard copy application form by
                     contacting the MUUSA Scholarship Coordinator. If you mail in a hard copy form, your form must be
-                    RECEIVED (not postmarked) by April 15 in order to be considered. </p>
+                    RECEIVED (not postmarked) by May 15 in order to be considered. </p>
                 <p><strong>Scholarships are limited and cannot be guaranteed. Campers should not make any
                         travel or financial plans on the assumption that they will receive a scholarship or
                         any specific scholarship amount until they have received written (via email or
@@ -84,16 +83,16 @@
                     includes: Nate Warner, John Sandman, Duncan Metcalfe, Cheryl Heinz, and Karen Seymour-Ells for
                     MUUSA {{ $year->year }}. Nate Warner will serve as the Scholarship Committee Coordinator and
                     the primary contact for the Scholarship Committee.</p>
-                <p>Upon receipt of the YMCA's determinations, the Scholarship Committee will review all
+                <p>The Committee will review all
                     applications and independently determine how available scholarship funds will be
                     allocated.</p>
                 <p>Scholarships will be awarded based upon the following criteria:</p>
                 <ul>
-                    <li>YMCA scholarship determinations</li>
+                    <li>Financial need</li>
                     <li>Welcoming new campers who have not previously had an opportunity to attend MUUSA
                     </li>
                     <li>Interest in attending MUUSA and being part of the MUUSA community</li>
-                    <li>Availability of funds</li>
+                    <li>Availability of scholarship funds</li>
                 </ul>
                 <p>To make the process as fair as possible, members of the Scholarship Committee will recuse
                     themselves from any decision involving a scholarship application by a family member or
@@ -101,7 +100,7 @@
                 <p>The Scholarship Committee has sole discretion to determine whether to award a scholarship
                     and in what amount. The Committee's decisions are final.</p>
                 <h4 class="pb-2">Scholarship Amounts</h4>
-                <p>For {{ $year->year }}, the total scholarship amounts awarded will initially be capped on
+                <p>For {{ $year->year }}, the total scholarship amounts awarded will be capped on
                     a per-camper (not per-family) basis. The maximum scholarship awards will be as
                     follows:</p>
                 <p>Adults (including YAs): $400 per person<br/> Children and Youth age 6 and up: $250 per
@@ -113,8 +112,7 @@
                     and $50 for each child in . In other words, all adults receiving MUUSA scholarship funds
                     will pay at least $100 or $50 (depending on age) for their week at camp, regardless
                     of honoraria.</p>
-                <p>Scholarship amounts do not apply toward additional MUUSA workshop or class fees, such as
-                    the float trip or supplies for the fabric workshop.</p>
+                <p>Scholarship amounts do not apply toward additional MUUSA workshop fees or excursions.</p>
                 <h4 class="pb-2">Why Would I Take on a Staff Role at MUUSA if I am Applying for a
                     Scholarship?</h4>
                 <p>Choosing to serve in a MUUSA staff role allows you to give back to the MUUSA community in
