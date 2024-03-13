@@ -43,11 +43,11 @@
                     funds that are available, and explains the scholarship award process.</p>
                 <h3 class="pb-2">How to Apply For a Scholarship</h3>
                 <h5>Begin an application form, available <a
-                            href="https://docs.google.com/forms/d/1UL5tRegpPlaIuSMLHhy9R5rPLOdpkGlKe2vHGHZuJyc/edit">here</a>.
+                        href="https://docs.google.com/forms/d/1UL5tRegpPlaIuSMLHhy9R5rPLOdpkGlKe2vHGHZuJyc/edit">here</a>.
                 </h5>
                 <p>If you are unable to use the online form, you may request a hard copy application form by
                     contacting the MUUSA Scholarship Coordinator. If you mail in a hard copy form, your form must be
-                    RECEIVED (not postmarked) by May 15 in order to be considered. </p>
+                    RECEIVED (not postmarked) by May 10 in order to be considered. </p>
                 <p><strong>Scholarships are limited and cannot be guaranteed. Campers should not make any
                         travel or financial plans on the assumption that they will receive a scholarship or
                         any specific scholarship amount until they have received written (via email or
@@ -124,47 +124,31 @@
                 <p><strong>Thank you for your interest in applying for a scholarship for
                         MUUSA {{ $year->year }}. We hope this document has helped clarify the scholarship
                         process. If you have further questions or concerns please contact the Scholarship
-                        Committee Coordinator, Nate Warner using the Contact Us (select "Scholarship Coordinator") link above.</strong>
+                        Committee Coordinator, Nate Warner using the Contact Us (select "Scholarship Coordinator") link
+                        above.</strong>
                 </p>
             </div>
 
             <div class="tab-pane fade py-3" id="tab-2" role="tabpanel">
                 <h3>Appendix</h3>
                 <h4>Where Do Scholarship Funds Come From?</h4>
-                <p>MUUSA scholarships provide a discount off of the fees that MUUSA would otherwise charge a
-                    camper for their stay. Because MUUSA has to cover its financial obligations, the money
-                    that we are not collecting from campers who receive scholarships must be made up from
-                    some other source. Scholarship funds may come from two sources: YMCA of the Ozarks and
-                    MUUSA's own scholarship fund. Understanding how these two sources work together requires
-                    some understanding of our (MUUSA's) financial obligations to Trout Lodge.</p>
-                <p>Campers pay MUUSA for their week at camp. The revenue we receive from campers covers our
-                    fees to Trout Lodge (for food, lodging, Trout Lodge staff, etc.) and MUUSA expenses (for
-                    program staff, supplies, insurance, etc.). Our contract with Trout Lodge obligates MUUSA
-                    to pay a certain minimum guaranteed amount to Trout Lodge (the &quot;minimum guarantee&quot;),
-                    regardless of how many campers register or our actual revenue. Paying the minimum
-                    guarantee allows MUUSA to retain exclusive rights to the Trout Lodge property.We have
-                    not met the minimum guaranteein some years, or met it by only a very small margin, even
-                    though camp has been nearly full. This is because Trout Lodge bases the minimum
-                    guarantee on a higher occupancy rate (i.e., more campers per room) than we achieve.</p>
-                <p>The YMCA of the Ozarks has funding to provide a limited number of scholarships to MUUSA
-                    campers who may not otherwise be able to afford a camp experience. These scholarships do
-                    not go directly to the camper or MUUSA. Rather, they operate as a percentage discount
-                    off of what Trout Lodge would otherwise charge MUUSA for that camper's stay. However,
-                    the YMCA provides these discounts only once MUUSA's minimum guarantee is met. In other
-                    words, YMCA scholarships only benefit MUUSA campers to the extent that our enrollment is
-                    high enough to exceed our minimum guarantee with Trout Lodge. Even if we exceed the
-                    guarantee by more than the value of the scholarships awarded, YMCA scholarships do not
-                    cover the other MUUSA expenses paid for by our camp fees.</p>
-                <p>MUUSA has its own scholarship fund that we use to provide additional assistance with camp
-                    costs not covered by YMCA scholarships. These funds come mainly from voluntary donations
-                    from MUUSA campers and through fundraising. MUUSA's main scholarship fundraising sources
-                    have historically included donations paid as part of the registration process, a portion
-                    of MUUSA bookstore profits (if any), and art show sales.</p>
-                <p>Each year, the Treasurer and Registrar will review the balance in the Scholarship Fund as
-                    well as MUUSA's projected enrollment and revenue. They will then recommend an amount to
-                    be included in the budget for scholarship awards. The amount available for distribution
-                    will be included in the budget approved by the Planning Council, and will be finalized
-                    before scholarship awards are communicated to campers.</p>
+                <p>MUUSA scholarships provide a discount off of the fees that MUUSA would otherwise charge a camper for
+                    their stay. Because MUUSA has to cover its financial obligations, the money that we are not
+                    collecting from campers who receive scholarships must be made up from some other source. Scholarship
+                    funds may come from one primary source: MUUSA's own scholarship fund.</p>
+                <p>Campers pay MUUSA for their week at camp. The revenue we receive from campers covers our fees to
+                    Indiana University and UUCB (for food, lodging, staff, etc.) and MUUSA expenses (for program staff,
+                    supplies, insurance, etc.).</p>
+                <p>MUUSA's scholarship funds come mainly from voluntary donations from MUUSA campers and through
+                    fundraising. MUUSA's main scholarship fundraising sources have historically included donations paid
+                    as part of the registration process, a portion of MUUSA bookstore profits (if any), and art show
+                    sales.</p>
+                <p>Each year, the Treasurer and Registrar will review the balance in the Scholarship Fund as well as
+                    MUUSA's projected enrollment and revenue. They will then recommend an amount to be included in the
+                    budget for scholarship awards. The amount available for distribution will be included in the budget
+                    approved by the Planning Council, and will be finalized before scholarship awards are communicated
+                    to campers.
+                </p>
             </div>
         </div>
     </div>

@@ -67,14 +67,14 @@
                             Camp Information
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuCampInfo">
-                            @if($year->is_brochure)
-                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">
-                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider"/>
-                                </li>
-                            @endif
+{{--                            @if($year->is_brochure)--}}
+{{--                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">--}}
+{{--                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    <hr class="dropdown-divider"/>--}}
+{{--                                </li>--}}
+{{--                            @endif--}}
                             <li><a href="{{ route('housing') }}" class="dropdown-item"><i class="fas fa-bath fa-fw"></i>
                                     Housing Options</a>
                             </li>
@@ -92,11 +92,11 @@
                                     <i class="fas fa-microphone fa-fw"></i> Theme Speakers
                                 </a>
                             </li>
-{{--                            <li>--}}
-{{--                                <a href="{{ route('cost') }}" class="dropdown-item">--}}
-{{--                                    <i class="fas fa-calculator fa-fw"></i> Cost Calculator--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            <li>
+                                <a href="{{ route('cost') }}" class="dropdown-item">
+                                    <i class="fas fa-calculator fa-fw"></i> Cost Calculator
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('scholarship') }}" class="dropdown-item">
                                     <i class="fas fa-universal-access fa-fw"></i> Scholarships
@@ -571,13 +571,13 @@
                         <li><a class="text-white underlined-link"
                                href="{{ route('programs') }}">Programs</a>
                         </li>
-                        <li>
-                            <a class="text-white underlined-link" href="{{ route('workshops.display') }}">Workshop
-                                List</a>
-                        </li>
+{{--                        <li>--}}
+{{--                            <a class="text-white underlined-link" href="{{ route('workshops.display') }}">Workshop--}}
+{{--                                List</a>--}}
+{{--                        </li>--}}
                         <li>
                             <a class="text-white underlined-link" href="{{ route('themespeaker') }}">Theme
-                                Speaker</a>
+                                Speakers</a>
                         </li>
                         <li><a class="text-white underlined-link" href="{{ route('cost') }}">Cost
                                 Calculator</a>
@@ -586,10 +586,10 @@
                             <a class="text-white underlined-link"
                                href="{{ route('scholarship') }}">Scholarships</a>
                         </li>
-                        <li>
-                            <a class="text-white underlined-link"
-                               href="{{ route('workshops.excursions') }}">Excursions</a>
-                        </li>
+{{--                        <li>--}}
+{{--                            <a class="text-white underlined-link"--}}
+{{--                               href="{{ route('workshops.excursions') }}">Excursions</a>--}}
+{{--                        </li>--}}
                         <li>
                             <a class="text-white underlined-link" href="{{ route('termsofservice') }}">Terms of
                                 Service</a>
