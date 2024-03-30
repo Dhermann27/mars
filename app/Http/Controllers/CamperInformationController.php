@@ -48,7 +48,7 @@ class CamperInformationController extends Controller
                 'phonenbr.*' => 'nullable|regex:/^\d{3}-\d{3}-\d{4}$/',
                 'birthdate.*' => 'required|regex:/^\d{4}-\d{2}-\d{2}$/',
                 'program_id.*' => 'exists:programs,id',
-                'roommate.*' => 'max:255',
+//                'roommate.*' => 'max:255',
                 'sponsor.*' => 'max:255',
                 'church_id.*' => 'exists:churches,id',
                 'foodoption_id.*' => 'exists:foodoptions,id',
@@ -153,7 +153,7 @@ class CamperInformationController extends Controller
             $program_id = Programname::YoungAdultUnderAge;
         }
 
-        $camper->roommate = $request->input('roommate')[$i];
+//        $camper->roommate = $request->input('roommate')[$i];
         $camper->sponsor = $request->input('sponsor')[$i];
         $camper->church_id = $request->input('churchid')[$i];
         $camper->is_handicap = in_array($camper->id, $request->input('is_handicap') ?? array()) ? 1 : 0;

@@ -84,9 +84,9 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
     @if(count($camper->yearsattending) == 1)
         <x-form-group label="Room &amp; Meal Plan" name="room_id[]" errorKey="room_id.{{ $looper }}" type="select">
             <option value="0">No plan chosen yet</option>
-                <option value="1175" @selected(1175 == old('room_id.' . $looper,  $camper->yearsattending[0]->room_id))>
-                    Dorm Housing with full meals at dorm
-                </option>
+            <option value="1175" @selected(1175 == old('room_id.' . $looper,  $camper->yearsattending[0]->room_id))>
+                Dorm Housing with full meals at dorm
+            </option>
             <option value="1176" @selected(1176 == old('room_id.' . $looper,  $camper->yearsattending[0]->room_id))>
                 Dorm Housing with partial meals at dorm (breakfast, dinner)*
             </option>
@@ -100,15 +100,14 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
                 Commuter with no meals at dorm*
             </option>
         </x-form-group>
-        <span class="alert alert-warning p-0 m-0 small">
-            *<i>includes lunch daily at church</i>, Burt/Meyer programs required to reside in dorm
-        </span>
+        <x-slot:tooltip>*<i>includes lunch daily at church</i>, Burt/Meyer programs required to reside in dorm
+        </x-slot:tooltip>
     @endif
 
     {{--    <x-form-group label=" Roommate Name" name="roommate[]" errorKey="roommate.{{ $looper }}"--}}
-{{--                  placeholder="First and last name" :formobject="$camper">--}}
-{{--        <x-slot:tooltip>{{ __('registration.roommate') }}</x-slot:tooltip>--}}
-{{--    </x-form-group>--}}
+    {{--                  placeholder="First and last name" :formobject="$camper">--}}
+    {{--        <x-slot:tooltip>{{ __('registration.roommate') }}</x-slot:tooltip>--}}
+    {{--    </x-form-group>--}}
 
     <x-form-group label="Sponsor Name" name="sponsor[]" errorKey="sponsor.{{ $looper }}"
                   placeholder="First and last name" :formobject="$camper">
