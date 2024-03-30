@@ -21,17 +21,17 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
 
     <x-form-group label="Sex" name="sex_id[]" errorKey="sex_id.{{ $looper }}" type="select">
         <option value="0">Choose sex</option>
-        <option value="1000" @selected(old('sex_id.' . $looper, $camper->sex_id))>Male</option>
-        <option value="1001" @selected(old('sex_id.' . $looper, $camper->sex_id))>Female</option>
-        <option value="1002" @selected(old('sex_id.' . $looper, $camper->sex_id))>Intersex</option>
-        <option value="1003" @selected(old('sex_id.' . $looper, $camper->sex_id))>Something Else</option>
+        <option value="1000" @selected(1000 == old('sex_id.' . $looper, $camper->sex_id))>Male</option>
+        <option value="1001" @selected(1001 == old('sex_id.' . $looper, $camper->sex_id))>Female</option>
+        <option value="1002" @selected(1002 == old('sex_id.' . $looper, $camper->sex_id))>Intersex</option>
+        <option value="1003" @selected(1003 == old('sex_id.' . $looper, $camper->sex_id))>Something Else</option>
     </x-form-group>
 
     <x-form-group label="Gender Identity" name="gender_id[]" errorKey="gender_id.{{ $looper }}" type="select">
         <option value="0">Choose gender identity</option>
-        <option value="1000" @selected(old('gender_id.' . $looper, $camper->gender_id))>Cisgender</option>
-        <option value="1001" @selected(old('gender_id.' . $looper, $camper->gender_id))>Transgender</option>
-        <option value="1003" @selected(old('gender_id.' . $looper, $camper->gender_id))>Something Else</option>
+        <option value="1000" @selected(1000 == old('gender_id.' . $looper, $camper->gender_id))>Cisgender</option>
+        <option value="1001" @selected(1001 == old('gender_id.' . $looper, $camper->gender_id))>Transgender</option>
+        <option value="1003" @selected(1003 == old('gender_id.' . $looper, $camper->gender_id))>Something Else</option>
     </x-form-group>
 
     <x-form-group label="First Name" name="firstname[]" errorKey="firstname.{{ $looper }}" :formobject="$camper"
