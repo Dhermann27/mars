@@ -74,17 +74,17 @@
             <h6 class="dropdown-header"><strong>Opens {{ $year->brochure_date }}</strong></h6>
         @endif
     @endif
-    <li class="stepper-step">
-        <x-steps.header url="roomselection" :stepdata="$stepdata['isRoomsSelected']" icon="bed" :is-large="$isLarge"
-                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">
-            Room Selection
-        </x-steps.header>
-        <div class="stepper-content">
-            @if($isLarge)
-                <span>Select a room where you will stay and see who your neighbors might be.</span>
-            @endif
-        </div>
-    </li>
+{{--    <li class="stepper-step">--}}
+{{--        <x-steps.header url="roomselection" :stepdata="$stepdata['isRoomsSelected']" icon="bed" :is-large="$isLarge"--}}
+{{--                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">--}}
+{{--            Room Selection--}}
+{{--        </x-steps.header>--}}
+{{--        <div class="stepper-content">--}}
+{{--            @if($isLarge)--}}
+{{--                <span>Select a room where you will stay and see who your neighbors might be.</span>--}}
+{{--            @endif--}}
+{{--        </div>--}}
+{{--    </li>--}}
     <li class="stepper-step">
         <x-steps.header url="workshopchoice" :stepdata="$stepdata['workshopsSelected']" operation="gt"
                         comparator="0" icon="rocket" :is-large="$isLarge" is-required="false"
@@ -104,42 +104,42 @@
             @endif
         </div>
     </li>
-    <li class="stepper-step">
-        <x-steps.header url="nametag" :stepdata="$stepdata['nametagsCustomized']" operation="gt"
-                        comparator="0" icon="id-card" :is-large="$isLarge" is-required="false"
-                        :tooltip="$year->is_brochure == 1 ? __('registration.completeabove') : __('registration.notopenyet')">
-            Nametag Customization
-        </x-steps.header>
-        <div class="stepper-content">
-            @if($isLarge)
-                <span>
-                    Customize the nametags that you'll receive during check-in. <strong>Optional.</strong>
-                </span>
-            @elseif($stepdata['nametagsCustomized'] != null)
-                <span class="small">
-                  {{ $stepdata['nametagsCustomized'] . ' nametags' . ($stepdata['nametagsCustomized']!=1 ? 's' : '') }}
-                    decorated
-                </span>
-            @endif
-        </div>
-    </li>
-    <li class="stepper-step">
-        <x-steps.header url="medicalresponse" :stepdata="$stepdata['medicalResponsesNeeded']" operation="eq"
-                        comparator="0" icon="clipboard-medical" :is-large="$isLarge"
-                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">
-            Medical Responses
-        </x-steps.header>
-        <div class="stepper-content">
-            @if($isLarge)
-                <span>
-              All people under 18 years of age must have their parent or guardian fill out medical forms.
-          </span>
-            @elseif($stepdata['medicalResponsesNeeded'] != null)
-                <span class="small">
-                  {{ $stepdata['medicalResponsesNeeded'] . ' response' . ($stepdata['medicalResponsesNeeded']!=1 ? 's' : '') }}
-                    needed
-                </span>
-            @endif
-        </div>
-    </li>
+{{--    <li class="stepper-step">--}}
+{{--        <x-steps.header url="nametag" :stepdata="$stepdata['nametagsCustomized']" operation="gt"--}}
+{{--                        comparator="0" icon="id-card" :is-large="$isLarge" is-required="false"--}}
+{{--                        :tooltip="$year->is_brochure == 1 ? __('registration.completeabove') : __('registration.notopenyet')">--}}
+{{--            Nametag Customization--}}
+{{--        </x-steps.header>--}}
+{{--        <div class="stepper-content">--}}
+{{--            @if($isLarge)--}}
+{{--                <span>--}}
+{{--                    Customize the nametags that you'll receive during check-in. <strong>Optional.</strong>--}}
+{{--                </span>--}}
+{{--            @elseif($stepdata['nametagsCustomized'] != null)--}}
+{{--                <span class="small">--}}
+{{--                  {{ $stepdata['nametagsCustomized'] . ' nametags' . ($stepdata['nametagsCustomized']!=1 ? 's' : '') }}--}}
+{{--                    decorated--}}
+{{--                </span>--}}
+{{--            @endif--}}
+{{--        </div>--}}
+{{--    </li>--}}
+{{--    <li class="stepper-step">--}}
+{{--        <x-steps.header url="medicalresponse" :stepdata="$stepdata['medicalResponsesNeeded']" operation="eq"--}}
+{{--                        comparator="0" icon="clipboard-medical" :is-large="$isLarge"--}}
+{{--                        :tooltip="$year->is_brochure ? __('registration.completeabove') : __('registration.notopenyet')">--}}
+{{--            Medical Responses--}}
+{{--        </x-steps.header>--}}
+{{--        <div class="stepper-content">--}}
+{{--            @if($isLarge)--}}
+{{--                <span>--}}
+{{--              All people under 18 years of age must have their parent or guardian fill out medical forms.--}}
+{{--          </span>--}}
+{{--            @elseif($stepdata['medicalResponsesNeeded'] != null)--}}
+{{--                <span class="small">--}}
+{{--                  {{ $stepdata['medicalResponsesNeeded'] . ' response' . ($stepdata['medicalResponsesNeeded']!=1 ? 's' : '') }}--}}
+{{--                    needed--}}
+{{--                </span>--}}
+{{--            @endif--}}
+{{--        </div>--}}
+{{--    </li>--}}
 </ul>

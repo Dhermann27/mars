@@ -13,10 +13,25 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
         <option value="0">Choose pronouns</option>
         @foreach($pronouns as $pronoun)
             <option value="{{ $pronoun->id }}"
-                @selected($pronoun->id == old('pronoun_id.' . $looper, $camper->pronoun_id))>
+                    @selected($pronoun->id == old('pronoun_id.' . $looper, $camper->pronoun_id))>
                 {{ $pronoun->name }}
             </option>
         @endforeach
+    </x-form-group>
+
+    <x-form-group label="Sex" name="sex_id[]" errorKey="sex_id.{{ $looper }}" type="select">
+        <option value="0">Choose sex</option>
+        <option value="1000" @selected(old('sex_id.' . $looper, $camper->sex_id))>Male</option>
+        <option value="1001" @selected(old('sex_id.' . $looper, $camper->sex_id))>Female</option>
+        <option value="1002" @selected(old('sex_id.' . $looper, $camper->sex_id))>Intersex</option>
+        <option value="1003" @selected(old('sex_id.' . $looper, $camper->sex_id))>Something Else</option>
+    </x-form-group>
+
+    <x-form-group label="Gender Identity" name="gender_id[]" errorKey="gender_id.{{ $looper }}" type="select">
+        <option value="0">Choose gender identity</option>
+        <option value="1000" @selected(old('gender_id.' . $looper, $camper->gender_id))>Cisgender</option>
+        <option value="1001" @selected(old('gender_id.' . $looper, $camper->gender_id))>Transgender</option>
+        <option value="1003" @selected(old('gender_id.' . $looper, $camper->gender_id))>Something Else</option>
     </x-form-group>
 
     <x-form-group label="First Name" name="firstname[]" errorKey="firstname.{{ $looper }}" :formobject="$camper"
@@ -102,7 +117,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
     <x-form-group label="Food Restriction" name="foodoption_id[]" errorKey="foodoption_id.{{ $looper }}" type="select">
         @foreach($foodoptions as $foodoption)
             <option value="{{ $foodoption->id }}"
-                @selected($foodoption->id == old('foodoption_id.' . $looper, $camper->foodoption_id))>
+                    @selected($foodoption->id == old('foodoption_id.' . $looper, $camper->foodoption_id))>
                 {{ $foodoption->name }}
             </option>
         @endforeach

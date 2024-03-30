@@ -22,6 +22,8 @@ class CamperInformationController extends Controller
     private const LAST_PROGRAM_SELECT = '(SELECT program_id FROM yearsattending yap, years y WHERE yap.year_id=y.id AND yearsattending.camper_id=yap.camper_id AND y.year<? ORDER BY year DESC LIMIT 1) lastprogram_id';
 
     private $messages = ['pronoun_id.*.exists' => 'Please choose a preferred pronoun.',
+        'sex_id.*.min' => 'Please choose a sex.',
+        'gender_id.*.min' => 'Please choose a gender identity.',
         'firstname.*.required' => 'Please enter a first name.',
         'lastname.*.required' => 'Please enter a last name.',
         'email.*.email' => 'Please enter a valid email address.',
@@ -38,6 +40,8 @@ class CamperInformationController extends Controller
             $this->validate($request, [
                 'days.*' => 'between:0,8',
                 'pronoun_id.*' => 'exists:pronouns,id',
+                'sex_id.*' => 'min:1',
+                'gender_id.*' => 'min:1',
                 'firstname.*' => 'required|max:255',
                 'lastname.*' => 'required|max:255',
                 'email.*' => 'nullable|email|max:255|distinct',
@@ -122,6 +126,8 @@ class CamperInformationController extends Controller
     private function upsertCamper(Request $request, Camper $camper, $i)
     {
         $camper->pronoun_id = $request->input('pronoun_id')[$i];
+        $camper->sex_id = $request->input('sex_id')[$i];
+        $camper->gender_id = $request->input('gender_id')[$i];
         $camper->firstname = $request->input('firstname')[$i];
         $camper->lastname = $request->input('lastname')[$i];
 

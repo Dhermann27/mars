@@ -20,13 +20,14 @@
 @section('content')
     <x-navtabs :tabs="$timeslots" option="name">
         @foreach($timeslots as $timeslot)
-            <div role="tabpanel" class="tab-pane fade {{ $loop->index == 0 ? 'active show' : ''}}"
-                 aria-expanded="{{ $loop->index ? 'true' : 'false' }}" id="tab-{{ $timeslot->id }}">
-                <div class="note note-info text-black m-3">Workshop Time: {{ $timeslot->start_time->format('g:i A') }}
-                    - {{ $timeslot->end_time->format('g:i A') }}</div>
+            @if($workshops->has($timeslot->id))
+                <div role="tabpanel" class="tab-pane fade {{ $loop->index == 0 ? 'active show' : ''}}"
+                     aria-expanded="{{ $loop->index ? 'true' : 'false' }}" id="tab-{{ $timeslot->id }}">
+                    <div class="note note-info text-black m-3">Workshop
+                        Time: {{ $timeslot->start_time->format('g:i A') }}
+                        - {{ $timeslot->end_time->format('g:i A') }}</div>
 
-                <div class="container px-3 py-5 px-lg-4 py-lg-6 bg-grey mb-5">
-                    @if($workshops->has($timeslot->id))
+                    <div class="container px-3 py-5 px-lg-4 py-lg-6 bg-grey mb-5">
                         @foreach($workshops->get($timeslot->id) as $workshop)
                             <x-layouts.blog :title="$workshop->name">
 
@@ -42,9 +43,9 @@
                                 <p>{!! $workshop->blurb !!}</p>
                             </x-layouts.blog>
                         @endforeach
-                    @endif
+                    </div>
                 </div>
-            </div>
+            @endif
         @endforeach
     </x-navtabs>
 @endsection
