@@ -17,41 +17,59 @@
         <h3>Registration rates</h3>
         <table>
             <tr>
-                <td>Adult: Dorm Housing + Full Meals at McNutt</td>
+                <td>Adults: Dorm Housing with full meals at dorm*</td>
                 <td>$500</td>
             </tr>
             <tr>
-                <td>Burt, Meyer, Cratty Dorm Housing+ Full Meals at McNutt</td>
+                <td>YA, Burt, Meyer, Cratty: Dorm Housing with full meals at dorm</td>
                 <td>$360</td>
             </tr>
             <tr>
-                <td>Adults Dorm Housing + breakfast and dinner at McNutt*</td>
+                <td>Adults: Dorm Housing with partial meals at dorm (breakfast, dinner)*</td>
                 <td>$500</td>
             </tr>
             <tr>
-                <td>YA or Cratty: Dorm Housing + breakfast and dinner at McNutt*</td>
+                <td>YA or Cratty: Dorm Housing with partial meals at dorm (breakfast, dinner)*</td>
                 <td>$360</td>
             </tr>
             <tr>
-                <td>Adults Commuter with breakfast and dinner at McNutt*</td>
+                <td>Adults: Commuter with breakfast, dinner at Dorm*</td>
                 <td>$300</td>
             </tr>
             <tr>
-                <td>YA or Cratty Commuter + breakfast and dinner at McNutt*</td>
+                <td>YA or Cratty: Commuter with breakfast, dinner at Dorm*</td>
                 <td>$215</td>
             </tr>
             <tr>
-                <td>Adult Commuter with minimum meals (lunch daily at church)</td>
-                <td>$230</td>
+                <td>Adults: Commuter with dinner at Dorm*</td>
+                <td>$250</td>
             </tr>
             <tr>
-                <td>YA or Cratty Commuter with minimum meals (lunch daily at church)</td>
+                <td>YA or Cratty: Commuter with dinner at Dorm*</td>
                 <td>$175</td>
             </tr>
+            <tr>
+                <td>Adults: Commuter with no meals at Dorm*</td>
+                <td>$210</td>
+            </tr>
+            <tr>
+                <td>YA or Cratty: Commuter with no meals at Dorm*</td>
+                <td>$150</td>
+            </tr>
+            <tr>
+                <td>Children under 6 with breakfast, dinner at Dorm*</td>
+                <td>$100</td>
+            </tr>
+            <tr>
+                <td>Children under 6 with dinner at Dorm*</td>
+                <td>$50</td>
+            </tr>
+            <tr>
+                <td>Children under 6 with no meals at Dorm*</td>
+                <td>Free</td>
+            </tr>
         </table>
-        <p>*All options with breakfast and dinner only at McNutt include lunch daily at the church.</p>
-        <p>No charge for meals for children under the age of 6.</p>
-        <p>We ask that you pay when you register, if you are at all able!</p>
+        <p>*<i>includes lunch daily at church</i></p>
 
         {{--        <div class="note note-warning text-black m-3">--}}
         {{--            Warning: this calculator only provides an estimate of your camp cost and your actual fees--}}

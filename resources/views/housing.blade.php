@@ -36,8 +36,8 @@
                     arrangements. Lunch will be offered at UUCB, or you can opt for meals at the IU dining hall where
                     our residential youth programs (junior high through young adult) will be. (We will ask you to choose
                     at registration so everyone can plan with good numbers.) Ample parking should be available at each
-                    location, and carpooling is encouraged. Click here to reserve your room: Midwest UU Summer Assembly
-                    (hilton.com)</p>
+                    location, and carpooling is encouraged. <a href="https://www.hilton.com/en/attend-my-event/bmgnwht-msa-be71305c-03ce-4ac2-8472-123c59ae3355/">Click here to reserve your room: Midwest UU Summer Assembly
+                    (hilton.com)</a></p>
 
                 <p>Bloomington has a variety of other hotels if this hotel does not fit your needs. Note that activities
                     for adults and children 6th grade and younger will be centered at UUCB, which is at the corner of

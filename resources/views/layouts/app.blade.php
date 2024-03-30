@@ -82,11 +82,11 @@
                                     <i class="fas fa-sitemap fa-fw"></i> Programs
                                 </a>
                             </li>
-{{--                            <li>--}}
-{{--                                <a href="{{ route('workshops.display') }}" class="dropdown-item">--}}
-{{--                                    <i class="fas fa-map fa-fw"></i> Workshop List--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            <li>
+                                <a href="{{ route('workshops.display') }}" class="dropdown-item">
+                                    <i class="fas fa-map fa-fw"></i> Workshop List
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('themespeaker') }}" class="dropdown-item">
                                     <i class="fas fa-microphone fa-fw"></i> Theme Speakers
@@ -102,11 +102,11 @@
                                     <i class="fas fa-universal-access fa-fw"></i> Scholarships
                                 </a>
                             </li>
-{{--                            <li>--}}
-{{--                                <a href="{{ route('workshops.excursions') }}" class="dropdown-item">--}}
-{{--                                    <i class="fas fa-binoculars fa-fw"></i> Excursions--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            <li>
+                                <a href="{{ route('workshops.excursions') }}" class="dropdown-item">
+                                    <i class="fas fa-binoculars fa-fw"></i> Excursions
+                                </a>
+                            </li>
                             {{--                            <li>--}}
                             {{--                                <hr class="dropdown-divider"/>--}}
                             {{--                            </li>--}}
@@ -571,10 +571,10 @@
                         <li><a class="text-white underlined-link"
                                href="{{ route('programs') }}">Programs</a>
                         </li>
-{{--                        <li>--}}
-{{--                            <a class="text-white underlined-link" href="{{ route('workshops.display') }}">Workshop--}}
-{{--                                List</a>--}}
-{{--                        </li>--}}
+                        <li>
+                            <a class="text-white underlined-link" href="{{ route('workshops.display') }}">Workshop
+                                List</a>
+                        </li>
                         <li>
                             <a class="text-white underlined-link" href="{{ route('themespeaker') }}">Theme
                                 Speakers</a>
@@ -586,10 +586,10 @@
                             <a class="text-white underlined-link"
                                href="{{ route('scholarship') }}">Scholarships</a>
                         </li>
-{{--                        <li>--}}
-{{--                            <a class="text-white underlined-link"--}}
-{{--                               href="{{ route('workshops.excursions') }}">Excursions</a>--}}
-{{--                        </li>--}}
+                        <li>
+                            <a class="text-white underlined-link"
+                               href="{{ route('workshops.excursions') }}">Excursions</a>
+                        </li>
                         <li>
                             <a class="text-white underlined-link" href="{{ route('termsofservice') }}">Terms of
                                 Service</a>

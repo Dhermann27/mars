@@ -15,7 +15,7 @@
                 &quot;MUUSA&quot; includes the Midwest Unitarian Universalist Summer Assembly, Unitarian
                 Universalist, Inc., and all of its officers, planning council members, members, staff, and
                 volunteers. The &quot;Host Sites&quot; include the owners and operators of any locations used for
-                MUUSA {{ $year->year }}, including but not limited to the DuPage Unitarian Universalist Church and any
+                MUUSA {{ $year->year }}, including but not limited to the Bloomington Unitarian Universalist Church and any
                 hotels or other sites rented or leased by MUUSA.</p>
             <p>
                 By submitting your registration for MUUSA {{ $year->year }}, you agree to the following terms on behalf of
