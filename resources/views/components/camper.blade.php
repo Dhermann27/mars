@@ -83,6 +83,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
 
     @if(count($camper->yearsattending) == 1)
         <x-form-group label="Room &amp; Meal Plan" name="room_id[]" errorKey="room_id.{{ $looper }}" type="select">
+            <x-slot:tooltip>*<i>includes lunch daily at church</i>, Burt/Meyer programs required to reside in dorm</x-slot:tooltip>
             <option value="0">No plan chosen yet</option>
             <option value="1175" @selected(1175 == old('room_id.' . $looper,  $camper->yearsattending[0]->room_id))>
                 Dorm Housing with full meals at dorm
@@ -100,8 +101,8 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
                 Commuter with no meals at dorm*
             </option>
         </x-form-group>
-        <x-slot:tooltip>*<i>includes lunch daily at church</i>, Burt/Meyer programs required to reside in dorm
-        </x-slot:tooltip>
+    @else
+        <x-form-group type="hidden" name="room_id[]" value="0"/>
     @endif
 
     {{--    <x-form-group label=" Roommate Name" name="roommate[]" errorKey="roommate.{{ $looper }}"--}}
