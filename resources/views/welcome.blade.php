@@ -62,11 +62,11 @@
             <div class="container w-lg-70">
                 <div class="row mt-2">
                     <div class="col-lg-6 d-sm-flex">
-                        {{--                        <a class="border border-2 border-bottom-0 border-primary rounded-top"--}}
-                        {{--                           href="{{ route('brochure') }}">--}}
-                        {{--                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"--}}
-                        {{--                                 alt="Web Brochure cover">--}}
-                        {{--                        </a>--}}&nbsp;
+                        <a class="border border-2 border-bottom-0 border-primary rounded-top"
+                           href="{{ route('brochure') }}">
+                            <img id="brochureimg" class="card-img-top" src="/images/brochure.png"
+                                 alt="Web Brochure cover">
+                        </a>
                     </div>
                     <div class="col-lg-6 d-sm-flex align-content-center d-flex align-items-center">
                         <div class="mr-auto py-0 pl-lg-5 my-3 my-md-0">

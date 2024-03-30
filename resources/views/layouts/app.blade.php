@@ -67,14 +67,14 @@
                             Camp Information
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="menuCampInfo">
-{{--                            @if($year->is_brochure)--}}
-{{--                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">--}}
-{{--                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>--}}
-{{--                                </li>--}}
-{{--                                <li>--}}
-{{--                                    <hr class="dropdown-divider"/>--}}
-{{--                                </li>--}}
-{{--                            @endif--}}
+                            @if($year->is_brochure)
+                                <li class="mt-2"><h5><a href="{{ route('brochure') }}" class="dropdown-item">
+                                            <i class="fas fa-desktop fa-fw"></i> Web Brochure</a></h5>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider"/>
+                                </li>
+                            @endif
                             <li><a href="{{ route('housing') }}" class="dropdown-item"><i class="fas fa-bath fa-fw"></i>
                                     Housing Options</a>
                             </li>
