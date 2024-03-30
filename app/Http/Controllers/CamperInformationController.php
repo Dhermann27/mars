@@ -167,8 +167,11 @@ class CamperInformationController extends Controller
                 $ya->days = $request->input('days')[$i];
             }
             $ya->program_id = $program_id;
+
             if ($request->input('room_id')[$i] != 0) $room_id = $request->input('room_id')[$i];
             if($program_id == Programname::Burt || $program_id == Programname::Meyer) $room_id = 1175;
+            $ya->room_id = $room_id;
+
             $ya->save();
         }
 
