@@ -10,7 +10,7 @@
 
 @section('content')
 
-    <x-layouts.register :stepdata="$stepdata" step="4" previous="camperinfo" next="#">
+    <x-layouts.register :stepdata="$stepdata" step="4" previous="camperinfo" next="workshopchoice">
         <div class="display-6 mt-3 border-bottom text-end">Your Balance</div>
         <form id="muusapayment" class="form-horizontal" role="form" method="POST"
               action="{{ route('payment.store', ['id' => request()->route('id')]) }}">
