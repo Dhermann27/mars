@@ -3,7 +3,7 @@
 aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}">
     <x-form-group type="hidden" name="id[]" errorKey="id.{{ $looper }}" value="{{ $camper->id }}"/>
 
-    @if(count($camper->yearsattending) == 1 && Gate::allows('is-council'))
+    @if(Gate::allows('is-council'))
         <x-form-group label="Days Attending" name="days[]" errorKey="days.{{ $looper }}" is-adminonly="true"
                       class="days-mask" value="{{ $camper->yearsattending[0]->days ?? 0}}"/>
     @endif
