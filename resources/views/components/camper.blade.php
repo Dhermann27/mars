@@ -77,13 +77,11 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
                 </option>
             @endforeach
         </x-form-group>
-    @else
-        <x-form-group type="hidden" name="program_id[]" value="{{ \App\Enums\Programname::Adult }}"/>
-    @endif
 
-    @if(count($camper->yearsattending) == 1)
+
         <x-form-group label="Room &amp; Meal Plan" name="room_id[]" errorKey="room_id.{{ $looper }}" type="select">
-            <x-slot:tooltip>*<i>includes lunch daily at church</i>, Burt/Meyer programs required to reside in dorm</x-slot:tooltip>
+            <x-slot:tooltip>*includes lunch daily at church, Burt/Meyer programs required to reside in dorm
+            </x-slot:tooltip>
             <option value="0">No plan chosen yet</option>
             <option value="1175" @selected(1175 == old('room_id.' . $looper,  $camper->yearsattending[0]->room_id))>
                 Dorm Housing with full meals at dorm
@@ -102,6 +100,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
             </option>
         </x-form-group>
     @else
+        <x-form-group type="hidden" name="program_id[]" value="{{ \App\Enums\Programname::Adult }}"/>
         <x-form-group type="hidden" name="room_id[]" value="0"/>
     @endif
 
