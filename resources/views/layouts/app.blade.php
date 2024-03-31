@@ -360,9 +360,9 @@
                     @else
                         <a class="btn btn-lg btn-secondary px-3 me-2" href="{{ route('login') }}"
                            role="button">Login</a>
-                        {{--                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">--}}
-                        {{--                            Get Started--}}
-                        {{--                        </a>--}}
+                        <a class="btn btn-lg btn-primary" href="{{ route('register') }}" role="button">
+                            Get Started
+                        </a>
                     @endif
 
                 </div>
@@ -648,20 +648,20 @@
                                 <hr/>
                                 <h6>Opens {{ $year->brochure_date }}</h6>
                                 <li>Workshop Preferences</li>
-                                <li>Room Selection</li>
-                                <li>Nametag Customization</li>
-                                <li>Medical Response(s)</li>
+{{--                                <li>Room Selection</li>--}}
+{{--                                <li>Nametag Customization</li>--}}
+{{--                                <li>Medical Response(s)</li>--}}
                             @else
                                 <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
                                         Preferences</a></li>
-                                <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room
-                                        Selection</a></li>
-                                <li><a class="text-white underlined-link"
-                                       href="{{ route('nametag.index') }}">Nametags</a>
-                                </li>
-                                <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical
-                                        Response(s)</a>
-                                </li>
+{{--                                <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room--}}
+{{--                                        Selection</a></li>--}}
+{{--                                <li><a class="text-white underlined-link"--}}
+{{--                                       href="{{ route('nametag.index') }}">Nametags</a>--}}
+{{--                                </li>--}}
+{{--                                <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical--}}
+{{--                                        Response(s)</a>--}}
+{{--                                </li>--}}
                             @endif
                         </ul>
                     @endcan
@@ -676,8 +676,8 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         {{ $year->year }} &copy; Midwest Unitarian Universalist Summer Assembly. Design by <a
-            href="https://mdbootstrap.com/" target="_blank"
-            class="text-white underlined-link">MDBootstrap.com</a>.
+                href="https://mdbootstrap.com/" target="_blank"
+                class="text-white underlined-link">MDBootstrap.com</a>.
     </div>
     <!-- Copyright -->
 </footer>
