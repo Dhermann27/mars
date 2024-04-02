@@ -43,30 +43,30 @@ Route::get('/register', [DashboardController::class, 'index'])->name('register')
 Route::get('/admin', [DashboardController::class, 'admin'])->name('admin')->middleware(['can:is-council']);
 
 Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
-//    Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('registration_on');
+    Route::get('', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('registration_on');
     Route::get('/{id?}', [CamperSelectionController::class, 'index'])->name('camperselect.index')->middleware('can:is-council');
-//    Route::post('/', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('registration_on');
+    Route::post('/', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('registration_on');
     Route::post('/{id?}', [CamperSelectionController::class, 'store'])->name('camperselect.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'household', 'middleware' => 'auth'], function () {
-//    Route::get('', [HouseholdController::class, 'index'])->name('household.index')->middleware('registration_on');
+    Route::get('', [HouseholdController::class, 'index'])->name('household.index')->middleware('registration_on');
     Route::get('/{id?}', [HouseholdController::class, 'index'])->name('household.index')->middleware('can:is-council');
-//    Route::post('', [HouseholdController::class, 'store'])->name('household.store')->middleware('registration_on');
+    Route::post('', [HouseholdController::class, 'store'])->name('household.store')->middleware('registration_on');
     Route::post('/{id?}', [HouseholdController::class, 'store'])->name('household.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'camperinfo', 'middleware' => 'auth'], function () {
-//    Route::get('', [CamperInformationController::class, 'index'])->name('camperinfo.index')->middleware('registration_on');
+    Route::get('', [CamperInformationController::class, 'index'])->name('camperinfo.index')->middleware('registration_on');
     Route::get('/{id?}', [CamperInformationController::class, 'index'])->name('camperinfo.index')->middleware('can:is-council');
-//    Route::post('/', [CamperInformationController::class, 'store'])->name('camperinfo.store')->middleware('registration_on');
+    Route::post('/', [CamperInformationController::class, 'store'])->name('camperinfo.store')->middleware('registration_on');
     Route::post('/{id?}', [CamperInformationController::class, 'store'])->name('camperinfo.store')->middleware('can:is-super');
 });
 
 Route::group(['prefix' => 'payment', 'middleware' => 'auth'], function () {
-//    Route::get('', [PaymentController::class, 'index'])->name('payment.index')->middleware('registration_on');
+    Route::get('', [PaymentController::class, 'index'])->name('payment.index')->middleware('registration_on');
     Route::get('/{id?}', [PaymentController::class, 'index'])->name('payment.index')->middleware('can:is-council');
-//    Route::post('', [PaymentController::class, 'store'])->name('payment.store')->middleware('registration_on');
+    Route::post('', [PaymentController::class, 'store'])->name('payment.store')->middleware('registration_on');
     Route::post('/{id?}', [PaymentController::class, 'write'])->name('payment.store')->middleware('can:is-super');
 });
 
@@ -81,9 +81,9 @@ Route::group(['prefix' => 'payment', 'middleware' => 'auth'], function () {
 //});
 
 Route::group(['prefix' => 'workshopchoice', 'middleware' => 'auth'], function () {
-//    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('brochure_on');
+    Route::get('/', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('brochure_on');
     Route::get('/{id?}', [WorkshopController::class, 'index'])->name('workshopchoice.index')->middleware('can:is-council');
-//    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware(['registration_on', 'can:has-paid']);
+    Route::post('/', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware(['registration_on', 'can:has-paid']);
     Route::post('/{id?}', [WorkshopController::class, 'store'])->name('workshopchoice.store')->middleware('can:is-super');
 });
 

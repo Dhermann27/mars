@@ -5,7 +5,7 @@
 @endsection
 
 @section('heading')
-    These single-day trips off the YMCA of the Ozarks campus are a blast every year!
+    These single-day trips off-campus are a blast every year!
 @endsection
 
 @section('image')
