@@ -41,14 +41,14 @@
                     <i class="fas fa-rocket"></i>
                 </a>
             </li>
-            <li class="nav-item mx-5">
-                <i id="room-success" class="fas fa-check btn-success float-end d-none"></i>
-                <a href="{{ route('roomselection.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"
-                   class="nav-link @if(preg_match('/\/roomselection/', url()->current(), $matches)) active @endif"
-                   data-toggle="tooltip" data-placement="bottom" data-container="ul#littlesteps" title="Room Selection">
-                    <i class="fas fa-bed"></i>
-                </a>
-            </li>
+{{--            <li class="nav-item mx-5">--}}
+{{--                <i id="room-success" class="fas fa-check btn-success float-end d-none"></i>--}}
+{{--                <a href="{{ route('roomselection.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"--}}
+{{--                   class="nav-link @if(preg_match('/\/roomselection/', url()->current(), $matches)) active @endif"--}}
+{{--                   data-toggle="tooltip" data-placement="bottom" data-container="ul#littlesteps" title="Room Selection">--}}
+{{--                    <i class="fas fa-bed"></i>--}}
+{{--                </a>--}}
+{{--            </li>--}}
             {{--            <li class="nav-item mx-5">--}}
             {{--                <i id="nametag-success" class="fas fa-check btn-success float-end d-none"></i>--}}
             {{--                <a href="{{ route('nametag.index', ['id' => session()->has('camper') ? session()->get('camper')->id : null]) }}"--}}

@@ -291,42 +291,42 @@
                                                 <i class="fas fa-rocket fa-fw"></i> Workshop List
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="#" class="dropdown-item disabled">
-                                                <i class="fas fa-bed fa-fw"></i> Room Selection
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="dropdown-item disabled">
-                                                <i class="fas fa-id-card fa-fw"></i> Nametags
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="dropdown-item disabled">
-                                                <i class="fas fa-envelope fa-fw"></i> Confirmation
-                                            </a>
-                                        </li>
+{{--                                        <li>--}}
+{{--                                            <a href="#" class="dropdown-item disabled">--}}
+{{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li>--}}
+{{--                                            <a href="#" class="dropdown-item disabled">--}}
+{{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li>--}}
+{{--                                            <a href="#" class="dropdown-item disabled">--}}
+{{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
                                     @else
-                                        <li>
-                                            <a href="{{ route('roomselection.index') }}" class="dropdown-item">
-                                                <i class="fas fa-bed fa-fw"></i> Room Selection
-                                            </a>
-                                        </li>
+{{--                                        <li>--}}
+{{--                                            <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
+{{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
                                         <li>
                                             <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
                                                 <i class="fas fa-rocket fa-fw"></i> Workshops
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="{{ route('nametag.index') }}" class="dropdown-item">
-                                                <i class="fas fa-id-card fa-fw"></i> Nametags
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">
-                                                <i class="fas fa-envelope fa-fw"></i> Confirmation
-                                            </a>
-                                        </li>
+{{--                                        <li>--}}
+{{--                                            <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
+{{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li>--}}
+{{--                                            <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">--}}
+{{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
                                     @endif
                                     <li>
                                         <hr class="dropdown-divider"/>
