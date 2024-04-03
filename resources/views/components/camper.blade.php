@@ -20,6 +20,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
     </x-form-group>
 
     <x-form-group label="Sex" name="sex_id[]" errorKey="sex_id.{{ $looper }}" type="select">
+        <x-slot:tooltip>{!! __('registration.pronoun') !!}</x-slot:tooltip>
         <option value="0">Choose sex</option>
         <option value="1000" @selected(1000 == old('sex_id.' . $looper, $camper->sex_id))>Male</option>
         <option value="1001" @selected(1001 == old('sex_id.' . $looper, $camper->sex_id))>Female</option>
@@ -28,6 +29,7 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
     </x-form-group>
 
     <x-form-group label="Gender Identity" name="gender_id[]" errorKey="gender_id.{{ $looper }}" type="select">
+        <x-slot:tooltip>{!! __('registration.pronoun') !!}</x-slot:tooltip>
         <option value="0">Choose gender identity</option>
         <option value="1000" @selected(1000 == old('gender_id.' . $looper, $camper->gender_id))>Cisgender</option>
         <option value="1001" @selected(1001 == old('gender_id.' . $looper, $camper->gender_id))>Transgender</option>
@@ -104,10 +106,10 @@ aria-expanded="{{ $looper == 0 ? 'true' : 'false' }}" id="tab-{{ $camper->id }}"
         <x-form-group type="hidden" name="room_id[]" value="0"/>
     @endif
 
-    {{--    <x-form-group label=" Roommate Name" name="roommate[]" errorKey="roommate.{{ $looper }}"--}}
-    {{--                  placeholder="First and last name" :formobject="$camper">--}}
-    {{--        <x-slot:tooltip>{{ __('registration.roommate') }}</x-slot:tooltip>--}}
-    {{--    </x-form-group>--}}
+    <x-form-group label=" Roommate Name" name="roommate[]" errorKey="roommate.{{ $looper }}"
+                  placeholder="First and last name" :formobject="$camper">
+        <x-slot:tooltip>{{ __('registration.roommate') }}</x-slot:tooltip>
+    </x-form-group>
 
     <x-form-group label="Sponsor Name" name="sponsor[]" errorKey="sponsor.{{ $looper }}"
                   placeholder="First and last name" :formobject="$camper">

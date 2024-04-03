@@ -6,10 +6,9 @@ return [
     'pronoun' => '<strong>Why do we ask?</strong>
                     <p>MUUSA is an intentionally inclusive community that
                                   welcomes everyone regardless of their biological sex or gender
-                                  identification. We ask that you include your pronoun
-                                  for two reasons:</p>
-                           <p>For lodging purposes, we segregate our Junior High
-                                  campers into one of two cabins in accordance with Missouri
+                                  identification.</p>
+                           <p>For lodging purposes, we segregate our campers into one of two communities
+                            in accordance with Indiana
                                   state law. Please contact us to make special arrangements for
                                   any camper who would prefer alternatives.</p>
                            <p>If you are a single camper and have not found a roommate,
@@ -20,10 +19,10 @@ return [
     'roommate' => '<p>There is no need to add family members to this field; we assume that
                    you would like to room with them unless contacted with another request.</p>',
     'specialneeds' => 'Examples: disabled accessibility, refrigeration for medicines, special diet other than vegan or gluten free, service/companion animals, accommodations for the children\'s program',
-    'sponsor' => '<strong>When is a sponsor required?</strong> 
-                   <p>A sponsor is required if the camper will be under the age  of 18 on the first
+    'sponsor' => '<strong>When is a sponsor required?</strong>
+                   <p>A sponsor is required if the camper will be under the age of 18 on the first
                    day of camp and a parent or legal guardian is not attending for the entire length
-                   of time that the camper will be on YMCA property. A sponsor is asked to attend
+                   of time that the camper will be at mini-MUUSA. A sponsor is asked to attend
                    the informational meetings in the parents\' stead, and if the camper is asked to
                    leave for any reason, the sponsor will be required to assist the camper home.</p>
                    <p>If you are having difficulty finding a sponsor, please let us know using the

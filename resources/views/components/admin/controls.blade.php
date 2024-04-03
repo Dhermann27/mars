@@ -19,8 +19,8 @@
 {{--       href="{{ route('roomselection.index', ['id' => $id]) }}" data-mdb-toggle="tooltip" title="Room Selection">--}}
 {{--        <i class="fas fa-bed fa-fw"></i>--}}
 {{--    </a>--}}
-{{--    <a class="btn btn-secondary px-2 {{ $id == 0 ? 'disabled' : '' }}"--}}
-{{--       href="{{ route('workshopchoice.index', ['id' => $id]) }}" data-mdb-toggle="tooltip" title="Workshops">--}}
-{{--        <i class="fas fa-rocket fa-fw"></i>--}}
-{{--    </a>--}}
+    <a class="btn btn-secondary px-2 {{ $id == 0 ? 'disabled' : '' }}"
+       href="{{ route('workshopchoice.index', ['id' => $id]) }}" data-mdb-toggle="tooltip" title="Workshops">
+        <i class="fas fa-rocket fa-fw"></i>
+    </a>
 </div>
