@@ -78,7 +78,7 @@ class WorkshopController extends Controller
 
     public function display()
     {
-        if($this->year->is_brochure) {
+        if ($this->year->is_brochure) {
             $workshops = Workshop::where('year_id', $this->year->id)->get()->groupBy('timeslot_id');
         } else {
             $lastyear = Year::where('year', '<', $this->year->year)->orderBy('year', 'desc')->firstOrFail();
@@ -90,7 +90,7 @@ class WorkshopController extends Controller
 
     public function excursions()
     {
-        if($this->year->is_brochure) {
+        if ($this->year->is_brochure) {
             $workshops = Workshop::where('year_id', $this->year->id)->where('timeslot_id', Timeslotname::Excursions)
                 ->get();
         } else {
@@ -105,7 +105,7 @@ class WorkshopController extends Controller
 
     private function getCampers($id)
     {
-        return ThisyearCamper::where('family_id', $id)->with('yearattending.workshops')->orderBy('birthdate')->get();
+        return ThisyearCamper::where('family_id', $id)->whereNotNull('program_id')->with('yearattending.workshops')->orderBy('birthdate')->get();
     }
 
 }
