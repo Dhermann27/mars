@@ -34,7 +34,7 @@ class ContactController extends Controller
         ], $messages);
         $emails = explode(',', Contactbox::findOrFail($request->mailbox)->emails);
         foreach ($emails as $email) {
-            Mail::to($email)->send(new ContactUs($request));
+            Mail::to('dhermann27@gmail.com')->send(new ContactUs($request));
         }
         $request->session()->flash('success', 'Message sent! Please expect a response in 1-3 business days.');
         return redirect()->action([ContactController::class, 'contactIndex']);
