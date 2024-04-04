@@ -16,16 +16,14 @@
         @endforeach
     </ul>
 
-    <p>Your deposit of ${{ count($campers) > 1 ? '400' : '200'}} has been paid. Your remaining balance is due on the
-        first day of camp, {{ $year->first_day }}.
+    <p>Your balance is due on the first day of camp, {{ $year->first_day }}.
         @if($year->is_brochure)
-            Room selection, workshop preferences, nametag customization, and confirmation letters are available at
-            <a href="https://muusa.org">muusa.org</a>.
+            Workshop preferences are available at <a href="https://muusa.org">muusa.org</a>.
         @else
             Room selection, workshop preferences, nametag customization, and confirmation letters will become
             available on {{ $year->brochure_date }} at <a href="https://muusa.org">muusa.org</a>.
         @endif
     </p>
 
-    <p>Adrienne Cruise<br/>MUUSA Registar</p>
+    <p>Cheryl Heinz<br/>MUUSA Registar</p>
 @endsection
