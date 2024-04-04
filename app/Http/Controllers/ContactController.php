@@ -33,8 +33,9 @@ class ContactController extends Controller
             'g-recaptcha-response' => (config('app.name') != 'MUUSADusk' ? 'required|recaptchav3:contact,0.5' : '')
         ], $messages);
         $emails = explode(',', Contactbox::findOrFail($request->mailbox)->emails);
-        dd($emails);
-        Mail::to($emails)->send(new ContactUs($request));
+        foreach ($emails as $email) {
+            Mail::to($email)->send(new ContactUs($request));
+        }
         $request->session()->flash('success', 'Message sent! Please expect a response in 1-3 business days.');
         return redirect()->action([ContactController::class, 'contactIndex']);
     }
