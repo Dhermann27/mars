@@ -39,7 +39,7 @@ Route::get('/excursions', [WorkshopController::class, 'excursions'])->name('work
 //Route::get('/directory', [DirectoryController::class, 'index'])->name('directory')->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['auth', 'registration_on']);
-Route::get('/register', [DashboardController::class, 'index'])->name('register');//->middleware(['auth', 'registration_on']);
+Route::get('/registration', [DashboardController::class, 'index'])->name('registration')->middleware(['auth', 'registration_on']);
 Route::get('/admin', [DashboardController::class, 'admin'])->name('admin')->middleware(['can:is-council']);
 
 Route::group(['prefix' => 'camperselect', 'middleware' => 'auth'], function () {
