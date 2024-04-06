@@ -141,7 +141,7 @@
                         <li class="nav-item pe-3"><a>{{ $year->next_muse }}</a>
                         </li>
                     @endif
-                    <li class="nav-item pe-3"><a href="mailto:muusa@muusa.org" class="nav-link"><i class="far fa-mailbox"></i> Contact Us</a>
+                    <li class="nav-item pe-3"><a href="mailto:info@muusa.org" class="nav-link"><i class="far fa-mailbox"></i> Contact Us</a>
                     {{--                    <li class="nav-item pe-3"><a href="https://www.bonfire.com/store/muusa/" class="nav-link">Store</a>--}}
                     {{--                    <li class="nav-item pe-3"><a href="{{ route('activityproposal') }}" class="nav-link">Activity Proposal</a>--}}
 
@@ -601,7 +601,7 @@
 
                 <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                     <h5>Questions?</h5>
-                    <i class="far fa-mailbox"></i> Email us at <a href="mailto:muusa@muusa.org">muusa@muusa.org</a>
+                    <i class="far fa-mailbox"></i> Email us at <a href="mailto:info@muusa.org">muusa@muusa.org</a>
 
                     <hr class="dropdown-divider"/>
 
