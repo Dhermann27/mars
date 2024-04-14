@@ -84,8 +84,7 @@
                                     space in the dorms for programming. Most adult programs and Morning Celebrations
                                     will be at the church.</p>
                                 <p>Plenty of hotels in all price ranges are also nearby.</p>
-                                <p>We are working to get the brochure and registration up and running by the middle of
-                                    February 2024. Rev. Misha Sanders will be our theme speaker!</p>
+                                <p>Rev. Misha Sanders will be our theme speaker!</p>
                                 <p>Wednesday July 3rd through Sunday July 7th, 2024. Hope to see you there!</p>
                                 <p>&nbsp;</p>
 

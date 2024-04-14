@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <meta name="description"
-          content="Midwest Unitarian Universalist Summer Assembly, located outside Potosi, Missouri (Formerly Lake Geneva Summer Assembly in Williams Bay, Wisconsin)">
+          content="Midwest Unitarian Universalist Summer Assembly (Formerly Lake Geneva Summer Assembly in Williams Bay, Wisconsin and Potosi, Missouri)">
     <meta name="author" content="Dan Hermann">
     <title>
         @hassection('title')
