@@ -119,8 +119,8 @@
                                 <h4>To Pay via Mail:</h4>
                                 Make checks payable to <strong>MUUSA, Inc.</strong><br/>
                                 Mail check by May 31, {{ $year->year }} to<br/>
-                                MUUSA, Inc.<br/>1371 Amesbury Dr<br/>
-                                Cincinnati, OH 45231<br/> <br/>
+                                MUUSA, Inc.<br/>3055 Long Grove Ln<br/>
+                                Aurora, IL 60504-5959<br/> <br/>
                             @else
                                 <h4>To Pay without Fees:</h4>
                                 Make checks payable to <strong>MUUSA, Inc.</strong><br/>

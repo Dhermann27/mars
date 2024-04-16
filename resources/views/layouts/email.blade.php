@@ -361,7 +361,7 @@
                                                         <div class="footer"
                                                              style="color: #999999; font-family: &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 13px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                                                             ©{{ $year->year }}
-                                                            MUUSA | Registrar | 6348 Meis Ave, Cincinnati OH 45224
+                                                            MUUSA | Registrar | 3055 Long Grove Ln, Aurora, IL 60504-5959
                                                             <div class="outlook-fixer"
                                                                  style="color: #999999; font-family: &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 13px; clear: both; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                                                             </div>
