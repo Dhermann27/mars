@@ -107,7 +107,7 @@
 @section('script')
     <script type="text/javascript">
         function checkDays(item) {
-            if(!item.hasClass('nocheck')) {
+            if(!window.hasClass(item, 'nocheck')) {
                 let days = parseInt(0, 2);
                 const actives = item.querySelectorAll('button.active');
                 for (j = 0; j < actives.length; j++) {
