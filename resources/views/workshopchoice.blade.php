@@ -107,15 +107,17 @@
 @section('script')
     <script type="text/javascript">
         function checkDays(item) {
-            let days = parseInt(0, 2);
-            const actives = item.querySelectorAll('button.active');
-            for (j = 0; j < actives.length; j++) {
-                var choice = parseInt(actives[j].getAttribute('data-bits'), 2);
-                if (choice & days) {
-                    for (k = 0; k < actives.length; k++) window.addClass(actives[k], 'list-group-item-danger');
-                    window.removeClass(item.querySelector('.alert-danger'), 'd-none');
-                } else {
-                    days = choice | days;
+            if(!item.hasClass('nocheck')) {
+                let days = parseInt(0, 2);
+                const actives = item.querySelectorAll('button.active');
+                for (j = 0; j < actives.length; j++) {
+                    var choice = parseInt(actives[j].getAttribute('data-bits'), 2);
+                    if (choice & days) {
+                        for (k = 0; k < actives.length; k++) window.addClass(actives[k], 'list-group-item-danger');
+                        window.removeClass(item.querySelector('.alert-danger'), 'd-none');
+                    } else {
+                        days = choice | days;
+                    }
                 }
             }
         }
@@ -125,12 +127,12 @@
         window.addClass(document.getElementById('workshop-{{ $camper->id }}-{{ $choice->id }}'), 'active');
         @endforeach
         @endforeach
-        const lists = document.querySelectorAll('form#workshops div.tab-pane div.list-group:not(div.nocheck)');
+        const lists = document.querySelectorAll('form#workshops div.tab-pane div.list-group');
         for (i = 0; i < lists.length; i++) {
             checkDays(lists[i]);
         }
         @cannot('readonly')
-        const items = document.querySelectorAll('form#workshops div.list-group:not(div.nocheck) button.list-group-item');
+        const items = document.querySelectorAll('form#workshops button.list-group-item');
         for (i = 0; i < items.length; i++) {
             window.addEvent(items[i], 'click', function (e) {
                 e.preventDefault();
