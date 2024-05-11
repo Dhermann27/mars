@@ -60,7 +60,7 @@
                             <div class="row">
                                 @if(!$camper->program->is_minor)
                                     @foreach($timeslots as $timeslot)
-                                        <div id="timeslot{{ $timeslot->id }}" class="list-group col-md-6 col-sm-12 pb-5">
+                                        <div id="timeslot-{{ $timeslot->id }}" class="list-group col-md-6 col-sm-12 pb-5">
                                             <h5>{{ $timeslot->name }}
                                                 @if($timeslot->id != 1005)
                                                     ({{ $timeslot->start_time->format('g:i A') }}
