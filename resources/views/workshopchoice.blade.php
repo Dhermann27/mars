@@ -130,7 +130,7 @@
             checkDays(lists[i]);
         }
         @cannot('readonly')
-        const items = document.querySelectorAll('form#workshops button.list-group-item');
+        const items = document.querySelectorAll('form#workshops div.list-group:not(div.nocheck) button.list-group-item');
         for (i = 0; i < items.length; i++) {
             window.addEvent(items[i], 'click', function (e) {
                 e.preventDefault();
