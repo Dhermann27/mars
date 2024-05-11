@@ -68,9 +68,9 @@ class WorkshopController extends Controller
                 $request->session()->flash('warning', 'There are no campers registered for this year.');
             }
         }
-        $timeslots = Timeslot::withWhereHas(['workshops' => function ($query) {
+        $timeslots = Timeslot::withWhereHas('workshops', function ($query) {
             $query->where('year_id', $this->year->id);
-        }])->get();
+        })->get();
         return view('workshopchoice', ['timeslots' => $timeslots, 'campers' => $campers,
             'stepdata' => $steps]);
 
