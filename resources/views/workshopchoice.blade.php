@@ -60,7 +60,7 @@
                             <div class="row">
                                 @if(!$camper->program->is_minor)
                                     @foreach($timeslots as $timeslot)
-                                        <div id="timeslot-{{ $timeslot->id }}" class="list-group col-md-6 col-sm-12 pb-5">
+                                        <div class="list-group col-md-6 col-sm-12 pb-5 @if($timeslot->id == \App\Enums\Timeslotname::Excursions) nocheck @endif">
                                             <h5>{{ $timeslot->name }}
                                                 @if($timeslot->id != 1005)
                                                     ({{ $timeslot->start_time->format('g:i A') }}
@@ -125,7 +125,7 @@
         window.addClass(document.getElementById('workshop-{{ $camper->id }}-{{ $choice->id }}'), 'active');
         @endforeach
         @endforeach
-        const lists = document.querySelectorAll('form#workshops div.tab-pane div.list-group:not(div#timeslot-{{ \App\Enums\Timeslotname::Excursions }})');
+        const lists = document.querySelectorAll('form#workshops div.tab-pane div.list-group:not(div.nocheck)');
         for (i = 0; i < lists.length; i++) {
             checkDays(lists[i]);
         }
