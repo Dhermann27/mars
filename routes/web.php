@@ -96,7 +96,7 @@ Route::group(['prefix' => 'workshopchoice', 'middleware' => 'auth'], function ()
 //    Route::get('/', [ConfirmController::class, 'index'])->name('medicalresponse.index')->middleware('brochure_on');
 //    Route::post('/', [ConfirmController::class, 'store'])->name('medicalresponse.store')->middleware('registration_on', 'can:has-paid');
 //});
-Route::get('/', [ConfirmController::class, 'all'])->name('invoices')->middleware('can:is-super');
+Route::get('/invoices', [ConfirmController::class, 'all'])->name('invoices')->middleware('can:is-super');
 
 Route::group(['prefix' => 'data'], function () {
     Route::get('camperlist', [DataController::class, 'campers'])->middleware('can:is-council');

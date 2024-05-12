@@ -45,7 +45,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($family->campers as $camper)
+            @foreach($family->thisyearcampers as $camper)
                 <tr>
                     <td>{{ $camper->firstname }} {{ $camper->lastname }}</td>
                     <td>{{ $camper->pronounname }}</td>
