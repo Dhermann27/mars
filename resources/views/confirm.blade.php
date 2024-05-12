@@ -242,5 +242,6 @@
         {{--                            });--}}
         {{--                        });--}}
         {{--                    </script>--}}
-        @endsection
+    @endforeach
+@endsection
 
