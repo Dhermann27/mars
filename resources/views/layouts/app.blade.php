@@ -42,7 +42,7 @@
 <header>
     <!-- Animated navbar-->
     <nav @class(['navbar', 'navbar-expand-lg', 'navbar-scroll', 'fixed-top' => config('app.name') != 'MUUSADusk'])>
-        <div class="container-fluid">
+        <div class="container-fluid d-print-none">
             <button class="navbar-toggler ps-0" type="button" data-mdb-toggle="collapse"
                     data-mdb-target="#navbarMars" aria-controls="navbarMars" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -175,8 +175,9 @@
                                                     <a href="{{ route('reports.deposits') }}">Bank Deposits</a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{ route('reports.campers') }}">Campers ({{ $year->year }}
-                                                        )</a>
+                                                    <a href="{{ route('reports.campers') }}">
+                                                        Campers ({{ $year->year }})
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <a href="{{ route('reports.workshops') }}"
@@ -298,42 +299,42 @@
                                                 <i class="fas fa-rocket fa-fw"></i> Workshop List
                                             </a>
                                         </li>
-{{--                                        <li>--}}
-{{--                                            <a href="#" class="dropdown-item disabled">--}}
-{{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                        <li>--}}
-{{--                                            <a href="#" class="dropdown-item disabled">--}}
-{{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                        <li>--}}
-{{--                                            <a href="#" class="dropdown-item disabled">--}}
-{{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="#" class="dropdown-item disabled">--}}
+                                        {{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="#" class="dropdown-item disabled">--}}
+                                        {{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="#" class="dropdown-item disabled">--}}
+                                        {{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
                                     @else
-{{--                                        <li>--}}
-{{--                                            <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
-{{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="{{ route('roomselection.index') }}" class="dropdown-item">--}}
+                                        {{--                                                <i class="fas fa-bed fa-fw"></i> Room Selection--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
                                         <li>
                                             <a href="{{ route('workshopchoice.index') }}" class="dropdown-item">
                                                 <i class="fas fa-rocket fa-fw"></i> Workshops
                                             </a>
                                         </li>
-{{--                                        <li>--}}
-{{--                                            <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
-{{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                        <li>--}}
-{{--                                            <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">--}}
-{{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="{{ route('nametag.index') }}" class="dropdown-item">--}}
+                                        {{--                                                <i class="fas fa-id-card fa-fw"></i> Nametags--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <a href="{{ route('medicalresponse.index') }}" class="dropdown-item">--}}
+                                        {{--                                                <i class="fas fa-envelope fa-fw"></i> Confirmation--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        </li>--}}
                                     @endif
                                     <li>
                                         <hr class="dropdown-divider"/>
@@ -380,7 +381,7 @@
 
 
     @hasSection('title')
-        <div class="jumbotron jumbotron-fluid text-white @hasSection('image') bg-image @else bg-primary py-5 @endif"
+        <div class="jumbotron jumbotron-fluid text-white d-print-none @hasSection('image') bg-image @else bg-primary py-5 @endif"
              @hasSection('image') style="background-size: cover; background-position-y: bottom; background-image: @yield('image');" @endif>
             <div class="container mt-5 pt-5 text-shadow">
                 <h1 class="display-4">
@@ -655,20 +656,20 @@
                                 <hr/>
                                 <h6>Opens {{ $year->brochure_date }}</h6>
                                 <li>Workshop Preferences</li>
-{{--                                <li>Room Selection</li>--}}
-{{--                                <li>Nametag Customization</li>--}}
-{{--                                <li>Medical Response(s)</li>--}}
+                                {{--                                <li>Room Selection</li>--}}
+                                {{--                                <li>Nametag Customization</li>--}}
+                                {{--                                <li>Medical Response(s)</li>--}}
                             @else
                                 <li><a class="text-white underlined-link" href="{{ route('workshopchoice.index') }}">Workshop
                                         Preferences</a></li>
-{{--                                <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room--}}
-{{--                                        Selection</a></li>--}}
-{{--                                <li><a class="text-white underlined-link"--}}
-{{--                                       href="{{ route('nametag.index') }}">Nametags</a>--}}
-{{--                                </li>--}}
-{{--                                <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical--}}
-{{--                                        Response(s)</a>--}}
-{{--                                </li>--}}
+                                {{--                                <li><a class="text-white underlined-link" href="{{ route('roomselection.index') }}">Room--}}
+                                {{--                                        Selection</a></li>--}}
+                                {{--                                <li><a class="text-white underlined-link"--}}
+                                {{--                                       href="{{ route('nametag.index') }}">Nametags</a>--}}
+                                {{--                                </li>--}}
+                                {{--                                <li><a class="text-white underlined-link" href="{{ route('medicalresponse.index') }}">Medical--}}
+                                {{--                                        Response(s)</a>--}}
+                                {{--                                </li>--}}
                             @endif
                         </ul>
                     @endcan
