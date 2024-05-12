@@ -38,14 +38,14 @@
     </tbody>
     <tfoot>
     @if(request()->route()->hasParameter('id'))
-        <tr class="text-md-right {{ $charges->sum('amount') > 0 ? 'text-red' : 'text-green' }}">
+        <tr class="text-md-end {{ $charges->sum('amount') > 0 ? 'text-red' : 'text-green' }}">
             <td colspan="2">&nbsp;</td>
             <td class="amount">{{ number_format(abs($charges->sum('amount')), 2) }}</td>
             <td colspan="2"><strong>Amount {{ $charges->sum('amount') >= 0 ? 'Due' : 'Owed' }}</strong></td>
         </tr>
     @else
         @if(Gate::allows('accept-paypal', $year))
-            <tr class="text-md-right">
+            <tr class="text-md-end">
                 <td colspan="2">&nbsp;</td>
                 <td class="amount">
                     <span id="amountNow">{{ number_format(max($deposit, 0), 2) }}</span>
@@ -54,7 +54,7 @@
             </tr>
         @endif
         @if($stepdata["isRoomsSelected"])
-            <tr class="text-md-right">
+            <tr class="text-md-end">
                 <td colspan="2">&nbsp;</td>
                 <td class="amount">
                     <span id="amountArrival">{{ number_format(max(0, $charges->sum('amount')), 2) }}

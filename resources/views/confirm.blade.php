@@ -77,15 +77,15 @@
                 <tr>
                     <td class="text-md-center">{{ $charge->timestamp }}</td>
                     <td>{{ $charge->chargetypename }}</td>
-                    <td class="amount text-md-right">${{ number_format($charge->amount, 2) }}</td>
+                    <td class="amount text-md-end">{{ number_format($charge->amount, 2) }}</td>
                     <td>{{ $charge->memo }}</td>
                 </tr>
             @endforeach
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="2" class="text-md-right"><strong>Amount Due on {{ $year->checkin }}:</strong></td>
-                <td class="amount">${{ number_format( $family->charges->sum('amount'), 2) }}</td>
+                <td colspan="2" class="text-md-end"><strong>Amount Due on {{ $year->checkin }}:</strong></td>
+                <td class="amount">{{ number_format( $family->charges->sum('amount'), 2) }}</td>
                 <td>&nbsp;</td>
             </tr>
             </tfoot>

@@ -49,7 +49,7 @@
         @elseif($type == 'next')
             {{--@include('includes.formgroup', ['type' => 'next', 'label' => '', 'attribs' => ['name' => 'Next Camper']])--}}
             <div class="form-group row">
-                <div class="col-md-10 text-md-right">
+                <div class="col-md-10 text-md-end">
                     <button type="button" class="btn btn-default nextcamper">{{ $attribs["name"] }}
                         <i class="fas fa-chevron-right"></i>
                     </button>

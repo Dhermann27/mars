@@ -57,7 +57,7 @@
             </div>
 
             <div class="form-group row @error('usertype') has-danger @enderror">
-                <label for="usertype" class="col-md-4 col-form-label text-md-right">User Type</label>
+                <label for="usertype" class="col-md-4 col-form-label text-md-end">User Type</label>
 
                 <div class="col-md-6">
                     <select id="usertype" name="usertype"
