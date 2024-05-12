@@ -96,6 +96,7 @@ Route::group(['prefix' => 'workshopchoice', 'middleware' => 'auth'], function ()
 //    Route::get('/', [ConfirmController::class, 'index'])->name('medicalresponse.index')->middleware('brochure_on');
 //    Route::post('/', [ConfirmController::class, 'store'])->name('medicalresponse.store')->middleware('registration_on', 'can:has-paid');
 //});
+Route::get('/', [ConfirmController::class, 'all'])->name('invoices')->middleware('can:is-super');
 
 Route::group(['prefix' => 'data'], function () {
     Route::get('camperlist', [DataController::class, 'campers'])->middleware('can:is-council');
@@ -158,7 +159,7 @@ Route::group(['middleware' => ['can:is-super'], 'prefix' => 'admin'], function (
 });
 Route::get('/muse', function () {
     $muses = File::allFiles(public_path('muses'));
-    if(count($muses) == 0) abort(404);
+    if (count($muses) == 0) abort(404);
     $muse = array_pop($muses);
     return redirect('/muses/' . $muse->getBasename());
 });

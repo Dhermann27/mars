@@ -225,6 +225,13 @@
                                                         </a>
                                                     </li>
                                                     <li>
+                                                        <a href="{{ route('invoices') }}"
+                                                           data-mdb-toggle="tooltip" title="Slow call">
+                                                            Invoices
+                                                            <i class="fas fa-turtle fa-xl"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
                                                         <a href="{{ route('admin.positions.index') }}">Staff
                                                             Positions</a>
                                                     </li>

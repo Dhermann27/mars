@@ -21,7 +21,7 @@ class CamperInformationController extends Controller
 {
     private const LAST_PROGRAM_SELECT = '(SELECT program_id FROM yearsattending yap, years y WHERE yap.year_id=y.id AND yearsattending.camper_id=yap.camper_id AND y.year<? ORDER BY year DESC LIMIT 1) lastprogram_id';
 
-    private $messages = ['pronoun_id.*.exists' => 'Please choose a preferred pronoun.',
+    private $messages = ['pronoun_id.*.exists' => 'Please choose the pronoun(s) you use.',
         'sex_id.*.min' => 'Please choose a sex.',
         'gender_id.*.min' => 'Please choose a gender identity.',
         'firstname.*.required' => 'Please enter a first name.',
