@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Medicalresponse;
-use App\Http\ThisyearFamily;
+use App\Models\ThisyearFamily;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
